@@ -12,6 +12,7 @@
     <name>JiraGamificado</name>
     <description>Jira Gamificado Modular</description>
 
+    <!-- ✅ Módulos do projeto -->
     <modules>
         <module>domain</module>
         <module>infrastructure</module>
@@ -20,13 +21,17 @@
         <module>application</module>
     </modules>
 
+    <!-- ✅ Propriedades globais -->
     <properties>
         <java.version>21</java.version>
         <spring.boot.version>3.4.4</spring.boot.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!-- ✅ Dependências compartilhadas -->
     <dependencyManagement>
         <dependencies>
+            <!-- Spring Boot BOM -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -34,12 +39,52 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!-- Spring JPA -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-data-jpa</artifactId>
+            </dependency>
+
+            <!-- Jakarta Persistence -->
+            <dependency>
+                <groupId>jakarta.persistence</groupId>
+                <artifactId>jakarta.persistence-api</artifactId>
+                <version>3.1.0</version>
+            </dependency>
+
+            <!-- Lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.30</version>
+                <scope>provided</scope>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
+    <!-- ✅ Plugins compartilhados com suporte a Lombok -->
     <build>
         <pluginManagement>
             <plugins>
+                <!-- Plugin de compilação com suporte a annotation processors -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.13.0</version>
+                    <configuration>
+                        <release>${java.version}</release>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>1.18.30</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+                <!-- Plugin Spring Boot (usado nos módulos que precisam) -->
                 <plugin>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-maven-plugin</artifactId>
@@ -47,4 +92,5 @@
             </plugins>
         </pluginManagement>
     </build>
+
 </project>

@@ -1,0 +1,11 @@
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/Main.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/gamification/GrantAchievementService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/gamification/UnlockRewardService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/gamification/UpdateScoreService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/projectmanagement/CompleteTaskService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/projectmanagement/CreateProjectService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/projectmanagement/LaunchChallengeService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/teams/AddMemberToTeamService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/teams/CreateTeamService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/core/teams/GiveFeedbackService.java
+/Users/brunoribeiro/Documents/jira-gamificado/application/src/main/java/com/cesar/school/support/reporting/PerformanceReportService.java
