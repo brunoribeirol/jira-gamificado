@@ -6,13 +6,21 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="JiraGamificado" />
+        <module name="presentation" />
+        <module name="tests" />
+        <module name="application" />
+        <module name="infrastructure" />
+        <module name="domain" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="JiraGamificado" options="-parameters" />
+      <module name="JiraGamificado" options="" />
+      <module name="application" options="" />
+      <module name="domain" options="" />
+      <module name="infrastructure" options="" />
+      <module name="presentation" options="" />
     </option>
   </component>
 </project>
