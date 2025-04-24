@@ -27,7 +27,7 @@ SprintQuest permite a criação e gestão de projetos com visualização de tare
 
 - 📄 [Descrição do Domínio (PDF)](./docs/descricao_dominio.pdf)
 - 🖼️ [Protótipo de Baixa Fidelidade (Figma)](https://www.figma.com/design/8yORsLBWoXVqCpEj7tWPCJ/Projeto-Requisistos?node-id=0-1&p=f&t=eIytbgGlwM35SFbd-0)
-- 🗺️ [Mapa de Histórias de Usuário](./docs/mapa_historias_usuario.png)
+- 🗺️ [Mapa de Histórias de Usuário](./docs/mapa_historias_usuario.jpeg)
 
 ---
 
