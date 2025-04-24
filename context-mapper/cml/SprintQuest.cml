@@ -1,0 +1,254 @@
+Domain SprintQuest {
+    Subdomain ProjectManagement
+    Subdomain Gamification
+    Subdomain TeamsAndUsers
+    Subdomain ReportingAndPerformance
+}
+
+ContextMap SprintQuestContextMap {
+    contains ProjectManagement
+    contains Gamification
+    contains TeamsAndUsers
+    contains ReportingAndPerformance
+
+    ProjectManagement Shared-Kernel TeamsAndUsers
+    Gamification Shared-Kernel TeamsAndUsers
+    ReportingAndPerformance CustomerSupplier ProjectManagement
+    ReportingAndPerformance CustomerSupplier Gamification
+}
+
+BoundedContext ProjectManagement implements ProjectManagement {
+    Aggregate ProjectManagement {
+        Service ProjectManagementService {
+            void createProject(@ProjectId projectId, @String name);
+            void addStage(@ProjectId projectId, @StageId stageId);
+            void addTask(@StageId stageId, @TaskId taskId);
+            void addChallenge(@ProjectId projectId, @ChallengeId challengeId);
+        }
+
+        Entity Project {
+            aggregateRoot
+
+            -ProjectId id
+            String name
+            List<StageId> stages
+            List<ChallengeId> challenges
+
+            def void addStage(@StageId stageId);
+            def void addTask(@StageId stageId, @TaskId taskId);
+            def void addChallenge(@ChallengeId challengeId);
+        }
+
+        Entity Stage {
+            aggregateRoot
+
+            -StageId id
+            String name
+            List<TaskId> tasks
+
+            def void addTask(@TaskId taskId);
+        }
+
+        Entity Task {
+            aggregateRoot
+
+            -TaskId id
+            String description
+            Date dueDate
+        }
+
+        Entity Challenge {
+            aggregateRoot
+
+            -ChallengeId id
+            String name
+            String description
+        }
+
+        ValueObject ProjectId {
+            int id
+        }
+
+        ValueObject StageId {
+            int id
+        }
+
+        ValueObject TaskId {
+            int id
+        }
+
+        ValueObject ChallengeId {
+            int id
+        }
+    }
+}
+
+BoundedContext Gamification implements Gamification {
+    Aggregate Gamification {
+        Service GamificationService {
+            void registerPoints(@UserId userId, @int points);
+            void unlockAchievement(@UserId userId, @AchievementId achievementId);
+            void updateRanking(@UserId userId);
+        }
+
+        Entity Score {
+            aggregateRoot
+
+            -ScoreId id
+            -UserId userId
+            int totalPoints
+
+            def void addPoints(@int points);
+        }
+
+        Entity Reward {
+            aggregateRoot
+
+            -RewardId id
+            String name
+            String description
+            int requiredPoints
+        }
+
+        Entity Achievement {
+            aggregateRoot
+
+            -AchievementId id
+            String name
+            String description
+        }
+
+        Entity Ranking {
+            aggregateRoot
+
+            -RankingId id
+            List<ScoreId> topScores
+            Date lastUpdated
+
+            def void updateRanking(@List<ScoreId> newTopScores);
+        }
+
+        ValueObject UserId {
+            int id
+        }
+
+        ValueObject ScoreId {
+            int id
+        }
+
+        ValueObject RewardId {
+            int id
+        }
+
+        ValueObject AchievementId {
+            int id
+        }
+
+        ValueObject RankingId {
+            int id
+        }
+    }
+}
+
+BoundedContext TeamsAndUsers implements TeamsAndUsers {
+    Aggregate TeamsAndUsers {
+        Service TeamsAndUsersService {
+            void createTeam(@TeamId teamId, @String teamName);
+            void addMember(@TeamId teamId, @UserId userId, @Role role);
+            void giveFeedback(@UserId userId, @FeedbackId feedbackId);
+        }
+
+        Entity Team {
+            aggregateRoot
+
+            -TeamId id
+            String name
+            List<MemberId> members
+
+            def void addMember(@UserId userId, @Role role);
+        }
+
+        Entity Member {
+            aggregateRoot
+
+            -MemberId id
+            -UserId userId
+            Role role
+            List<FeedbackId> feedbacks
+
+            def void addFeedback(@FeedbackId feedbackId);
+        }
+
+        Entity Feedback {
+            aggregateRoot
+
+            -FeedbackId id
+            -UserId giverId
+            -UserId receiverId
+            String comments
+            Date date
+
+            def void updateFeedback(@String comments);
+        }
+
+        ValueObject TeamId {
+            int id
+        }
+
+        ValueObject MemberId {
+            int id
+        }
+
+        ValueObject UserId {
+            int id
+        }
+
+        ValueObject FeedbackId {
+            int id
+        }
+
+        ValueObject Role {
+            enum Leader
+            enum Member
+        }
+    }
+}
+
+BoundedContext ReportingAndPerformance implements ReportingAndPerformance {
+    Aggregate ReportingAndPerformance {
+        Service ReportingAndPerformanceService {
+            Report generatePerformanceReport(@ProjectId projectId, @UserId userId);
+            Report generateTeamReport(@TeamId teamId);
+        }
+
+        Entity Report {
+            aggregateRoot
+
+            -ReportId id
+            String title
+            String content
+            Date generatedDate
+
+            def void updateContent(@String content);
+        }
+
+        Entity PerformanceData {
+            aggregateRoot
+
+            -PerformanceDataId id
+            -UserId userId
+            int pointsEarned
+            List<FeedbackId> feedbackGiven
+
+            def void addFeedback(@FeedbackId feedbackId);
+        }
+
+        ValueObject ReportId {
+            int id
+        }
+
+        ValueObject PerformanceDataId {
+            int id
+        }
+    }
+}

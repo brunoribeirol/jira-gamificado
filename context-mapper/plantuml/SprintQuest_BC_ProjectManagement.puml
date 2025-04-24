@@ -1,0 +1,59 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'ProjectManagement' Aggregate" <<Rectangle>> {
+	class Project <<(A,#fffab8) Aggregate Root>> {
+		String name
+		List<StageId> stages
+		List<ChallengeId> challenges
+		ProjectId id
+		void addStage(StageId stageId)
+		void addTask(StageId stageId, TaskId taskId)
+		void addChallenge(ChallengeId challengeId)
+	}
+	class Stage <<(A,#fffab8) Aggregate Root>> {
+		String name
+		List<TaskId> tasks
+		StageId id
+		void addTask(TaskId taskId)
+	}
+	class Task <<(A,#fffab8) Aggregate Root>> {
+		String null
+		Date dueDate
+		TaskId id
+	}
+	class Challenge <<(A,#fffab8) Aggregate Root>> {
+		String name
+		String null
+		ChallengeId id
+	}
+	class ProjectId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class StageId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class TaskId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class ChallengeId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class ProjectManagementService <<(S,DarkSeaGreen) Service>> {
+		void createProject(ProjectId projectId, null null)
+		void addStage(ProjectId projectId, StageId stageId)
+		void addTask(StageId stageId, TaskId taskId)
+		void addChallenge(ProjectId projectId, ChallengeId challengeId)
+	}
+}
+Challenge --> ChallengeId : id
+Project --> ProjectId : id
+Stage --> StageId : id
+Task --> TaskId : id
+legend left
+  This bounded context implements the subdomain 'ProjectManagement'.
+end legend
+
+
+@enduml

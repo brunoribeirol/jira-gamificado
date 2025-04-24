@@ -1,0 +1,59 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'TeamsAndUsers' Aggregate" <<Rectangle>> {
+	class Team <<(A,#fffab8) Aggregate Root>> {
+		String name
+		List<MemberId> members
+		TeamId id
+		void addMember(UserId userId, Role role)
+	}
+	class Member <<(A,#fffab8) Aggregate Root>> {
+		Role role
+		List<FeedbackId> feedbacks
+		MemberId id
+		UserId userId
+		void addFeedback(FeedbackId feedbackId)
+	}
+	class Feedback <<(A,#fffab8) Aggregate Root>> {
+		String comments
+		Date date
+		FeedbackId id
+		UserId giverId
+		UserId receiverId
+		void updateFeedback(null null)
+	}
+	class TeamId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class MemberId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class UserId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class FeedbackId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class Role <<(V,DarkSeaGreen) Value Object>> {
+	}
+	enum Leader {
+	}
+	enum Member {
+	}
+	class TeamsAndUsersService <<(S,DarkSeaGreen) Service>> {
+		void createTeam(TeamId teamId, null null)
+		void addMember(TeamId teamId, UserId userId, Role role)
+		void giveFeedback(UserId userId, FeedbackId feedbackId)
+	}
+}
+Team --> TeamId : id
+Feedback --> FeedbackId : id
+Member --> MemberId : id
+legend left
+  This bounded context implements the subdomain 'TeamsAndUsers'.
+end legend
+
+
+@enduml
