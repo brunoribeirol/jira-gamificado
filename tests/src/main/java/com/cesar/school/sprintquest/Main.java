@@ -1,4 +1,4 @@
-package com.cesar.school;
+package com.cesar.school.sprintquest;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

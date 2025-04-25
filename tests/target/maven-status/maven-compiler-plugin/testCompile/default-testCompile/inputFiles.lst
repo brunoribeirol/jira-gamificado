@@ -1,2 +1,2 @@
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/bdd/RunnerTest.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/bdd/steps/KanbanSteps.java
+/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/runners/RunCucumberTest.java
+/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/CriarProjetosSteps.java
