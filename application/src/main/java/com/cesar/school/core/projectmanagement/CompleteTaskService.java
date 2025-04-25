@@ -1,5 +1,7 @@
 package com.cesar.school.core.projectmanagement;
 
+import com.cesar.school.core.projectmanagement.entity.Task;
+import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

@@ -1,0 +1,142 @@
+Domain SprintQuest {
+    Subdomain ProjectManagement
+    Subdomain Gamification
+    Subdomain TeamsAndUsers
+}
+
+ContextMap SprintQuestContextMap {
+    contains ProjectManagement
+    contains Gamification
+    contains TeamsAndUsers
+
+    ProjectManagement Shared-Kernel TeamsAndUsers
+    Gamification Shared-Kernel TeamsAndUsers
+}
+
+BoundedContext ProjectManagement implements ProjectManagement {
+    Aggregate ProjectManagement {
+        Service ProjectManagementService {
+            void createProject(@ProjectId projectId, @String name, @String description);
+            void addTask(@ProjectId projectId, @TaskId taskId);
+            void moveTask(@TaskId taskId, @String targetColumn);
+            void completeTask(@TaskId taskId);
+            void addChallenge(@ProjectId projectId, @ChallengeId challengeId);
+        }
+
+        Entity Project {
+            aggregateRoot
+            -ProjectId id
+            String name
+            String description
+            List<TaskId> tasks
+            List<ChallengeId> challenges
+            String[] kanbanColumns
+            -TeamId teamId
+        }
+
+        Entity Task {
+            aggregateRoot
+            -TaskId id
+            String title
+            String description
+            List<MemberId> assignees
+            String kanbanColumn
+            Integer points
+            Date createdAt
+            Date? completedAt
+        }
+
+        Entity Challenge {
+            aggregateRoot
+            -ChallengeId id
+            String title
+            String description
+            String criteria
+            Integer extraPoints
+            MemberId createdBy
+            ProjectId projectId
+            Date deadline
+        }
+
+        ValueObject ProjectId { int id }
+        ValueObject TaskId { int id }
+        ValueObject ChallengeId { int id }
+        ValueObject TeamId { int id }
+        ValueObject MemberId { int id }
+    }
+}
+
+BoundedContext Gamification implements Gamification {
+    Aggregate Gamification {
+        Service GamificationService {
+            void assignPoints(@MemberId memberId, @int points);
+            void unlockReward(@MemberId memberId);
+        }
+
+        Entity Reward {
+            aggregateRoot
+            -RewardId id
+            String description
+            Integer requiredPoints
+            String type
+            MemberId createdBy
+        }
+
+        Entity Score {
+            aggregateRoot
+            -MemberId memberId
+            int totalPoints
+        }
+
+        ValueObject RewardId { int id }
+    }
+}
+
+BoundedContext TeamsAndUsers implements TeamsAndUsers {
+    Aggregate TeamsAndUsers {
+        Service TeamsAndUsersService {
+            void createTeam(@TeamId teamId, @String teamName);
+            void addMember(@TeamId teamId, @MemberId memberId, @Role role);
+            List<Reward> getUnlockedRewards(@MemberId memberId);
+            int getScore(@MemberId memberId);
+            List<Feedback> getReceivedFeedbacks(@MemberId memberId);
+        }
+
+        Entity Team {
+            aggregateRoot
+            -TeamId id
+            String name
+            MemberId leader
+            List<MemberId> members
+            Integer teamScore
+        }
+
+        Entity Member {
+            aggregateRoot
+            -MemberId id
+            String name
+            String email
+            String password
+            Role role
+            int individualScore
+            List<RewardId> unlockedRewards
+        }
+
+        Entity Feedback {
+            aggregateRoot
+            -FeedbackId id
+            String message
+            Date date
+            MemberId givenBy
+            MemberId receivedBy
+            TaskId? relatedTask
+        }
+
+        ValueObject TeamId { int id }
+        ValueObject FeedbackId { int id }
+        ValueObject Role {
+            enum Leader
+            enum Member
+        }
+    }
+}

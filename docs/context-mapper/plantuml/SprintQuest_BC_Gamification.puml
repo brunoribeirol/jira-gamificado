@@ -1,0 +1,31 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'Gamification' Aggregate" <<Rectangle>> {
+	class Reward <<(A,#fffab8) Aggregate Root>> {
+		String null
+		Integer requiredPoints
+		String MemberId
+		createdBy null
+		RewardId id
+	}
+	class Score <<(A,#fffab8) Aggregate Root>> {
+		int totalPoints
+		MemberId memberId
+	}
+	class RewardId <<(V,DarkSeaGreen) Value Object>> {
+		int id
+	}
+	class GamificationService <<(S,DarkSeaGreen) Service>> {
+		void assignPoints(MemberId memberId, null null)
+		void unlockReward(MemberId memberId)
+	}
+}
+Reward --> RewardId : id
+legend left
+  This bounded context implements the subdomain 'Gamification'.
+end legend
+
+
+@enduml

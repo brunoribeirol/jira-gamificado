@@ -1,6 +1,6 @@
 package com.cesar.school.core.gamification;
 
-import com.cesar.school.core.projectmanagement.Project;
+import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.teams.Member;
 import jakarta.persistence.*;
 import lombok.*;
