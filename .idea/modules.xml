@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/domain.iml" filepath="$PROJECT_DIR$/domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JiraGamificado.iml" filepath="$PROJECT_DIR$/JiraGamificado.iml" />
     </modules>
   </component>
 </project>

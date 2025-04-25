@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import static org.springframework.util.Assert.isTrue;
 
-class ChallengeId {
+public class ChallengeId {
     private final int value;
 
     public ChallengeId(int value) {

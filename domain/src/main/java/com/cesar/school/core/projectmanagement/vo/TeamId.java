@@ -1,11 +1,10 @@
 package com.cesar.school.core.projectmanagement.vo;
 
 import static org.apache.commons.lang3.Validate.isTrue;
-import static org.springframework.util.Assert.isTrue;
 
 import java.util.Objects;
 
-class TeamId {
+public class TeamId {
     private final int value;
 
     public TeamId(int value) {

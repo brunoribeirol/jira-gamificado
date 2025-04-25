@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import static org.springframework.util.Assert.isTrue;
 
-class TaskId {
+public class TaskId {
     private final int value;
 
     public TaskId(int value) {

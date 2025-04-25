@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import static org.springframework.util.Assert.isTrue;
 
-class MemberId {
+public class MemberId {
     private final int value;
 
     public MemberId(int value) {

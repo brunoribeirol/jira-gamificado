@@ -1,7 +1,9 @@
 package com.cesar.school.core.projectmanagement.entity;
 
-import com.cesar.school.core.projectmanagement.MemberId;
-import com.cesar.school.core.projectmanagement.TaskId;
+
+
+import com.cesar.school.core.projectmanagement.vo.MemberId;
+import com.cesar.school.core.projectmanagement.vo.TaskId;
 
 import java.util.*;
 
