@@ -18,6 +18,14 @@ public class Task {
     private Date completedAt;
 
     public Task(TaskId id, String title, String description, List<MemberId> assignees, int points) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("O nome da tarefa é obrigatório");
+        }
+
+        if (assignees == null || assignees.isEmpty()) {
+            throw new IllegalArgumentException("Selecione ao menos um responsável");
+        }
+
         this.id = id;
         this.title = title;
         this.description = description;

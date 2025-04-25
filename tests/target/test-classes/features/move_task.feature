@@ -1,5 +1,4 @@
-# Created by brunoribeiro at 24/04/25
-Feature: Mover tarefas no quadro Kanban
+Feature: Mover tarefa no Kanban
 
   Scenario: Mover tarefa com sucesso
     Given que sou responsável pela tarefa “Implementar login”
@@ -12,5 +11,5 @@ Feature: Mover tarefas no quadro Kanban
     Given que estou tentando mover uma tarefa atribuída a outro membro
     And a tarefa “Revisar documentação” está atribuída a outro membro
     When tento mover essa tarefa para outra coluna
-    Then o sistema exibe a mensagem “Você não pode mover tarefas que não são suas”
+    Then mensagem de erro ao mover tarefa: "Você não pode mover tarefas que não são suas"
     And mantém a tarefa em sua posição original

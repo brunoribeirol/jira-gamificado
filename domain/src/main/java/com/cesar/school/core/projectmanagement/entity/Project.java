@@ -15,6 +15,9 @@ public class Project {
     private final List<String> kanbanColumns = List.of("Backlog", "Pronto", "Em Progresso", "Revisão", "Concluído");
 
     public Project(ProjectId id, String name, String description, TeamId teamId) {
+        if (name == null || name.isBlank()) {
+            throw new IllegalArgumentException("Nome do projeto é obrigatório");
+        }
         this.id = id;
         this.name = name;
         this.description = description;
