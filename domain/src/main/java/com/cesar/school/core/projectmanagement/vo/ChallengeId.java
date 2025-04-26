@@ -2,13 +2,13 @@ package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-import static org.springframework.util.Assert.isTrue;
-
 public class ChallengeId {
     private final int value;
 
     public ChallengeId(int value) {
-        isTrue(value > 0, "O ID do desafio deve ser positivo");
+        if (value <= 0) {
+            throw new IllegalArgumentException("O ID do desafio deve ser positivo");
+        }
         this.value = value;
     }
 

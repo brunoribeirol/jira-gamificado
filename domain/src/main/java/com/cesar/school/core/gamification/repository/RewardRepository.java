@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RewardRepository {
-    void save(Reward reward);
-    Optional<Reward> findById(RewardId id);
+
+    Reward save(Reward reward);
+    Optional<Reward> findById(RewardId rewardId);
     List<Reward> findAll();
-    List<Reward> findRewardsAvailableFor(int score);
+    List<Reward> findRewardsAvailableForPoints(int points);
+    void deleteById(RewardId rewardId);
 }

@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface TaskRepository {
     Optional<Task> findById(TaskId id);
     void save(Task task);
+    void deleteById(TaskId id);
+    void update(Task task);
 }

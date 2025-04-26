@@ -25,12 +25,19 @@ public class Project {
     }
 
     public void addTask(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("Tarefa não pode ser nula");
+        }
         this.tasks.add(task);
     }
 
     public void addChallenge(Challenge challenge) {
+        if (challenge == null) {
+            throw new IllegalArgumentException("Desafio não pode ser nulo");
+        }
         this.challenges.add(challenge);
     }
+
 
     public ProjectId getId() { return id; }
     public String getName() { return name; }

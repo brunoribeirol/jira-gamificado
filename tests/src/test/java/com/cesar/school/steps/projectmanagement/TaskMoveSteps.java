@@ -1,16 +1,17 @@
-package com.cesar.school.steps;
+package com.cesar.school.steps.projectmanagement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.cesar.school.core.projectmanagement.entity.Task;
-import com.cesar.school.core.projectmanagement.vo.MemberId;
+
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 
+import com.cesar.school.core.shared.MemberId;
 import io.cucumber.java.en.*;
 
 import java.util.List;
 
-public class MoveTaskSteps {
+public class TaskMoveSteps {
 
     private Task tarefa;
     private String erro;

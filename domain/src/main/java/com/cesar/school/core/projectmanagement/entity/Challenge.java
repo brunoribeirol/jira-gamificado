@@ -1,9 +1,8 @@
 package com.cesar.school.core.projectmanagement.entity;
 
-
 import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.MemberId;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
+import com.cesar.school.core.shared.MemberId;
 
 import java.util.Date;
 
@@ -19,6 +18,12 @@ public class Challenge {
 
     public Challenge(ChallengeId id, String title, String description, String criteria, int extraPoints,
                      MemberId createdBy, ProjectId projectId, Date deadline) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Título do desafio é obrigatório");
+        }
+        if (criteria == null || criteria.isBlank()) {
+            throw new IllegalArgumentException("Critério do desafio é obrigatório");
+        }
         this.id = id;
         this.title = title;
         this.description = description;

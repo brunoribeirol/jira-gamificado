@@ -1,14 +1,14 @@
 package com.cesar.school.core.projectmanagement.vo;
 
-import static org.apache.commons.lang3.Validate.isTrue;
-
 import java.util.Objects;
 
 public class TeamId {
     private final int value;
 
     public TeamId(int value) {
-        isTrue(value > 0, "O ID do time deve ser positivo");
+        if (value <= 0) {
+            throw new IllegalArgumentException("O ID do time deve ser positivo");
+        }
         this.value = value;
     }
 

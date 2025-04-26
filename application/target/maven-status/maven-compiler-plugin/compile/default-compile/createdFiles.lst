@@ -1,11 +1,1 @@
-com/cesar/school/core/gamification/UpdateScoreService.class
-com/cesar/school/core/teams/CreateTeamService.class
-com/cesar/school/core/projectmanagement/CreateProjectService.class
 com/cesar/school/Main.class
-com/cesar/school/core/projectmanagement/CompleteTaskService.class
-com/cesar/school/core/projectmanagement/LaunchChallengeService.class
-com/cesar/school/core/gamification/GrantAchievementService.class
-com/cesar/school/core/teams/AddMemberToTeamService.class
-com/cesar/school/core/gamification/UnlockRewardService.class
-com/cesar/school/core/teams/GiveFeedbackService.class
-com/cesar/school/support/reporting/PerformanceReportService.class

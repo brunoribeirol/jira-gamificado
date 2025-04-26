@@ -2,13 +2,13 @@ package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-import static org.springframework.util.Assert.isTrue;
-
 public class ProjectId {
     private final int value;
 
     public ProjectId(int value) {
-        isTrue(value > 0, "O ID do projeto deve ser positivo");
+        if (value <= 0) {
+            throw new IllegalArgumentException("O ID do projeto deve ser positivo");
+        }
         this.value = value;
     }
 
