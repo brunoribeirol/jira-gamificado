@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface RewardRepository {
 
-    Reward save(Reward reward);
+    void save(Reward reward);
     Optional<Reward> findById(RewardId rewardId);
     List<Reward> findAll();
     List<Reward> findRewardsAvailableForPoints(int points);

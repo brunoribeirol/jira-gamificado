@@ -2,7 +2,7 @@ package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-public class TaskId {
+public final class TaskId {
     private final int value;
 
     public TaskId(int value) {

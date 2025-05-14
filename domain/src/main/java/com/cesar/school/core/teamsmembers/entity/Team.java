@@ -3,8 +3,10 @@ package com.cesar.school.core.teamsmembers.entity;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.vo.TeamId;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Team {
     private final TeamId id;
@@ -13,27 +15,29 @@ public class Team {
     private final List<MemberId> members;
     private int teamScore;
 
-    public Team(TeamId id, String name, MemberId leaderId, List<MemberId> members) {
+    public Team(TeamId id, String name, MemberId leaderId, List<MemberId> initialMembers) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome do time não pode ser vazio");
         }
-        if (leaderId == null || members == null || members.isEmpty()) {
+        if (leaderId == null || initialMembers == null || initialMembers.isEmpty()) {
             throw new IllegalArgumentException("O time deve ter um líder e membros");
         }
 
-        this.id = id;
+        this.id = Objects.requireNonNull(id);
         this.name = name;
         this.leaderId = leaderId;
-        this.members = List.copyOf(members);  // Garantindo imutabilidade da lista de membros
+        this.members = new ArrayList<>(initialMembers);
         this.teamScore = 0;
     }
 
     public void addMember(MemberId memberId) {
-        throw new UnsupportedOperationException("Membros não podem ser alterados após a criação do time");
+        if (!members.contains(memberId)) {
+            members.add(memberId);
+        }
     }
 
     public void removeMember(MemberId memberId) {
-        throw new UnsupportedOperationException("Membros não podem ser removidos após a criação do time");
+        members.remove(memberId);
     }
 
     public void addPoints(int points) {
@@ -41,7 +45,6 @@ public class Team {
         teamScore += points;
     }
 
-    // Métodos Getters
     public TeamId getId() {
         return id;
     }
@@ -55,7 +58,7 @@ public class Team {
     }
 
     public List<MemberId> getMembers() {
-        return Collections.unmodifiableList(members); // Garantindo imutabilidade da lista de membros
+        return Collections.unmodifiableList(members);
     }
 
     public int getTeamScore() {

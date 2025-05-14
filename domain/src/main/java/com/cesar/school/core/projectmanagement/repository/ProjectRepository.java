@@ -9,5 +9,4 @@ public interface ProjectRepository {
     Optional<Project> findById(ProjectId id);
     void save(Project project);
     void deleteById(ProjectId id);
-    void update(Project project);
 }

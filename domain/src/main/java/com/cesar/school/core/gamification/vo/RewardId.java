@@ -2,7 +2,7 @@ package com.cesar.school.core.gamification.vo;
 
 import java.util.Objects;
 
-public class RewardId {
+public final class RewardId {
     private final int value;
 
     public RewardId(int value) {

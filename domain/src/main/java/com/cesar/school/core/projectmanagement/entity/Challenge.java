@@ -24,6 +24,10 @@ public class Challenge {
         if (criteria == null || criteria.isBlank()) {
             throw new IllegalArgumentException("Critério do desafio é obrigatório");
         }
+        if (extraPoints < 0) {
+            throw new IllegalArgumentException("Pontos extras devem ser positivos");
+        }
+
         this.id = id;
         this.title = title;
         this.description = description;

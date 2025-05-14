@@ -15,14 +15,6 @@ ContextMap SprintQuestContextMap {
 
 BoundedContext ProjectManagement implements ProjectManagement {
     Aggregate ProjectManagement {
-        Service ProjectManagementService {
-            void createProject(@ProjectId projectId, @String name, @String description);
-            void addTask(@ProjectId projectId, @TaskId taskId);
-            void moveTask(@TaskId taskId, @String targetColumn);
-            void completeTask(@TaskId taskId);
-            void addChallenge(@ProjectId projectId, @ChallengeId challengeId);
-        }
-
         Entity Project {
             aggregateRoot
             -ProjectId id
@@ -30,7 +22,7 @@ BoundedContext ProjectManagement implements ProjectManagement {
             String description
             List<TaskId> tasks
             List<ChallengeId> challenges
-            String[] kanbanColumns
+            List<String> kanbanColumns
             -TeamId teamId
         }
 
@@ -63,45 +55,74 @@ BoundedContext ProjectManagement implements ProjectManagement {
         ValueObject ChallengeId { int id }
         ValueObject TeamId { int id }
         ValueObject MemberId { int id }
+
+        Repository ProjectRepository {
+            Optional<Project> findById(@ProjectId id)
+            void save(Project project)
+            void deleteById(@ProjectId id)
+        }
+
+        Repository TaskRepository {
+            Optional<Task> findById(@TaskId id)
+            void save(Task task)
+            void deleteById(@TaskId id)
+        }
+
+        Repository ChallengeRepository {
+            Optional<Challenge> findById(@ChallengeId id)
+            void save(Challenge challenge)
+            void deleteById(@ChallengeId id)
+        }
+
+        Service ProjectService {
+            void createProject(@ProjectId projectId, @String name, @String description);
+            void addTask(@ProjectId projectId, @TaskId taskId);
+            void moveTask(@TaskId taskId, @String targetColumn);
+            void completeTask(@TaskId taskId);
+            void addChallenge(@ProjectId projectId, @ChallengeId challengeId);
+        }
     }
 }
 
 BoundedContext Gamification implements Gamification {
     Aggregate Gamification {
-        Service GamificationService {
-            void assignPoints(@MemberId memberId, @int points);
-            void unlockReward(@MemberId memberId);
-        }
-
         Entity Reward {
             aggregateRoot
             -RewardId id
             String description
             Integer requiredPoints
-            String type
+            RewardType type
             MemberId createdBy
         }
 
-        Entity Score {
-            aggregateRoot
-            -MemberId memberId
-            int totalPoints
+        ValueObject RewardId { int id }
+
+        ValueObject RewardType {
+            enum CUPOM
+            enum FOLGA
+            enum DESTAQUE
         }
 
-        ValueObject RewardId { int id }
+        Repository RewardRepository {
+            Optional<Reward> findById(@RewardId id)
+            void save(Reward reward)
+            void deleteById(@RewardId id)
+            List<Reward> findAll()
+            List<Reward> findRewardsAvailableForPoints(@int points)
+        }
+
+        Service RewardService {
+            void createReward(@Reward reward);
+            Optional<Reward> getRewardById(@RewardId rewardId);
+            List<Reward> getAllRewards();
+            List<Reward> getRewardsAvailableForPoints(@int points);
+            void deleteReward(@RewardId rewardId);
+        }
     }
 }
 
 BoundedContext TeamsAndUsers implements TeamsAndUsers {
     Aggregate TeamsAndUsers {
-        Service TeamsAndUsersService {
-            void createTeam(@TeamId teamId, @String teamName);
-            void addMember(@TeamId teamId, @MemberId memberId, @Role role);
-            List<Reward> getUnlockedRewards(@MemberId memberId);
-            int getScore(@MemberId memberId);
-            List<Feedback> getReceivedFeedbacks(@MemberId memberId);
-        }
-
         Entity Team {
             aggregateRoot
             -TeamId id
@@ -134,9 +155,32 @@ BoundedContext TeamsAndUsers implements TeamsAndUsers {
 
         ValueObject TeamId { int id }
         ValueObject FeedbackId { int id }
+
         ValueObject Role {
-            enum Leader
-            enum Member
+            enum DEV
+            enum QA
+            enum PO
+            enum LIDER
+        }
+
+        Repository TeamRepository {
+            Optional<Team> findById(@TeamId id)
+            void save(Team team)
+            void delete(Team team)
+        }
+
+        Service MemberTeamService {
+            void createTeam(@TeamId teamId, @String teamName);
+            void addMember(@TeamId teamId, @MemberId memberId, @Role role);
+            List<RewardId> getUnlockedRewards(@MemberId memberId);
+            int getScore(@MemberId memberId);
+            List<Feedback> getReceivedFeedbacks(@MemberId memberId);
+        }
+
+        Repository MemberRepository {
+            Optional<Member> findById(@MemberId id)
+            void save(Member member)
+            void delete(Member member)
         }
     }
 }

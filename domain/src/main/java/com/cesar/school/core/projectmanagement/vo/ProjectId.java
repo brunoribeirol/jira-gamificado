@@ -2,7 +2,7 @@ package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-public class ProjectId {
+public final class ProjectId {
     private final int value;
 
     public ProjectId(int value) {

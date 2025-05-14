@@ -9,5 +9,4 @@ public interface ChallengeRepository {
     Optional<Challenge> findById(ChallengeId id);
     void save(Challenge challenge);
     void deleteById(ChallengeId id);
-    void update(Challenge challenge);
 }

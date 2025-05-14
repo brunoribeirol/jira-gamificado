@@ -9,5 +9,4 @@ public interface TeamRepository {
     void save(Team team);
     Optional<Team> findById(TeamId teamId);
     void delete(Team team);
-    void update(Team team);
 }

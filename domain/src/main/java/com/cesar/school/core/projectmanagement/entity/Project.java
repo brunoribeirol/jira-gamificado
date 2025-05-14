@@ -45,5 +45,8 @@ public class Project {
     public TeamId getTeamId() { return teamId; }
     public List<Task> getTasks() { return List.copyOf(tasks); }
     public List<Challenge> getChallenges() { return List.copyOf(challenges); }
-    public List<String> getKanbanColumns() { return kanbanColumns; }
+    public List<String> getKanbanColumns() {
+        return Collections.unmodifiableList(kanbanColumns);
+    }
+
 }

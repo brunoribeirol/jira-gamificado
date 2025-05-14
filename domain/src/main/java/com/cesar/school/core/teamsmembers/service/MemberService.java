@@ -1,12 +1,16 @@
 package com.cesar.school.core.teamsmembers.service;
 
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.gamification.entity.Reward;
+import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
+import com.cesar.school.core.shared.MemberId;
 
+import java.util.Optional;
 
 public interface MemberService {
-    void saveMember(Member member);
-    Member getMemberById(MemberId memberId);
-    void updateMember(Member member);
-    void deleteMember(Member member);
+
+    void addPoints(MemberId memberId, int points);
+    void addFeedback(MemberId memberId, Feedback feedback);
+    void unlockReward(MemberId memberId, Reward reward);
+    Optional<Member> getById(MemberId memberId);
 }

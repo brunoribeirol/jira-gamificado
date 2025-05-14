@@ -2,7 +2,7 @@ package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-public class ChallengeId {
+public final class ChallengeId {
     private final int value;
 
     public ChallengeId(int value) {

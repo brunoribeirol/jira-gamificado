@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <groupId>com.cesar.school</groupId>
         <artifactId>JiraGamificado</artifactId>
@@ -10,6 +12,10 @@
     </parent>
 
     <artifactId>presentation</artifactId>
+    <packaging>jar</packaging>
+
+    <name>presentation</name>
+    <description>Módulo de apresentação da aplicação Jira Gamificado</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -17,4 +23,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <dependencies>
+        <!-- Dependência do módulo domain -->
+        <dependency>
+            <groupId>com.cesar.school</groupId>
+            <artifactId>domain</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Outras dependências específicas do módulo presentation -->
+    </dependencies>
 </project>

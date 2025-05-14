@@ -5,6 +5,7 @@ import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.vo.FeedbackId;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Feedback {
     private final FeedbackId id;
@@ -15,12 +16,12 @@ public class Feedback {
     private final TaskId relatedTask; // opcional
 
     public Feedback(FeedbackId id, String message, Date date, MemberId givenBy, MemberId receivedBy, TaskId relatedTask) {
-        this.id = id;
-        this.message = message;
-        this.date = date;
-        this.givenBy = givenBy;
-        this.receivedBy = receivedBy;
-        this.relatedTask = relatedTask;
+        this.id = Objects.requireNonNull(id);
+        this.message = Objects.requireNonNull(message);
+        this.date = Objects.requireNonNull(date);
+        this.givenBy = Objects.requireNonNull(givenBy);
+        this.receivedBy = Objects.requireNonNull(receivedBy);
+        this.relatedTask = relatedTask; // pode ser null
     }
 
     public FeedbackId getId() {
@@ -32,7 +33,7 @@ public class Feedback {
     }
 
     public Date getDate() {
-        return new Date(date.getTime()); // Imutabilidade: evitando alterações externas
+        return new Date(date.getTime()); // garantir imutabilidade
     }
 
     public MemberId getGivenBy() {
