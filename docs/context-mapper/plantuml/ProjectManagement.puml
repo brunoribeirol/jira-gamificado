@@ -1,0 +1,122 @@
+@startuml
+
+!define ENTITY(x) class x << (E,#FFAAAA) >>
+!define VALUE_OBJECT(x) class x << (V,#FFDD55) >>
+!define SERVICE(x) class x << (S,#BBEEBB) >>
+!define REPOSITORY(x) class x << (R,#BBDDEE) >>
+
+
+skinparam componentStyle uml2
+
+package "'ProjectManagement' Aggregate" <<Rectangle>> {
+
+    ' ==================== ENTITIES ====================
+    class Project <<(A,#fffab8) Aggregate Root>> {
+        ProjectId id
+        String name
+        String description
+        List<TaskId> tasks
+        List<ChallengeId> challenges
+        List<String> kanbanColumns
+        TeamId teamId
+    }
+
+    class Task <<(A,#fffab8) Aggregate Root>> {
+        TaskId id
+        String title
+        String description
+        List<MemberId> assignees
+        String kanbanColumn
+        Integer points
+        Date createdAt
+        Date? completedAt
+    }
+
+    class Challenge <<(A,#fffab8) Aggregate Root>> {
+        ChallengeId id
+        String title
+        String description
+        String criteria
+        Integer extraPoints
+        MemberId createdBy
+        ProjectId projectId
+        Date deadline
+    }
+
+    ' ==================== VALUE OBJECTS ====================
+    class ProjectId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class TaskId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class ChallengeId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class TeamId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class MemberId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    ' ==================== REPOSITORIES ====================
+    class ProjectRepository <<(R,LightBlue) Repository>> {
+        findById(ProjectId): Optional<Project>
+        save(Project)
+        deleteById(ProjectId)
+    }
+
+    class TaskRepository <<(R,LightBlue) Repository>> {
+        findById(TaskId): Optional<Task>
+        save(Task)
+        deleteById(TaskId)
+    }
+
+    class ChallengeRepository <<(R,LightBlue) Repository>> {
+        findById(ChallengeId): Optional<Challenge>
+        save(Challenge)
+        deleteById(ChallengeId)
+    }
+
+    ' ==================== SERVICE ====================
+    class ProjectService <<(S,Wheat) Service>> {
+        createProject(ProjectId, String, String)
+        addTask(ProjectId, TaskId)
+        moveTask(TaskId, String)
+        completeTask(TaskId)
+        addChallenge(ProjectId, ChallengeId)
+    }
+
+    ' ==================== RELATIONSHIPS ====================
+    Project --> ProjectId : id
+    Project --> TaskId : tasks
+    Project --> ChallengeId : challenges
+    Project --> TeamId : teamId
+
+    Task --> TaskId : id
+    Task --> MemberId : assignees
+
+    Challenge --> ChallengeId : id
+    Challenge --> MemberId : createdBy
+    Challenge --> ProjectId : projectId
+
+    ProjectRepository --> Project
+    TaskRepository --> Task
+    ChallengeRepository --> Challenge
+
+    ProjectService --> Project
+    ProjectService --> Task
+    ProjectService --> Challenge
+}
+
+legend left
+  This bounded context implements the subdomain 'ProjectManagement'.
+  S = Service, R = Repository, A = Aggregate Root, V = Value Object
+end legend
+
+@enduml

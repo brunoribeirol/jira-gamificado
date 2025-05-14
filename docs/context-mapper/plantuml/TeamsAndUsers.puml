@@ -1,0 +1,112 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'TeamsAndUsers' Aggregate" <<Rectangle>> {
+
+    ' ==================== ENTITIES ====================
+    class Team <<(A,#fffab8) Aggregate Root>> {
+        TeamId id
+        String name
+        MemberId leader
+        List<MemberId> members
+        Integer teamScore
+    }
+
+    class Member <<(A,#fffab8) Aggregate Root>> {
+        MemberId id
+        String name
+        String email
+        String password
+        Role role
+        int individualScore
+        List<RewardId> unlockedRewards
+    }
+
+    class Feedback <<(A,#fffab8) Aggregate Root>> {
+        FeedbackId id
+        String message
+        Date date
+        MemberId givenBy
+        MemberId receivedBy
+        TaskId? relatedTask
+    }
+
+    ' ==================== VALUE OBJECTS ====================
+    class TeamId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class MemberId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class RewardId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class FeedbackId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class TaskId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class Role <<(V,DarkSeaGreen) Value Object>> {
+    }
+
+    enum DEV
+    enum QA
+    enum PO
+    enum LIDER
+
+    ' ==================== REPOSITORIES ====================
+    class TeamRepository <<(R,LightBlue) Repository>> {
+        findById(TeamId): Optional<Team>
+        save(Team)
+        delete(Team)
+    }
+
+    class MemberRepository <<(R,LightBlue) Repository>> {
+        findById(MemberId): Optional<Member>
+        save(Member)
+        delete(Member)
+    }
+
+    ' ==================== SERVICE ====================
+    class MemberTeamService <<(S,Wheat) Service>> {
+        createTeam(TeamId, String)
+        addMember(TeamId, MemberId, Role)
+        getUnlockedRewards(MemberId): List<RewardId>
+        getScore(MemberId): int
+        getReceivedFeedbacks(MemberId): List<Feedback>
+    }
+
+    ' ==================== RELATIONSHIPS ====================
+    Team --> TeamId : id
+    Team --> MemberId : leader
+    Team --> MemberId : members
+
+    Member --> MemberId : id
+    Member --> RewardId : unlockedRewards
+    Member --> Role : role
+
+    Feedback --> FeedbackId : id
+    Feedback --> MemberId : givenBy
+    Feedback --> MemberId : receivedBy
+    Feedback --> TaskId : relatedTask
+
+    TeamRepository --> Team
+    MemberRepository --> Member
+    MemberTeamService --> Team
+    MemberTeamService --> Member
+    MemberTeamService --> Feedback
+}
+
+legend left
+  This bounded context implements the subdomain 'TeamsAndUsers'.
+  S = Service, R = Repository, A = Aggregate Root, V = Value Object
+end legend
+
+@enduml

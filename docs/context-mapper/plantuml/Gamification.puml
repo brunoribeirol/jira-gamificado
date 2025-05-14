@@ -1,0 +1,64 @@
+@startuml
+
+skinparam componentStyle uml2
+
+package "'Gamification' Aggregate" <<Rectangle>> {
+
+    ' ==================== ENTITY ====================
+    class Reward <<(A,#fffab8) Aggregate Root>> {
+        RewardId id
+        String description
+        Integer requiredPoints
+        RewardType type
+        MemberId createdBy
+    }
+
+    ' ==================== VALUE OBJECTS ====================
+    class RewardId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    class RewardType <<(V,DarkSeaGreen) Value Object>> {
+    }
+
+    enum CUPOM
+    enum FOLGA
+    enum DESTAQUE
+
+    class MemberId <<(V,DarkSeaGreen) Value Object>> {
+        int id
+    }
+
+    ' ==================== REPOSITORY ====================
+    class RewardRepository <<(R,LightBlue) Repository>> {
+        findById(RewardId): Optional<Reward>
+        save(Reward)
+        deleteById(RewardId)
+        findAll(): List<Reward>
+        findRewardsAvailableForPoints(int): List<Reward>
+    }
+
+    ' ==================== SERVICE ====================
+    class RewardService <<(S,Wheat) Service>> {
+        createReward(Reward)
+        getRewardById(RewardId): Optional<Reward>
+        getAllRewards(): List<Reward>
+        getRewardsAvailableForPoints(int): List<Reward>
+        deleteReward(RewardId)
+    }
+
+    ' ==================== RELATIONSHIPS ====================
+    Reward --> RewardId : id
+    Reward --> RewardType : type
+    Reward --> MemberId : createdBy
+
+    RewardRepository --> Reward
+    RewardService --> Reward
+}
+
+legend left
+  This bounded context implements the subdomain 'Gamification'.
+  S = Service, R = Repository, A = Aggregate Root, V = Value Object
+end legend
+
+@enduml
