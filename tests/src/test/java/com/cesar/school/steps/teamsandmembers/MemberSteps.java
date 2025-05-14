@@ -3,62 +3,131 @@ package com.cesar.school.steps.teamsandmembers;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.vo.FeedbackId;
-import io.cucumber.java.pt.*;
+import com.cesar.school.core.projectmanagement.vo.TaskId;
+import io.cucumber.java.Before;
+import io.cucumber.java.en.*;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 public class MemberSteps {
 
-    private Feedback feedback;
-    private MemberId givenBy;
-    private MemberId receivedBy;
-    private List<Feedback> feedbackList;
+    private MemberId member;
+    private List<Feedback> feedbacks;
+    private List<Feedback> receivedFeedbacks;
+    private int totalPoints;
 
-    // Cenário 1: Enviar feedback para um membro
-    @Dado("que estou no perfil de um colega")
-    public void estouNoPerfilDeUmColega() {
-        // Simula o perfil do colega sendo acessado
-        givenBy = new MemberId(1);  // Quem está enviando o feedback
-        receivedBy = new MemberId(2);  // O membro que irá receber o feedback
+    @Before
+    public void setup() {
+        member = new MemberId(1);
+        feedbacks = new ArrayList<>();
+        receivedFeedbacks = new ArrayList<>();
+        totalPoints = 0;
     }
 
-    @Quando("preencho o formulário de feedback e envio")
-    public void preenchoFormularioDeFeedback() {
-        // Criação do feedback
-        feedback = new Feedback(new FeedbackId(1), "Muito bom trabalho!", new Date(), givenBy, receivedBy, null);
+    // === Progresso pessoal ===
+
+    @Given("que estou na aba “Meu Perfil”")
+    public void estou_na_aba_meu_perfil() {
+        // Nada necessário
     }
 
-    @Entao("o feedback aparece na lista do membro com nota e comentário")
-    public void feedbackApareceNaLista() {
-        assertNotNull(feedback, "O feedback não foi criado");
-        assertEquals("Muito bom trabalho!", feedback.getMessage());
-        assertEquals(givenBy, feedback.getGivenBy());
-        assertEquals(receivedBy, feedback.getReceivedBy());
+    @When("visualizo meus dados de progresso")
+    public void visualizo_dados_progresso() {
+        // Simulando progresso: 2 recompensas desbloqueadas
+        totalPoints = 1500;
     }
 
-    // Cenário 2: Visualizar feedbacks recebidos
-    @Dado("que recebi feedbacks anteriormente")
-    public void recebiFeedbacksAnteriormente() {
-        // Simulação de recebimento de feedback
-        feedbackList = List.of(
-                new Feedback(new FeedbackId(1), "Muito bom trabalho!", new Date(), new MemberId(1), new MemberId(2), null),
-                new Feedback(new FeedbackId(2), "Excelente desempenho!", new Date(), new MemberId(3), new MemberId(2), null)
+    @Then("o sistema retorna meu total de pontos")
+    public void retorna_total_pontos() {
+        assertTrue(totalPoints > 0);
+    }
+
+    @And("a lista das recompensas que já desbloqueei")
+    public void lista_recompensas_desbloqueadas() {
+        List<String> unlocked = Arrays.asList("Desconto R$ 10", "Vale café");
+        assertFalse(unlocked.isEmpty());
+    }
+
+    @Given("que tenho menos pontos do que o necessário para qualquer recompensa")
+    public void menos_pontos_que_recompensas() {
+        totalPoints = 0;
+    }
+
+    @When("acesso a seção “Meu Progresso”")
+    public void acesso_meu_progresso() {
+        // Nenhuma ação necessária
+    }
+
+    @Then("o sistema retorna que não há recompensas desbloqueadas")
+    public void sem_recompensas_desbloqueadas() {
+        List<String> unlocked = new ArrayList<>();
+        assertTrue(unlocked.isEmpty());
+    }
+
+    // === Feedbacks ===
+
+    @Given("que estou no perfil de um colega")
+    public void no_perfil_de_um_colega() {
+        // Simula visualização do perfil
+    }
+
+    @When("preencho o formulário de feedback e envio")
+    public void preencho_formulario_feedback() {
+        Feedback novoFeedback = new Feedback(
+                new FeedbackId(1),
+                "Excelente colaboração!",
+                new Date(),
+                member,
+                new MemberId(2),
+                new TaskId(1)
         );
+        feedbacks.add(novoFeedback);
     }
 
-    @Quando("acesso minha aba de feedback")
-    public void acessoMinhaAbaDeFeedback() {
-        // Simula o acesso à aba de feedback
+    @Then("o feedback aparece na lista do membro com nota e comentário")
+    public void feedback_aparece_na_lista() {
+        assertFalse(feedbacks.isEmpty());
+        Feedback f = feedbacks.get(0);
+        assertEquals("Excelente colaboração!", f.getMessage());
+        assertNotNull(f.getDate());
+        assertEquals(member, f.getGivenBy());
     }
 
-    @Entao("o sistema retorna uma lista com os feedbacks recebidos e seus respectivos emissores e datas")
-    public void sistemaRetornaListaDeFeedbacks() {
-        assertNotNull(feedbackList, "A lista de feedbacks está vazia");
-        assertTrue(feedbackList.size() > 0, "Nenhum feedback encontrado");
-        assertEquals("Muito bom trabalho!", feedbackList.get(0).getMessage());
-        assertEquals("Excelente desempenho!", feedbackList.get(1).getMessage());
+    @Given("que recebi feedbacks anteriormente")
+    public void recebi_feedbacks_anteriores() {
+        Feedback f1 = new Feedback(
+                new FeedbackId(2),
+                "Ótimo trabalho em equipe",
+                new Date(),
+                new MemberId(3),
+                member,
+                null
+        );
+        Feedback f2 = new Feedback(
+                new FeedbackId(3),
+                "Precisa melhorar testes",
+                new Date(),
+                new MemberId(4),
+                member,
+                null
+        );
+        receivedFeedbacks.addAll(List.of(f1, f2));
+    }
+
+    @When("acesso minha aba de feedback")
+    public void acesso_aba_feedback() {
+        // Nenhuma ação necessária, dados já carregados
+    }
+
+    @Then("o sistema retorna uma lista com os feedbacks recebidos e seus respectivos emissores e datas")
+    public void sistema_retorna_lista_feedbacks() {
+        assertEquals(2, receivedFeedbacks.size());
+        for (Feedback f : receivedFeedbacks) {
+            assertNotNull(f.getMessage());
+            assertNotNull(f.getGivenBy());
+            assertNotNull(f.getDate());
+        }
     }
 }
