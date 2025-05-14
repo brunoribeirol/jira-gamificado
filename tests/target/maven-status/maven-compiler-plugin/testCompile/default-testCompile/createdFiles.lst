@@ -1,9 +1,0 @@
-com/cesar/school/steps/teamsandmembers/MemberSteps.class
-com/cesar/school/steps/projectmanagement/ChallengeCreateSteps.class
-com/cesar/school/runners/RunCucumberTest.class
-com/cesar/school/steps/projectmanagement/TaskMoveSteps.class
-com/cesar/school/steps/projectmanagement/TaskAddSteps.class
-com/cesar/school/steps/gamification/RewardCreateSteps.class
-com/cesar/school/steps/projectmanagement/ProjectCreateSteps.class
-com/cesar/school/steps/projectmanagement/TaskCompleteSteps.class
-com/cesar/school/steps/teamsandmembers/MemberProgressSteps.class

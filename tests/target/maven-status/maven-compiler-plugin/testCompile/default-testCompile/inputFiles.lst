@@ -1,9 +1,0 @@
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/runners/RunCucumberTest.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/gamification/RewardCreateSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/projectmanagement/ChallengeCreateSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/projectmanagement/ProjectCreateSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/projectmanagement/TaskAddSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/projectmanagement/TaskCompleteSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/projectmanagement/TaskMoveSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/teamsandmembers/MemberProgressSteps.java
-/Users/brunoribeiro/Documents/jira-gamificado/tests/src/test/java/com/cesar/school/steps/teamsandmembers/MemberSteps.java
