@@ -10,7 +10,7 @@ Feature: Concluir tarefa
 
   Scenario: Apenas mover para "Concluído" não gera pontos
     Given sou responsável pela tarefa "Atualizar README"
-    When apenas arrasto o cartão da tarefa para a coluna "Concluído"
+    When arrasto visualmente a tarefa para a coluna "Concluído"
     Then a tarefa aparece visualmente na coluna "Concluído"
     But minha pontuação não é alterada
     And o sistema não registra a tarefa como formalmente concluída
