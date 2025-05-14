@@ -3,73 +3,108 @@ package com.cesar.school.core.projectmanagement.entity;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Objects;
 
 public class Task {
     private final TaskId id;
-    private String title;
+    private String title; // ❗ Modificável
     private final String description;
     private final List<MemberId> assignees;
-    private final int points;
+    private String kanbanColumn;
+    private int points;
     private final Date createdAt;
-    private String kanbanColumn = "Backlog";
     private Date completedAt;
-    private static final List<String> VALID_COLUMNS = List.of("Backlog", "Pronto", "Em Progresso", "Revisão", "Concluído");
 
-    public Task(TaskId id, String title, String description, List<MemberId> assignees, int points) {
+    public Task(TaskId id, String title, String description, String kanbanColumn, int points, Date createdAt) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("O nome da tarefa é obrigatório");
         }
-
-        if (assignees == null || assignees.isEmpty()) {
-            throw new IllegalArgumentException("Selecione ao menos um responsável");
+        if (points < 0) {
+            throw new IllegalArgumentException("A pontuação deve ser zero ou positiva");
         }
-
-        this.id = id;
+        this.id = Objects.requireNonNull(id);
         this.title = title;
         this.description = description;
-        this.assignees = new ArrayList<>(assignees);
+        this.kanbanColumn = Objects.requireNonNull(kanbanColumn);
         this.points = points;
-        this.createdAt = new Date();
+        this.createdAt = new Date(createdAt.getTime());
+        this.assignees = new ArrayList<>();
+        this.completedAt = null;
     }
 
-    // Novo método para atualizar o título da tarefa
-    public void updateTitle(String title) {
-        if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException("O nome da tarefa é obrigatório");
+    // ==== Regras de Negócio ====
+
+    public void assignTo(MemberId memberId) {
+        if (!assignees.contains(memberId)) {
+            assignees.add(memberId);
         }
-        this.title = title;
     }
 
-    public void moveTo(String column) {
-        if (!VALID_COLUMNS.contains(column)) {
-            throw new IllegalArgumentException("Coluna inválida para movimentação: " + column);
+    public void moveToColumn(String column) {
+        if (column == null || column.isBlank()) {
+            throw new IllegalArgumentException("A coluna não pode ser vazia");
         }
         this.kanbanColumn = column;
     }
 
-    public void complete() {
-        this.completedAt = new Date();
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    public TaskId getId() { return id; }
-    public String getTitle() { return title; }
-    public String getDescription() { return description; }
-    public List<MemberId> getAssignees() { return List.copyOf(assignees); }
-    public String getKanbanColumn() { return kanbanColumn; }
-    public int getPoints() { return points; }
-    public Date getCreatedAt() { return createdAt; }
-    public Date getCompletedAt() { return completedAt; }
-
-    // Método para atribuir um membro à tarefa
-    public void assignTo(MemberId memberId) {
-        if (memberId != null) {
-            assignees.add(memberId);
+    public void setPoints(int points) {
+        if (points < 0) {
+            throw new IllegalArgumentException("A pontuação deve ser zero ou positiva");
         }
+        this.points = points;
+    }
+
+    public void markAsCompleted() {
+        this.completedAt = new Date();
+        moveToColumn("Concluído");
+    }
+
+    public void setTitle(String newTitle) {
+        if (newTitle == null || newTitle.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome da tarefa é obrigatório");
+        }
+        this.title = newTitle;
+    }
+
+    // ==== Getters ====
+
+    public TaskId getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public List<MemberId> getAssignees() {
+        return Collections.unmodifiableList(assignees);
+    }
+
+    public String getKanbanColumn() {
+        return kanbanColumn;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public Date getCreatedAt() {
+        return new Date(createdAt.getTime());
+    }
+
+    public Date getCompletedAt() {
+        return completedAt != null ? new Date(completedAt.getTime()) : null;
+    }
+
+    public boolean isCompleted() {
+        return completedAt != null;
     }
 }
