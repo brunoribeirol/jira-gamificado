@@ -1,0 +1,30 @@
+package com.cesar.school.infrastructure.persistence.mapper.gamification;
+
+import com.cesar.school.core.gamification.entity.Reward;
+import com.cesar.school.core.gamification.vo.RewardId;
+import com.cesar.school.core.gamification.vo.RewardType;
+import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.infrastructure.persistence.entity.gamification.RewardEntity;
+
+public class RewardMapper {
+
+    public static RewardEntity toEntity(Reward reward) {
+        return new RewardEntity(
+                reward.getId().getValue(),
+                reward.getDescription(),
+                reward.getRequiredPoints(),
+                reward.getType(),
+                reward.getCreatedBy().getValue()
+        );
+    }
+
+    public static Reward toDomain(RewardEntity entity) {
+        return new Reward(
+                new RewardId(entity.getId()),
+                entity.getDescription(),
+                entity.getRequiredPoints(),
+                entity.getType(),
+                new MemberId(entity.getCreatedBy())
+        );
+    }
+}
