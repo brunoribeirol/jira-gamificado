@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
-                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
@@ -12,10 +12,6 @@
     </parent>
 
     <artifactId>presentation</artifactId>
-    <packaging>jar</packaging>
-
-    <name>presentation</name>
-    <description>Módulo de apresentação da aplicação Jira Gamificado</description>
 
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
@@ -24,13 +20,63 @@
     </properties>
 
     <dependencies>
-        <!-- Dependência do módulo domain -->
+        <!-- Domínio, aplicação e infraestrutura -->
         <dependency>
             <groupId>com.cesar.school</groupId>
             <artifactId>domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>com.cesar.school</groupId>
+            <artifactId>application</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
-        <!-- Outras dependências específicas do módulo presentation -->
+        <dependency>
+            <groupId>com.cesar.school</groupId>
+            <artifactId>infrastructure</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+
+        <!-- Spring Boot Web (para REST) -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Lombok (opcional, se for usar no controller) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- API de validação -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
+
+        <!-- Implementação real -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring.boot.version}</version>
+                <configuration>
+                    <mainClass>com.cesar.school.presentation.JiraGamificadoApplication</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
