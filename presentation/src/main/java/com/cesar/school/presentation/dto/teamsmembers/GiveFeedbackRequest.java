@@ -11,7 +11,6 @@ import java.util.Date;
 
 public class GiveFeedbackRequest {
 
-    @NotNull(message = "O ID do feedback é obrigatório.")
     public Integer id;
 
     @NotBlank(message = "A mensagem do feedback é obrigatória.")
@@ -27,7 +26,7 @@ public class GiveFeedbackRequest {
 
     public Feedback toDomain() {
         return new Feedback(
-                new FeedbackId(id),
+                id != null ? new FeedbackId(id) : null,
                 message,
                 new Date(),
                 new MemberId(givenBy),

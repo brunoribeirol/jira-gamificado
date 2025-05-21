@@ -61,7 +61,7 @@ public class MemberController {
         System.out.println(">>> Controller: Entrou no test-feedback");
 
         var feedback = new Feedback(
-                new FeedbackId(0),
+                null,
                 "Testando feedback direto",
                 new Date(),
                 new MemberId(101),

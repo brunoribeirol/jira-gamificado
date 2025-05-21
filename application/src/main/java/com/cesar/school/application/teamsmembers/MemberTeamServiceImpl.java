@@ -91,7 +91,7 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     @Override
     public void addFeedback(MemberId memberId, Feedback feedback) {
         System.out.println(">>> Service: Entrou em addFeedback");
-        System.out.println(">>> Feedback ID: " + feedback.getId().getValue());
+        System.out.println(">>> Feedback ID: " + (feedback.getId() != null ? feedback.getId().getValue() : "null (será gerado pelo banco)"));
         System.out.println(">>> FeedbackRepository é nulo? " + (feedbackRepository == null));
 
         Member member = memberRepository.findById(memberId)

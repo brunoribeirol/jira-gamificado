@@ -22,9 +22,9 @@ public class FeedbackMapper {
     public static FeedbackEntity toEntity(Feedback feedback) {
         FeedbackEntity entity = new FeedbackEntity();
 
-//        if (feedback.getId() != null) {
-//            entity.setId(feedback.getId().getValue());
-//        }
+        if (feedback.getId() != null) {
+            entity.setId(feedback.getId().getValue());
+        }
 
         entity.setMessage(feedback.getMessage());
         entity.setDate(feedback.getDate());
