@@ -13,6 +13,9 @@ import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.core.teamsmembers.vo.Role;
 import com.cesar.school.core.teamsmembers.vo.TeamId;
+import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
+import jakarta.transaction.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -21,10 +24,12 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
+    private final FeedbackRepository feedbackRepository;
 
-    public MemberTeamServiceImpl(TeamRepository teamRepository, MemberRepository memberRepository) {
+    public MemberTeamServiceImpl(TeamRepository teamRepository, MemberRepository memberRepository, FeedbackRepository feedbackRepository) {
         this.teamRepository = teamRepository;
         this.memberRepository = memberRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     // ========== MemberTeamService ==========
@@ -69,9 +74,7 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
 
     @Override
     public List<Feedback> getReceivedFeedbacks(MemberId memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
-        return member.getReceivedFeedbacks();
+        return feedbackRepository.findByReceivedBy(memberId); // ✅ busca do banco
     }
 
     // ========== MemberService ==========
@@ -84,12 +87,19 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
         memberRepository.save(member);
     }
 
+    @Transactional
     @Override
     public void addFeedback(MemberId memberId, Feedback feedback) {
+        System.out.println(">>> Service: Entrou em addFeedback");
+        System.out.println(">>> Feedback ID: " + feedback.getId().getValue());
+        System.out.println(">>> FeedbackRepository é nulo? " + (feedbackRepository == null));
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
+
         member.receiveFeedback(feedback);
         memberRepository.save(member);
+        feedbackRepository.save(feedback);
     }
 
     @Override

@@ -12,13 +12,18 @@ import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
+import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 
+import com.cesar.school.core.teamsmembers.service.MemberService;
+import com.cesar.school.core.teamsmembers.service.MemberTeamService;
+import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.infrastructure.persistence.repository.gamification.RewardRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.ChallengeRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.ProjectRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.TaskRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.teamsmembers.MemberRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.teamsmembers.TeamRepositoryImpl;
+import com.cesar.school.infrastructure.persistence.repository.teamsmembers.FeedbackRepositoryImpl;
 
 import com.cesar.school.infrastructure.persistence.springdata.gamification.RewardJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ChallengeJpaRepository;
@@ -26,6 +31,7 @@ import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.TaskJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.MemberJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJpaRepository;
+import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.FeedbackJpaRepository;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,8 +93,35 @@ public class BeanConfiguration {
         return new ChallengeServiceImpl(challengeRepository, projectRepository);
     }
 
+//    @Bean
+//    public MemberTeamServiceImpl memberTeamService(TeamRepository teamRepository, MemberRepository memberRepository, FeedbackRepository feedbackRepository) {
+//        return new MemberTeamServiceImpl(teamRepository, memberRepository, feedbackRepository);
+//    }
+
     @Bean
-    public MemberTeamServiceImpl memberTeamService(TeamRepository teamRepository, MemberRepository memberRepository) {
-        return new MemberTeamServiceImpl(teamRepository, memberRepository);
+    public MemberTeamServiceImpl memberTeamServiceImpl(TeamRepository teamRepo, MemberRepository memberRepo, FeedbackRepository feedbackRepo) {
+        return new MemberTeamServiceImpl(teamRepo, memberRepo, feedbackRepo);
+    }
+
+    @Bean
+    public MemberService memberService(MemberTeamServiceImpl impl) {
+        return impl;
+    }
+
+    @Bean
+    public MemberTeamService memberTeamService(MemberTeamServiceImpl impl) {
+        return impl;
+    }
+
+    @Bean
+    public TeamService teamService(MemberTeamServiceImpl impl) {
+        return impl;
+    }
+
+
+    @Bean
+    public FeedbackRepository feedbackRepository(FeedbackJpaRepository jpa) {
+        System.out.println(">>> Criando FeedbackRepositoryImpl");
+        return new FeedbackRepositoryImpl(jpa);
     }
 }

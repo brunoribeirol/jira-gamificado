@@ -9,11 +9,12 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan(basePackages = {
         "com.cesar.school.infrastructure.persistence.entity"
 })
-@ComponentScan(basePackages = {
-        "com.cesar.school.application",
-        "com.cesar.school.infrastructure.configuration",
-        "com.cesar.school.presentation"
-})
+@ComponentScan(basePackages = "com.cesar.school")//{
+//        "com.cesar.school.application",
+//        "com.cesar.school.infrastructure.configuration",
+//        "com.cesar.school.infrastructure.persistence.repository",
+//        "com.cesar.school.presentation"
+//})
 public class JiraGamificadoApplication {
     public static void main(String[] args) {
         SpringApplication.run(JiraGamificadoApplication.class, args);

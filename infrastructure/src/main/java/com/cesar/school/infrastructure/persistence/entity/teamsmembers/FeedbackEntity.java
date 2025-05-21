@@ -15,6 +15,7 @@ import java.util.Date;
 public class FeedbackEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String message;

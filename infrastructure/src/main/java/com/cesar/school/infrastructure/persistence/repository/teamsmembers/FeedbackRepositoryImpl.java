@@ -7,6 +7,7 @@ import com.cesar.school.core.teamsmembers.vo.FeedbackId;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.FeedbackEntity;
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.FeedbackMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.FeedbackJpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +23,13 @@ public class FeedbackRepositoryImpl implements FeedbackRepository {
 
     @Override
     public void save(Feedback feedback) {
-        jpaRepository.save(FeedbackMapper.toEntity(feedback));
+        System.out.println(">>> [DEBUG] Chamando jpaRepository.save no FeedbackRepositoryImpl");
+
+        FeedbackEntity entity = FeedbackMapper.toEntity(feedback);
+
+        System.out.println("SALVANDO FEEDBACK ENTITY: " + entity);
+
+        jpaRepository.save(entity);
     }
 
     @Override

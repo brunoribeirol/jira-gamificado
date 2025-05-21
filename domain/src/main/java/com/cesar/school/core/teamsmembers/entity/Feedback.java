@@ -16,7 +16,7 @@ public class Feedback {
     private final TaskId relatedTask; // opcional
 
     public Feedback(FeedbackId id, String message, Date date, MemberId givenBy, MemberId receivedBy, TaskId relatedTask) {
-        this.id = Objects.requireNonNull(id);
+        this.id = id;
         this.message = Objects.requireNonNull(message);
         this.date = Objects.requireNonNull(date);
         this.givenBy = Objects.requireNonNull(givenBy);
