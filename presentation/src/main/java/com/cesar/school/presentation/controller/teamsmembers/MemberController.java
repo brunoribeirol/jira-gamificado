@@ -28,7 +28,7 @@ public class MemberController {
     }
 
     @GetMapping("/{id}/feedbacks")
-    public ResponseEntity<List<FeedbackResponse>> getFeedbacks(@PathVariable int id) {
+    public ResponseEntity<List<FeedbackResponse>> getFeedbacks(@PathVariable("id") int id) {
         var feedbacks = memberService.getReceivedFeedbacks(new MemberId(id));
         var response = feedbacks.stream()
                 .map(FeedbackResponse::fromDomain)

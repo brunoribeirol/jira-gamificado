@@ -31,7 +31,7 @@ public class RewardController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RewardResponse> getRewardById(@PathVariable int id) {
+    public ResponseEntity<RewardResponse> getRewardById(@PathVariable("id") int id) {
         return rewardService.getRewardById(new RewardId(id))
                 .map(RewardResponse::fromDomain)
                 .map(ResponseEntity::ok)
@@ -48,7 +48,7 @@ public class RewardController {
     }
 
     @GetMapping("/available/{points}")
-    public ResponseEntity<List<RewardResponse>> getAvailableRewards(@PathVariable int points) {
+    public ResponseEntity<List<RewardResponse>> getAvailableRewards(@PathVariable("points") int points) {
         List<RewardResponse> responses = rewardService.getRewardsAvailableForPoints(points)
                 .stream()
                 .map(RewardResponse::fromDomain)
@@ -57,8 +57,9 @@ public class RewardController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ApiResponse> deleteReward(@PathVariable int id) {
+    public ResponseEntity<ApiResponse> deleteReward(@PathVariable("id") int id) {
         rewardService.deleteReward(new RewardId(id));
         return ResponseEntity.ok(new ApiResponse(true, "Recompensa removida com sucesso."));
     }
+
 }
