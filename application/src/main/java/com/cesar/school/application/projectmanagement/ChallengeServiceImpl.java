@@ -49,6 +49,6 @@ public class ChallengeServiceImpl implements ChallengeService {
     public List<Challenge> listByProject(ProjectId projectId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-        return project.getChallenges();
+        return challengeRepository.findAllByProjectId(projectId);
     }
 }

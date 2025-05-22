@@ -2,6 +2,7 @@ package com.cesar.school.infrastructure.persistence.entity.projectmanagement;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Date;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 @Table(name = "challenges")
 public class ChallengeEntity {
 
@@ -29,8 +31,6 @@ public class ChallengeEntity {
     private int projectId;
 
     private Date deadline;
-
-    public ChallengeEntity() {}
 
     public ChallengeEntity(int id, String title, String description, String criteria, int extraPoints,
                            int createdBy, int projectId, Date deadline) {

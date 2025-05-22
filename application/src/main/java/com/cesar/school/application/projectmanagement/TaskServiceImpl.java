@@ -56,18 +56,36 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void createTask(Task task) {
+        taskRepository.save(task);
+    }
+
+    @Override
     public void delete(TaskId taskId) {
         taskRepository.deleteById(taskId);
     }
 
     @Override
-    public void addTaskToProject(ProjectId projectId, Task task) {
+    public void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId) {
+        // 1. Atribui o membro responsável, se fornecido
+        if (assignedMemberId != null) {
+            task.assignTo(new MemberId(assignedMemberId));
+        }
+
+        // 2. Salva a tarefa no banco, delegando ao método padrão
+        this.createTask(task); // ⬅️ exatamente como é feito com o createMember
+
+        // 3. Busca o projeto e adiciona a tarefa nele
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+
         project.addTask(task);
+
+        // 4. Persiste a atualização no projeto
         projectRepository.save(project);
-        taskRepository.save(task); // salva também a tarefa individualmente
     }
+
+
 
     @Override
     public Optional<Task> getById(TaskId taskId) {

@@ -14,7 +14,8 @@ public interface TaskService {
     void completeTask(TaskId taskId);
     void moveTaskToColumn(TaskId taskId, String column);
     void delete(TaskId taskId);
-    void addTaskToProject(ProjectId projectId, Task task);
+    void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId);
+    void createTask(Task task);
     Optional<Task> getById(TaskId taskId);
     List<Task> listByProject(ProjectId projectId);
 }

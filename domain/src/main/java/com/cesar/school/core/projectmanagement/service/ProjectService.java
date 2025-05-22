@@ -1,6 +1,7 @@
 package com.cesar.school.core.projectmanagement.service;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
+import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
 
@@ -11,4 +12,5 @@ public interface ProjectService {
     Optional<Project> getById(ProjectId id);
     void update(Project project);
     void delete(ProjectId id);
+    void addTaskToProject(ProjectId projectId, Task task, int assignedMemberId);
 }

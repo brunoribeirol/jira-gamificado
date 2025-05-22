@@ -1,6 +1,7 @@
 package com.cesar.school.presentation.controller.projectmanagement;
 
 import com.cesar.school.application.projectmanagement.TaskServiceImpl;
+import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
@@ -23,10 +24,16 @@ public class TaskController {
     }
 
     @PostMapping("/project/{projectId}")
-    public ResponseEntity<Void> create(@PathVariable int projectId, @RequestBody @Valid CreateTaskRequest request) {
-        taskService.addTaskToProject(new ProjectId(projectId), request.toDomain());
+    public ResponseEntity<Void> create(
+            @PathVariable int projectId,
+            @RequestBody @Valid CreateTaskRequest request
+    ) {
+        Task task = request.toDomain(); // ✅ cria o domínio sem ID (como Member)
+        Integer memberId = request.getAssignedMemberId(); // ✅ extrai o membro atribuído (se houver)
+        taskService.addTaskToProject(new ProjectId(projectId), task, memberId);
         return ResponseEntity.ok().build();
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<TaskResponse> getById(@PathVariable int id) {

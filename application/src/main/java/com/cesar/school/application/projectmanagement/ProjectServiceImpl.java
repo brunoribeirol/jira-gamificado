@@ -1,24 +1,32 @@
 package com.cesar.school.application.projectmanagement;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
+import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
+import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.service.ProjectService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.MemberId;
 
-import java.util.List;
 import java.util.Optional;
 
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final TaskRepository taskRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository,
+                              TaskRepository taskRepository) {
         this.projectRepository = projectRepository;
+        this.taskRepository    = taskRepository;
     }
 
     @Override
-    public Project create(ProjectId projectId, String name, String description, TeamId teamId) {
+    public Project create(ProjectId projectId,
+                          String name,
+                          String description,
+                          TeamId teamId) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Nome do projeto é obrigatório");
         }
@@ -26,6 +34,29 @@ public class ProjectServiceImpl implements ProjectService {
         Project project = new Project(projectId, name, description, teamId);
         projectRepository.save(project);
         return project;
+    }
+
+    /**
+     * Adiciona uma tarefa ao projeto e persiste ambas as entidades.
+     */
+//    public void addTaskToProject(ProjectId projectId, Task task) {
+//        Project project = projectRepository.findById(projectId)
+//                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+//
+//        project.addTask(task);
+//        taskRepository.save(task);
+//        projectRepository.save(project);
+//    }
+
+    public void addTaskToProject(ProjectId projectId, Task task, int assignedMemberId) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+
+        task.assignTo(new MemberId(assignedMemberId)); // associa o membro à tarefa
+
+        project.addTask(task); // se quiser manter a lista de tarefas no projeto
+        taskRepository.save(task); // salva a tarefa no banco
+        projectRepository.save(project); // salva o projeto atualizado
     }
 
 

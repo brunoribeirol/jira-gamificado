@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public class TaskMapper {
     public static TaskEntity toEntity(Task task) {
         TaskEntity entity = new TaskEntity();
-        entity.setId(task.getId().getValue());
+        //entity.setId(task.getId().getValue());
         entity.setTitle(task.getTitle());
         entity.setDescription(task.getDescription());
         entity.setKanbanColumn(task.getKanbanColumn());
@@ -36,9 +36,9 @@ public class TaskMapper {
                 entity.getCreatedAt()
         );
         entity.getAssignees().forEach(id -> task.assignTo(new MemberId(id)));
-        if (entity.getCompletedAt() != null) {
-            task.markAsCompleted();
-        }
+//        if (entity.getCompletedAt() != null) {
+//            task.markAsCompleted();
+//        }
         return task;
     }
 }

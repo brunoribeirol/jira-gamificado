@@ -33,6 +33,7 @@ import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.Membe
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.FeedbackJpaRepository;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -57,10 +58,17 @@ public class BeanConfiguration {
         return new TaskRepositoryImpl(jpa);
     }
 
-    @Bean
-    public ChallengeRepository challengeRepository(ChallengeJpaRepository jpa) {
-        return new ChallengeRepositoryImpl(jpa);
-    }
+    //@Bean
+    //public ChallengeRepository challengeRepository(ChallengeJpaRepository jpa) {
+    //    return new ChallengeRepositoryImpl(jpa);
+    //}
+
+//    @Bean
+//    public ChallengeServiceImpl challengeService(
+//            @Qualifier("jpaChallengeRepo") ChallengeRepository challengeRepository,
+//            ProjectRepository projectRepository) {
+//        return new ChallengeServiceImpl(challengeRepository, projectRepository);
+//    }
 
     @Bean
     public MemberRepository memberRepository(MemberJpaRepository jpa) {
@@ -79,8 +87,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ProjectServiceImpl projectService(ProjectRepository projectRepository) {
-        return new ProjectServiceImpl(projectRepository);
+    public ProjectServiceImpl projectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
+        return new ProjectServiceImpl(projectRepository, taskRepository);
     }
 
     @Bean
@@ -92,11 +100,6 @@ public class BeanConfiguration {
     public ChallengeServiceImpl challengeService(ChallengeRepository challengeRepository, ProjectRepository projectRepository) {
         return new ChallengeServiceImpl(challengeRepository, projectRepository);
     }
-
-//    @Bean
-//    public MemberTeamServiceImpl memberTeamService(TeamRepository teamRepository, MemberRepository memberRepository, FeedbackRepository feedbackRepository) {
-//        return new MemberTeamServiceImpl(teamRepository, memberRepository, feedbackRepository);
-//    }
 
     @Bean
     public MemberTeamServiceImpl memberTeamServiceImpl(TeamRepository teamRepo, MemberRepository memberRepo, FeedbackRepository feedbackRepo) {

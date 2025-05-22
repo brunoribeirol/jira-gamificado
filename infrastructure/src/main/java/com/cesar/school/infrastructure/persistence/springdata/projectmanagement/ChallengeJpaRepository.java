@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ChallengeJpaRepository extends JpaRepository<ChallengeEntity, Integer> {
     List<ChallengeEntity> findByProjectId(int projectId);
+    List<ChallengeEntity> findAllByProjectId(Integer projectId);
 }

@@ -7,11 +7,14 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.ChallengeEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.ChallengeMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ChallengeJpaRepository;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository("jpaChallengeRepo")
 public class ChallengeRepositoryImpl implements ChallengeRepository {
 
     private final ChallengeJpaRepository jpaRepository;
@@ -37,8 +40,10 @@ public class ChallengeRepositoryImpl implements ChallengeRepository {
         jpaRepository.deleteById(id.getValue());
     }
 
-    public List<Challenge> findByProjectId(ProjectId projectId) {
-        return jpaRepository.findByProjectId(projectId.getValue())
+    @Override
+    public List<Challenge> findAllByProjectId(ProjectId projectId) {
+        return jpaRepository
+                .findAllByProjectId(projectId.getValue())
                 .stream()
                 .map(ChallengeMapper::toDomain)
                 .collect(Collectors.toList());

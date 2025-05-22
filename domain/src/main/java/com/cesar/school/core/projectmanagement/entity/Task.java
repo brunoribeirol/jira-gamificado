@@ -36,6 +36,25 @@ public class Task {
         this.completedAt = null;
     }
 
+    // Construtor para criação de novas tarefas
+    public Task(String title, String description, String kanbanColumn, int points) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("O nome da tarefa é obrigatório");
+        }
+        if (points < 0) {
+            throw new IllegalArgumentException("A pontuação deve ser zero ou positiva");
+        }
+        this.id = null; // será preenchido pela infraestrutura
+        this.title = title;
+        this.description = description;
+        this.kanbanColumn = Objects.requireNonNull(kanbanColumn);
+        this.points = points;
+        this.createdAt = new Date(); // agora() no momento da criação
+        this.assignees = new ArrayList<>();
+        this.completedAt = null;
+    }
+
+
     // ==== Regras de Negócio ====
 
     public void assignTo(MemberId memberId) {

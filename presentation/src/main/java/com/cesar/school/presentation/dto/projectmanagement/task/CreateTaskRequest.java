@@ -2,35 +2,48 @@ package com.cesar.school.presentation.dto.projectmanagement.task;
 
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
+import com.cesar.school.core.shared.MemberId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
+@Getter
+@Setter
 public class CreateTaskRequest {
 
-    @Positive
-    public int id;
+    private Integer id;
 
     @NotBlank
-    public String title;
+    private String title;
 
-    public String description;
+    private String description;
 
-    @NotBlank
-    public String kanbanColumn;
+    private Integer assignedMemberId;
 
     @Positive
-    public int points;
+    private int points;
 
     public Task toDomain() {
         return new Task(
-                new TaskId(id),
+                id != null ? new TaskId(id) : null,
                 title,
                 description,
-                kanbanColumn,
+                "Backlog",
                 points,
-                new Date()
+                new Date() // ou passe `null` se for setado automaticamente no domínio
         );
     }
+
+//    public Task toDomain() {
+//        return new Task(
+//                title,
+//                description,
+//                "Backlog",
+//                points
+//        );
+//    }
+
 }
