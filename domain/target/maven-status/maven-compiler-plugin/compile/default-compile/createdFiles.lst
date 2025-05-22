@@ -1,0 +1,7 @@
+com/cesar/school/Main.class
+com/cesar/school/core/gamification/repository/RewardRepository.class
+com/cesar/school/core/gamification/vo/RewardId.class
+com/cesar/school/core/gamification/service/RewardService.class
+com/cesar/school/core/gamification/entity/Reward.class
+com/cesar/school/core/gamification/vo/RewardType.class
+com/cesar/school/core/shared/MemberId.class
