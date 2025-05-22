@@ -6,6 +6,11 @@ import com.cesar.school.core.shared.MemberId;
 
 import java.util.Date;
 
+import com.cesar.school.core.teamsmembers.entity.Member;
+import com.cesar.school.presentation.dto.teamsmembers.CreateMemberRequest;
+import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
+
+import jakarta.validation.Valid;
 
 import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.MemberService;
@@ -81,4 +86,11 @@ public class MemberController {
         var rewardIds = memberTeamService.getUnlockedRewards(new MemberId(id));
         return ResponseEntity.ok(MemberResponse.from(id, rewardIds));
     }
+    @PostMapping
+    public ResponseEntity<Integer> create(@RequestBody @Valid CreateMemberRequest request) {
+        Member member = request.toDomain();
+        memberTeamService.createMember(member);
+        return ResponseEntity.ok().build();
+    }
+
 }

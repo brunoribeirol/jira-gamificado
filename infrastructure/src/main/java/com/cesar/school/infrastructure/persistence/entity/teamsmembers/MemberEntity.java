@@ -17,8 +17,8 @@ import java.util.List;
 public class MemberEntity {
 
     @Id
-    @Column(name = "member_id")
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String name;
     private String email;
@@ -28,7 +28,7 @@ public class MemberEntity {
     private Role role;
 
     @Column(name = "individual_score")
-    private int individualScore;
+    private int individualScore = 0;
 
     @ElementCollection
     @CollectionTable(name = "member_rewards", joinColumns = @JoinColumn(name = "member_id"))

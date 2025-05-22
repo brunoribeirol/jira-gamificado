@@ -87,6 +87,11 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
         memberRepository.save(member);
     }
 
+    @Override
+    public void createMember(Member member) {
+        memberRepository.save(member); // só conversa com a interface
+    }
+
     @Transactional
     @Override
     public void addFeedback(MemberId memberId, Feedback feedback) {

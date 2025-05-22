@@ -12,5 +12,6 @@ public interface MemberService {
     void addPoints(MemberId memberId, int points);
     void addFeedback(MemberId memberId, Feedback feedback);
     void unlockReward(MemberId memberId, Reward reward);
+    void createMember(Member member);
     Optional<Member> getById(MemberId memberId);
 }

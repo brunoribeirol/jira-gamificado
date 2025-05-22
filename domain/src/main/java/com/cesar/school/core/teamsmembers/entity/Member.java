@@ -24,7 +24,7 @@ public class Member {
             throw new IllegalArgumentException("Informações obrigatórias do membro não podem estar vazias");
         }
 
-        this.id = Objects.requireNonNull(id);
+        this.id = id;
         this.name = name;
         this.email = email;
         this.password = password;

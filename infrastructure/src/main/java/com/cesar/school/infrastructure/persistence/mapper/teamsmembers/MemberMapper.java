@@ -14,7 +14,7 @@ public class MemberMapper {
 
     public static MemberEntity toEntity(Member domain) {
         MemberEntity entity = new MemberEntity();
-        entity.setId(domain.getId().getValue());
+        //entity.setId(domain.getId().getValue());
         entity.setName(domain.getName());
         entity.setEmail(domain.getEmail());
         entity.setPassword(domain.getPassword());
