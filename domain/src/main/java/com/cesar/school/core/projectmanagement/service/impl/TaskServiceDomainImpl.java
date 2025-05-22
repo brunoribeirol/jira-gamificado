@@ -1,12 +1,9 @@
-package com.cesar.school.application.projectmanagement;
+package com.cesar.school.core.projectmanagement.service.impl;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
-<<<<<<< HEAD
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
-=======
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
 import com.cesar.school.core.projectmanagement.service.TaskService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
@@ -14,15 +11,13 @@ import com.cesar.school.core.shared.MemberId;
 
 import java.util.List;
 import java.util.Optional;
-<<<<<<< HEAD
-import java.util.stream.Collectors;
 
-public class TaskServiceImpl implements TaskService {
+public class TaskServiceDomainImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
 
-    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository) {
+    public TaskServiceDomainImpl(TaskRepository taskRepository, ProjectRepository projectRepository) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
     }
@@ -70,7 +65,7 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         project.addTask(task);
         projectRepository.save(project);
-        taskRepository.save(task); // salva também a tarefa individualmente
+        taskRepository.save(task);
     }
 
     @Override
@@ -83,46 +78,5 @@ public class TaskServiceImpl implements TaskService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         return project.getTasks();
-=======
-
-public class TaskServiceImpl {
-
-    private final TaskService taskService;
-
-    public TaskServiceImpl(TaskService taskService) {
-        this.taskService = taskService;
-    }
-
-    public void assignTaskToMember(TaskId taskId, MemberId memberId) {
-        taskService.assignTaskToMember(taskId, memberId);
-    }
-
-    public void updateTaskTitle(TaskId taskId, String newTitle) {
-        taskService.updateTaskTitle(taskId, newTitle);
-    }
-
-    public void completeTask(TaskId taskId) {
-        taskService.completeTask(taskId);
-    }
-
-    public void moveTaskToColumn(TaskId taskId, String column) {
-        taskService.moveTaskToColumn(taskId, column);
-    }
-
-    public void delete(TaskId taskId) {
-        taskService.delete(taskId);
-    }
-
-    public void addTaskToProject(ProjectId projectId, Task task) {
-        taskService.addTaskToProject(projectId, task);
-    }
-
-    public Optional<Task> getById(TaskId taskId) {
-        return taskService.getById(taskId);
-    }
-
-    public List<Task> listByProject(ProjectId projectId) {
-        return taskService.listByProject(projectId);
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
     }
 }

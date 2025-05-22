@@ -1,12 +1,9 @@
-package com.cesar.school.application.projectmanagement;
+package com.cesar.school.core.projectmanagement.service.impl;
 
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-<<<<<<< HEAD
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.repository.ChallengeRepository;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
-=======
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
 import com.cesar.school.core.projectmanagement.service.ChallengeService;
 import com.cesar.school.core.projectmanagement.vo.ChallengeId;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
@@ -14,13 +11,12 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import java.util.List;
 import java.util.Optional;
 
-<<<<<<< HEAD
-public class ChallengeServiceImpl implements ChallengeService {
+public class ChallengeServiceDomainImpl implements ChallengeService {
 
     private final ChallengeRepository challengeRepository;
     private final ProjectRepository projectRepository;
 
-    public ChallengeServiceImpl(ChallengeRepository challengeRepository, ProjectRepository projectRepository) {
+    public ChallengeServiceDomainImpl(ChallengeRepository challengeRepository, ProjectRepository projectRepository) {
         this.challengeRepository = challengeRepository;
         this.projectRepository = projectRepository;
     }
@@ -54,33 +50,5 @@ public class ChallengeServiceImpl implements ChallengeService {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
         return project.getChallenges();
-=======
-public class ChallengeServiceImpl {
-
-    private final ChallengeService challengeService;
-
-    public ChallengeServiceImpl(ChallengeService challengeService) {
-        this.challengeService = challengeService;
-    }
-
-    public void addToProject(ProjectId projectId, Challenge challenge) {
-        challengeService.addToProject(projectId, challenge);
-    }
-
-    public Optional<Challenge> getById(ChallengeId id) {
-        return challengeService.getById(id);
-    }
-
-    public void update(Challenge challenge) {
-        challengeService.update(challenge);
-    }
-
-    public void delete(ChallengeId id) {
-        challengeService.delete(id);
-    }
-
-    public List<Challenge> listByProject(ProjectId projectId) {
-        return challengeService.listByProject(projectId);
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
     }
 }
