@@ -1,23 +1,18 @@
-package com.cesar.school.application.projectmanagement;
+package com.cesar.school.core.projectmanagement.service.impl;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
-<<<<<<< HEAD
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
-=======
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
 import com.cesar.school.core.projectmanagement.service.ProjectService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
 
-<<<<<<< HEAD
-import java.util.List;
 import java.util.Optional;
 
-public class ProjectServiceImpl implements ProjectService {
+public class ProjectServiceDomainImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
 
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceDomainImpl(ProjectRepository projectRepository) {
         this.projectRepository = projectRepository;
     }
 
@@ -32,7 +27,6 @@ public class ProjectServiceImpl implements ProjectService {
         return project;
     }
 
-
     @Override
     public Optional<Project> getById(ProjectId id) {
         return projectRepository.findById(id);
@@ -46,31 +40,5 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void delete(ProjectId id) {
         projectRepository.deleteById(id);
-=======
-import java.util.Optional;
-
-public class ProjectServiceImpl {
-
-    private final ProjectService projectService;
-
-    public ProjectServiceImpl(ProjectService projectService) {
-        this.projectService = projectService;
-    }
-
-    public Project create(ProjectId projectId, String name, String description, TeamId teamId) {
-        return projectService.create(projectId, name, description, teamId);
-    }
-
-    public Optional<Project> getById(ProjectId id) {
-        return projectService.getById(id);
-    }
-
-    public void update(Project project) {
-        projectService.update(project);
-    }
-
-    public void delete(ProjectId id) {
-        projectService.delete(id);
->>>>>>> df22e55 (feat: apply professor feedback - refactor services to domain)
     }
 }
