@@ -1,11 +1,13 @@
 package com.cesar.school.application.teamsmembers;
 
 import com.cesar.school.core.gamification.entity.Reward;
+import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
+import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
 import com.cesar.school.core.teamsmembers.service.MemberService;
@@ -13,9 +15,6 @@ import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.core.teamsmembers.vo.Role;
 import com.cesar.school.core.teamsmembers.vo.TeamId;
-import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
-import jakarta.transaction.Transactional;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -24,19 +23,33 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
 
     private final TeamRepository teamRepository;
     private final MemberRepository memberRepository;
+    private final RewardRepository rewardRepository;
     private final FeedbackRepository feedbackRepository;
 
-    public MemberTeamServiceImpl(TeamRepository teamRepository, MemberRepository memberRepository, FeedbackRepository feedbackRepository) {
+
+    public MemberTeamServiceImpl(
+            TeamRepository teamRepository,
+            MemberRepository memberRepository,
+            RewardRepository rewardRepository,
+            FeedbackRepository feedbackRepository
+    ) {
         this.teamRepository = teamRepository;
         this.memberRepository = memberRepository;
+        this.rewardRepository = rewardRepository;
         this.feedbackRepository = feedbackRepository;
     }
 
-    // ========== MemberTeamService ==========
+
+    @Override
+    public void createMember(Member member) {
+        memberRepository.findByEmail(member.getEmail()).ifPresent(existing -> {
+            throw new IllegalArgumentException("E-mail já cadastrado.");
+        });
+        memberRepository.save(member);
+    }
 
     @Override
     public void createTeam(TeamId teamId, String teamName) {
-        // Em um cenário real, o ID do líder viria da autenticação
         MemberId leaderId = new MemberId(1);
         List<MemberId> initialMembers = List.of(leaderId);
         Team team = new Team(teamId, teamName, leaderId, initialMembers);
@@ -47,13 +60,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     public void addMember(TeamId teamId, MemberId memberId, Role role) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Time não encontrado"));
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
-
         member.setRole(role);
         team.addMember(memberId);
-
         teamRepository.save(team);
         memberRepository.save(member);
     }
@@ -74,10 +84,9 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
 
     @Override
     public List<Feedback> getReceivedFeedbacks(MemberId memberId) {
-        return feedbackRepository.findByReceivedBy(memberId); // ✅ busca do banco
+        return feedbackRepository.findByReceivedBy(memberId);
     }
 
-    // ========== MemberService ==========
 
     @Override
     public void addPoints(MemberId memberId, int points) {
@@ -88,29 +97,29 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
-    public void createMember(Member member) {
-        memberRepository.save(member); // só conversa com a interface
-    }
-
-    @Transactional
-    @Override
     public void addFeedback(MemberId memberId, Feedback feedback) {
-        System.out.println(">>> Service: Entrou em addFeedback");
-        System.out.println(">>> Feedback ID: " + (feedback.getId() != null ? feedback.getId().getValue() : "null (será gerado pelo banco)"));
-        System.out.println(">>> FeedbackRepository é nulo? " + (feedbackRepository == null));
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
-
         member.receiveFeedback(feedback);
-        memberRepository.save(member);
         feedbackRepository.save(feedback);
     }
 
     @Override
-    public void unlockReward(MemberId memberId, Reward reward) {
+    public void unlockReward(MemberId memberId, RewardId rewardId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
+
+        Reward reward = rewardRepository.findById(rewardId)
+                .orElseThrow(() -> new IllegalArgumentException("Recompensa não encontrada"));
+
+        if (reward.getRequiredPoints() <= 0) {
+            throw new IllegalArgumentException("Required points must be greater than zero.");
+        }
+
+        if (member.getIndividualScore() < reward.getRequiredPoints()) {
+            throw new IllegalArgumentException("Pontuação insuficiente para desbloquear a recompensa.");
+        }
+
         member.unlockReward(reward.getId());
         memberRepository.save(member);
     }
@@ -120,7 +129,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
         return memberRepository.findById(memberId);
     }
 
-    // ========== TeamService ==========
+    @Override
+    public List<Member> getAll() {
+        return memberRepository.findAll();
+    }
 
     @Override
     public void addPoints(TeamId teamId, int points) {

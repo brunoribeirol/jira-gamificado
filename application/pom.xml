@@ -26,10 +26,6 @@
             <artifactId>domain</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <groupId>jakarta.transaction</groupId>
-            <artifactId>jakarta.transaction-api</artifactId>
-        </dependency>
     </dependencies>
 
 </project>
