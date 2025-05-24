@@ -4,22 +4,31 @@ import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.NotNull;
 
 public class CreateProjectRequest {
 
-    @Positive(message = "O ID do projeto deve ser positivo.")
-    public int id;
+    public Integer id;
 
-    @NotBlank(message = "O nome é obrigatório.")
+    @NotBlank(message = "O nome do projeto é obrigatório.")
     public String name;
 
     public String description;
 
-    @Positive(message = "O ID da equipe deve ser positivo.")
-    public int teamId;
+    @NotNull(message = "O ID da equipe é obrigatório.")
+    public Integer teamId;
 
     public Project toDomain() {
+        // Se `id` é null, usamos o construtor de criação (sem id)
+        if (id == null) {
+            return new Project(
+                    name,
+                    description,
+                    new TeamId(teamId)
+            );
+        }
+
+        // Se `id` não for null, usamos o construtor com id
         return new Project(
                 new ProjectId(id),
                 name,

@@ -10,6 +10,7 @@ import com.cesar.school.presentation.dto.projectmanagement.project.ProjectRespon
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -21,11 +22,13 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateProjectRequest request) {
-        Project project = request.toDomain();
-        projectService.create(project.getId(), project.getName(), project.getDescription(), project.getTeamId());
-        return ResponseEntity.ok().build();
+    @GetMapping
+    public ResponseEntity<List<ProjectResponse>> getAll() {
+        List<Project> projects = projectService.getAll();
+        List<ProjectResponse> responses = projects.stream()
+                .map(ProjectResponse::fromDomain)
+                .toList();
+        return ResponseEntity.ok(responses);
     }
 
     @GetMapping("/{id}")
@@ -34,6 +37,12 @@ public class ProjectController {
                 .map(ProjectResponse::fromDomain)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/new-project")
+    public ResponseEntity<Void> create(@RequestBody @Valid CreateProjectRequest request) {
+        projectService.createProject(request.toDomain());
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{projectId}/tasks")
