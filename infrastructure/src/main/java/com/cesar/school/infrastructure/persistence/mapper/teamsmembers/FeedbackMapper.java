@@ -8,33 +8,25 @@ import com.cesar.school.infrastructure.persistence.entity.teamsmembers.FeedbackE
 
 public class FeedbackMapper {
 
-//    public static FeedbackEntity toEntity(Feedback domain) {
-//        return new FeedbackEntity(
-//                domain.getId().getValue(),
-//                domain.getMessage(),
-//                domain.getDate(),
-//                domain.getGivenBy().getValue(),
-//                domain.getReceivedBy().getValue(),
-//                domain.getRelatedTask() != null ? domain.getRelatedTask().getValue() : null
-//        );
-//    }
-
-    public static FeedbackEntity toEntity(Feedback feedback) {
-        FeedbackEntity entity = new FeedbackEntity();
-
-        if (feedback.getId() != null) {
-            entity.setId(feedback.getId().getValue());
+    public static FeedbackEntity toEntity(Feedback domain) {
+        if (domain.getId() != null) {
+            return new FeedbackEntity(
+                    domain.getId().getValue(),
+                    domain.getMessage(),
+                    domain.getDate(),
+                    domain.getGivenBy().getValue(),
+                    domain.getReceivedBy().getValue(),
+                    domain.getRelatedTask() != null ? domain.getRelatedTask().getValue() : null
+            );
+        } else {
+            return new FeedbackEntity(
+                    domain.getMessage(),
+                    domain.getDate(),
+                    domain.getGivenBy().getValue(),
+                    domain.getReceivedBy().getValue(),
+                    domain.getRelatedTask() != null ? domain.getRelatedTask().getValue() : null
+            );
         }
-
-        entity.setMessage(feedback.getMessage());
-        entity.setDate(feedback.getDate());
-        entity.setGivenBy(feedback.getGivenBy().getValue());
-        entity.setReceivedBy(feedback.getReceivedBy().getValue());
-        entity.setRelatedTask(
-                feedback.getRelatedTask() != null ? feedback.getRelatedTask().getValue() : null
-        );
-
-        return entity;
     }
 
     public static Feedback toDomain(FeedbackEntity entity) {

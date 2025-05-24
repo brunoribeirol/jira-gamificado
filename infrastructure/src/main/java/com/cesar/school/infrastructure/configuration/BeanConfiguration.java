@@ -10,30 +10,26 @@ import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.projectmanagement.repository.ChallengeRepository;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
+import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
-import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 
-import com.cesar.school.core.teamsmembers.service.MemberService;
-import com.cesar.school.core.teamsmembers.service.MemberTeamService;
-import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.infrastructure.persistence.repository.gamification.RewardRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.ChallengeRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.ProjectRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.projectmanagement.TaskRepositoryImpl;
+import com.cesar.school.infrastructure.persistence.repository.teamsmembers.FeedbackRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.teamsmembers.MemberRepositoryImpl;
 import com.cesar.school.infrastructure.persistence.repository.teamsmembers.TeamRepositoryImpl;
-import com.cesar.school.infrastructure.persistence.repository.teamsmembers.FeedbackRepositoryImpl;
 
 import com.cesar.school.infrastructure.persistence.springdata.gamification.RewardJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ChallengeJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ProjectJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.TaskJpaRepository;
+import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.FeedbackJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.MemberJpaRepository;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJpaRepository;
-import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.FeedbackJpaRepository;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -58,21 +54,19 @@ public class BeanConfiguration {
         return new TaskRepositoryImpl(jpa);
     }
 
-    //@Bean
-    //public ChallengeRepository challengeRepository(ChallengeJpaRepository jpa) {
-    //    return new ChallengeRepositoryImpl(jpa);
-    //}
-
-//    @Bean
-//    public ChallengeServiceImpl challengeService(
-//            @Qualifier("jpaChallengeRepo") ChallengeRepository challengeRepository,
-//            ProjectRepository projectRepository) {
-//        return new ChallengeServiceImpl(challengeRepository, projectRepository);
-//    }
+    @Bean
+    public ChallengeRepository challengeRepository(ChallengeJpaRepository jpa) {
+        return new ChallengeRepositoryImpl(jpa);
+    }
 
     @Bean
-    public MemberRepository memberRepository(MemberJpaRepository jpa) {
-        return new MemberRepositoryImpl(jpa);
+    public FeedbackRepository feedbackRepository(FeedbackJpaRepository jpa) {
+        return new FeedbackRepositoryImpl(jpa);
+    }
+
+    @Bean
+    public MemberRepository memberRepository(MemberJpaRepository jpa, FeedbackRepository feedbackRepository) {
+        return new MemberRepositoryImpl(jpa, feedbackRepository);
     }
 
     @Bean
@@ -102,29 +96,18 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public MemberTeamServiceImpl memberTeamServiceImpl(TeamRepository teamRepo, MemberRepository memberRepo, FeedbackRepository feedbackRepo) {
-        return new MemberTeamServiceImpl(teamRepo, memberRepo, feedbackRepo);
+    public MemberTeamServiceImpl memberTeamService(
+            TeamRepository teamRepository,
+            MemberRepository memberRepository,
+            RewardRepository rewardRepository,
+            FeedbackRepository feedbackRepository
+    ) {
+        return new MemberTeamServiceImpl(
+                teamRepository,
+                memberRepository,
+                rewardRepository,
+                feedbackRepository
+        );
     }
 
-    @Bean
-    public MemberService memberService(MemberTeamServiceImpl impl) {
-        return impl;
-    }
-
-    @Bean
-    public MemberTeamService memberTeamService(MemberTeamServiceImpl impl) {
-        return impl;
-    }
-
-    @Bean
-    public TeamService teamService(MemberTeamServiceImpl impl) {
-        return impl;
-    }
-
-
-    @Bean
-    public FeedbackRepository feedbackRepository(FeedbackJpaRepository jpa) {
-        System.out.println(">>> Criando FeedbackRepositoryImpl");
-        return new FeedbackRepositoryImpl(jpa);
-    }
 }

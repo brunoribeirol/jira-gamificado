@@ -21,7 +21,10 @@ public class MemberEntity {
     private Integer id;
 
     private String name;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password;
 
     @Enumerated(EnumType.STRING)
