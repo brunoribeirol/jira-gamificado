@@ -15,13 +15,18 @@ public class Project {
     private final List<String> kanbanColumns = List.of("Backlog", "Pronto", "Em Progresso", "Revisão", "Concluído");
 
     public Project(ProjectId id, String name, String description, TeamId teamId) {
-        if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException("Nome do projeto é obrigatório");
-        }
-        this.id = id;
-        this.name = name;
+        this.id = Objects.requireNonNull(id, "id must not be null");
+        this.name = Objects.requireNonNull(name, "name must not be null");
+        this.description = description; // description pode ser opcional
+        this.teamId = Objects.requireNonNull(teamId, "teamId must not be null");
+    }
+
+    // Usado para criar novo Project (sem id ainda)
+    public Project(String name, String description, TeamId teamId) {
+        this.id = null;
+        this.name = Objects.requireNonNull(name, "name must not be null");
         this.description = description;
-        this.teamId = teamId;
+        this.teamId = Objects.requireNonNull(teamId, "teamId must not be null");
     }
 
     public void addTask(Task task) {
