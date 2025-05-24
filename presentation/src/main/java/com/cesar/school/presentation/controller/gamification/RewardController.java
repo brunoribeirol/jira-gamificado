@@ -5,12 +5,14 @@ import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.presentation.dto.gamification.CreateRewardRequest;
 import com.cesar.school.presentation.dto.gamification.RewardResponse;
+import com.cesar.school.presentation.dto.gamification.UpdateRewardPointsRequest;
 import com.cesar.school.presentation.response.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,6 +57,31 @@ public class RewardController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);
     }
+
+    @PatchMapping("/{id}/points")
+    public ResponseEntity<ApiResponse> updateRewardPoints(
+            @PathVariable("id") int id,
+            @Valid @RequestBody UpdateRewardPointsRequest request) {
+
+        Optional<Reward> optional = rewardService.getRewardById(new RewardId(id));
+        if (optional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Reward existing = optional.get();
+
+        Reward updated = new Reward(
+                existing.getId(),
+                existing.getDescription(),
+                request.requiredPoints,
+                existing.getType(),
+                existing.getCreatedBy()
+        );
+
+        rewardService.createReward(updated);
+        return ResponseEntity.ok(new ApiResponse(true, "Pontuação da recompensa atualizada com sucesso."));
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteReward(@PathVariable("id") int id) {

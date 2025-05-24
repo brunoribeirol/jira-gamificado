@@ -15,7 +15,8 @@ import lombok.Setter;
 public class RewardEntity {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String description;
 
@@ -28,7 +29,7 @@ public class RewardEntity {
     @Column(name = "created_by")
     private int createdBy;
 
-    public RewardEntity(int id, String description, int requiredPoints, RewardType type, int createdBy) {
+    public RewardEntity(Integer id, String description, int requiredPoints, RewardType type, int createdBy) {
         this.id = id;
         this.description = description;
         this.requiredPoints = requiredPoints;

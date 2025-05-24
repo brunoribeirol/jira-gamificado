@@ -9,8 +9,9 @@ import com.cesar.school.infrastructure.persistence.entity.gamification.RewardEnt
 public class RewardMapper {
 
     public static RewardEntity toEntity(Reward reward) {
+        Integer id = reward.getId() != null ? reward.getId().getValue() : null;
         return new RewardEntity(
-                reward.getId().getValue(),
+                id,
                 reward.getDescription(),
                 reward.getRequiredPoints(),
                 reward.getType(),

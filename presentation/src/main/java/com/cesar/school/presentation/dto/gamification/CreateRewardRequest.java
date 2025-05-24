@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class CreateRewardRequest {
 
-    @NotNull
     public Integer id;
 
     @NotBlank
@@ -27,7 +26,7 @@ public class CreateRewardRequest {
 
     public Reward toDomain() {
         return new Reward(
-                new RewardId(id),
+                id != null ? new RewardId(id) : null,
                 description,
                 requiredPoints,
                 type,
