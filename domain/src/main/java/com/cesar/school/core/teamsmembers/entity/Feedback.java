@@ -15,13 +15,24 @@ public class Feedback {
     private final MemberId receivedBy;
     private final TaskId relatedTask; // opcional
 
+    // Usado quando o Feedback já existe (carregado do banco)
     public Feedback(FeedbackId id, String message, Date date, MemberId givenBy, MemberId receivedBy, TaskId relatedTask) {
-        this.id = id;
-        this.message = Objects.requireNonNull(message);
-        this.date = Objects.requireNonNull(date);
-        this.givenBy = Objects.requireNonNull(givenBy);
-        this.receivedBy = Objects.requireNonNull(receivedBy);
-        this.relatedTask = relatedTask; // pode ser null
+        this.id = Objects.requireNonNull(id, "id must not be null");
+        this.message = Objects.requireNonNull(message, "message must not be null");
+        this.date = Objects.requireNonNull(date, "date must not be null");
+        this.givenBy = Objects.requireNonNull(givenBy, "givenBy must not be null");
+        this.receivedBy = Objects.requireNonNull(receivedBy, "receivedBy must not be null");
+        this.relatedTask = relatedTask;
+    }
+
+    // Usado para criar novo Feedback (sem id ainda)
+    public Feedback(String message, Date date, MemberId givenBy, MemberId receivedBy, TaskId relatedTask) {
+        this.id = null;
+        this.message = Objects.requireNonNull(message, "message must not be null");
+        this.date = Objects.requireNonNull(date, "date must not be null");
+        this.givenBy = Objects.requireNonNull(givenBy, "givenBy must not be null");
+        this.receivedBy = Objects.requireNonNull(receivedBy, "receivedBy must not be null");
+        this.relatedTask = relatedTask;
     }
 
     public FeedbackId getId() {
@@ -33,7 +44,7 @@ public class Feedback {
     }
 
     public Date getDate() {
-        return new Date(date.getTime()); // garantir imutabilidade
+        return new Date(date.getTime()); // proteção contra mutabilidade externa
     }
 
     public MemberId getGivenBy() {

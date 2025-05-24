@@ -18,7 +18,7 @@ public final class Reward {
         if (requiredPoints <= 0) {
             throw new IllegalArgumentException("Required points must be greater than zero.");
         }
-        this.id = Objects.requireNonNull(id);
+        this.id = id;
         this.description = Objects.requireNonNull(description);
         this.requiredPoints = requiredPoints;
         this.type = Objects.requireNonNull(type);
