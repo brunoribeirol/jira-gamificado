@@ -1,24 +1,12 @@
 package com.cesar.school.presentation.controller.teamsmembers;
 
-import com.cesar.school.core.teamsmembers.entity.Feedback;
-import com.cesar.school.core.teamsmembers.vo.FeedbackId;
-import com.cesar.school.core.shared.MemberId;
-
-import java.util.Date;
-
-import com.cesar.school.core.teamsmembers.entity.Member;
-import com.cesar.school.presentation.dto.teamsmembers.CreateMemberRequest;
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
-
-import jakarta.validation.Valid;
-
-import com.cesar.school.core.teamsmembers.service.MemberTeamService;
-import com.cesar.school.core.teamsmembers.service.MemberService;
+import com.cesar.school.core.gamification.entity.Reward;
+import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.presentation.dto.teamsmembers.FeedbackResponse;
-import com.cesar.school.presentation.dto.teamsmembers.MemberResponse;
+import com.cesar.school.presentation.dto.teamsmembers.*;
 import com.cesar.school.presentation.response.ApiResponse;
-import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,68 +17,63 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/members")
 public class MemberController {
 
-    private final MemberService memberService;
-    private final MemberTeamService memberTeamService;
+    private final MemberTeamServiceImpl memberService;
 
-
-    public MemberController(MemberService memberService, MemberTeamService memberTeamService) {
+    public MemberController(MemberTeamServiceImpl memberService) {
         this.memberService = memberService;
-        this.memberTeamService = memberTeamService;
     }
 
-    @PostConstruct
-    public void init() {
-        System.out.println(">>> Controller: memberService = " + memberService.getClass().getName());
-        System.out.println(">>> Controller: memberTeamService = " + memberTeamService.getClass().getName());
-    }
-
-
-    @GetMapping("/{id}/score")
-    public ResponseEntity<ApiResponse> getScore(@PathVariable int id) {
-        int score = memberTeamService.getScore(new MemberId(id));
-        return ResponseEntity.ok(new ApiResponse(true, "Pontuação recuperada com sucesso: " + score));
-    }
-
-    @GetMapping("/{id}/feedbacks")
-    public ResponseEntity<List<FeedbackResponse>> getFeedbacks(@PathVariable("id") int id) {
-        var feedbacks = memberTeamService.getReceivedFeedbacks(new MemberId(id));
-        System.out.println("Encontrados: " + feedbacks.size() + " feedbacks");
-        var response = feedbacks.stream()
-                .map(FeedbackResponse::fromDomain)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/test-feedback")
-    public ResponseEntity<String> testFeedbackSave() {
-        System.out.println(">>> Controller: Entrou no test-feedback");
-
-        var feedback = new Feedback(
-                null,
-                "Testando feedback direto",
-                new Date(),
-                new MemberId(101),
-                new MemberId(104),
-                null
-        );
-
-        System.out.println(">>> Controller: Chamando memberService.addFeedback");
-
-        memberService.addFeedback(new MemberId(104), feedback);
-
-        System.out.println(">>> Controller: Feedback enviado com sucesso");return ResponseEntity.ok("Test feedback enviado");
-    }
-
-    @GetMapping("/{id}/rewards")
-    public ResponseEntity<MemberResponse> getUnlockedRewards(@PathVariable int id) {
-        var rewardIds = memberTeamService.getUnlockedRewards(new MemberId(id));
-        return ResponseEntity.ok(MemberResponse.from(id, rewardIds));
-    }
+    // POST /api/members
     @PostMapping
-    public ResponseEntity<Integer> create(@RequestBody @Valid CreateMemberRequest request) {
-        Member member = request.toDomain();
-        memberTeamService.createMember(member);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ApiResponse> createMember(@Valid @RequestBody CreateMemberRequest request) {
+        memberService.createMember(request.toDomain());
+        return ResponseEntity.ok(new ApiResponse(true, "Membro criado com sucesso."));
     }
 
+    // GET /api/members
+    @GetMapping
+    public ResponseEntity<List<MemberResponse>> getAllMembers() {
+        return ResponseEntity.ok(
+                memberService.getAll().stream()
+                        .map(MemberResponse::fromDomain)
+                        .collect(Collectors.toList())
+        );
+    }
+
+    // GET /api/members/{id}
+    @GetMapping("/{id}")
+    public ResponseEntity<MemberResponse> getMemberById(@PathVariable int id) {
+        return memberService.getById(new MemberId(id))
+                .map(MemberResponse::fromDomain)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // PATCH /api/members/{id}/points
+    @PatchMapping("/{id}/points")
+    public ResponseEntity<ApiResponse> addPoints(@PathVariable int id, @RequestBody AddPointsRequest request) {
+        memberService.addPoints(new MemberId(id), request.points);
+        return ResponseEntity.ok(new ApiResponse(true, "Pontos adicionados com sucesso"));
+    }
+
+    // PATCH /api/members/{id}/rewards
+    @PatchMapping("/{id}/rewards")
+    public ResponseEntity<ApiResponse> unlockReward(
+            @PathVariable int id,
+            @RequestBody RewardIdRequest request
+    ) {
+        memberService.unlockReward(new MemberId(id), new RewardId(request.rewardId));
+        return ResponseEntity.ok(new ApiResponse(true, "Recompensa desbloqueada com sucesso"));
+    }
+
+
+    // POST /api/members/{id}/feedbacks
+    @PostMapping("/{id}/feedbacks")
+    public ResponseEntity<ApiResponse> addFeedback(
+            @PathVariable int id,
+            @Valid @RequestBody FeedbackRequest request
+    ) {
+        memberService.addFeedback(new MemberId(id), request.toDomain());
+        return ResponseEntity.ok(new ApiResponse(true, "Feedback adicionado com sucesso"));
+    }
 }

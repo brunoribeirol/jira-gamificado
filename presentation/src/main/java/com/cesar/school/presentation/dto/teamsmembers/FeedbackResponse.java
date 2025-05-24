@@ -10,17 +10,15 @@ public class FeedbackResponse {
     public String message;
     public Date date;
     public int givenBy;
-    public int receivedBy;
-    public Integer relatedTask; // pode ser null
+    public Integer relatedTaskId;
 
     public static FeedbackResponse fromDomain(Feedback feedback) {
-        FeedbackResponse dto = new FeedbackResponse();
-        dto.id = feedback.getId().getValue();
-        dto.message = feedback.getMessage();
-        dto.date = feedback.getDate();
-        dto.givenBy = feedback.getGivenBy().getValue();
-        dto.receivedBy = feedback.getReceivedBy().getValue();
-        dto.relatedTask = feedback.getRelatedTask() != null ? feedback.getRelatedTask().getValue() : null;
-        return dto;
+        FeedbackResponse response = new FeedbackResponse();
+        response.id = feedback.getId().getValue();
+        response.message = feedback.getMessage();
+        response.date = feedback.getDate();
+        response.givenBy = feedback.getGivenBy().getValue();
+        response.relatedTaskId = feedback.getRelatedTask() != null ? feedback.getRelatedTask().getValue() : null;
+        return response;
     }
 }
