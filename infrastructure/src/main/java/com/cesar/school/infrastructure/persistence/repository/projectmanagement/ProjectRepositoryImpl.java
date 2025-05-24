@@ -19,16 +19,23 @@ public class ProjectRepositoryImpl implements ProjectRepository {
     }
 
     @Override
+    public void save(Project project) {
+        ProjectEntity entity = ProjectMapper.toEntity(project);
+        jpaRepository.save(entity);
+    }
+
+    @Override
     public Optional<Project> findById(ProjectId id) {
         return jpaRepository.findById(id.getValue())
                 .map(ProjectMapper::toDomain);
     }
 
-
     @Override
-    public void save(Project project) {
-        ProjectEntity entity = ProjectMapper.toEntity(project);
-        jpaRepository.save(entity);
+    public List<Project> findAll() {
+        return jpaRepository.findAll()
+                .stream()
+                .map(ProjectMapper::toDomain)
+                .toList();
     }
 
     @Override

@@ -2,18 +2,21 @@ package com.cesar.school.infrastructure.persistence.entity.projectmanagement;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Entity
+@Table(name = "projects")
 @Getter
 @Setter
-@Table(name = "projects")
+@NoArgsConstructor
 public class ProjectEntity {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String name;
     private String description;
@@ -21,20 +24,17 @@ public class ProjectEntity {
     @Column(name = "team_id")
     private int teamId;
 
-    @ElementCollection
-    @CollectionTable(name = "project_kanban_columns", joinColumns = @JoinColumn(name = "project_id"))
-    @Column(name = "column_name")
-    private List<String> kanbanColumns;
-
-    public ProjectEntity() {
-    }
-
-    public ProjectEntity(int id, String name, String description, int teamId, List<String> kanbanColumns) {
+    public ProjectEntity(Integer id, String name, String description, int teamId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.teamId = teamId;
-        this.kanbanColumns = kanbanColumns;
+    }
+
+    public ProjectEntity(String name, String description, int teamId) {
+        this.name = name;
+        this.description = description;
+        this.teamId = teamId;
     }
 
 }

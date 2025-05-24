@@ -8,13 +8,20 @@ import com.cesar.school.infrastructure.persistence.entity.projectmanagement.Proj
 public class ProjectMapper {
 
     public static ProjectEntity toEntity(Project domain) {
-        return new ProjectEntity(
-                domain.getId().getValue(),
-                domain.getName(),
-                domain.getDescription(),
-                domain.getTeamId().getValue(),
-                domain.getKanbanColumns()
-        );
+        if (domain.getId() != null) {
+            return new ProjectEntity(
+                    domain.getId().getValue(),
+                    domain.getName(),
+                    domain.getDescription(),
+                    domain.getTeamId().getValue()
+            );
+        } else {
+            return new ProjectEntity(
+                    domain.getName(),
+                    domain.getDescription(),
+                    domain.getTeamId().getValue()
+            );
+        }
     }
 
     public static Project toDomain(ProjectEntity entity) {

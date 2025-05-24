@@ -9,6 +9,7 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
 import com.cesar.school.core.shared.MemberId;
 
+import java.util.List;
 import java.util.Optional;
 
 public class ProjectServiceImpl implements ProjectService {
@@ -22,31 +23,25 @@ public class ProjectServiceImpl implements ProjectService {
         this.taskRepository    = taskRepository;
     }
 
+//    @Override
+//    public Project create(ProjectId projectId, String name, String description, TeamId teamId) {
+//        if (name == null || name.trim().isEmpty()) {
+//            throw new IllegalArgumentException("Nome do projeto é obrigatório");
+//        }
+//
+//        Project project = new Project(projectId, name, description, teamId);
+//        projectRepository.save(project);
+//        return project;
+//    }
+
     @Override
-    public Project create(ProjectId projectId,
-                          String name,
-                          String description,
-                          TeamId teamId) {
-        if (name == null || name.trim().isEmpty()) {
+    public void createProject(Project project) {
+        if (project.getName() == null || project.getName().isBlank()) {
             throw new IllegalArgumentException("Nome do projeto é obrigatório");
         }
 
-        Project project = new Project(projectId, name, description, teamId);
         projectRepository.save(project);
-        return project;
     }
-
-    /**
-     * Adiciona uma tarefa ao projeto e persiste ambas as entidades.
-     */
-//    public void addTaskToProject(ProjectId projectId, Task task) {
-//        Project project = projectRepository.findById(projectId)
-//                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-//
-//        project.addTask(task);
-//        taskRepository.save(task);
-//        projectRepository.save(project);
-//    }
 
     public void addTaskToProject(ProjectId projectId, Task task, int assignedMemberId) {
         Project project = projectRepository.findById(projectId)
@@ -59,6 +54,10 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project); // salva o projeto atualizado
     }
 
+    @Override
+    public List<Project> getAll() {
+        return projectRepository.findAll();
+    }
 
     @Override
     public Optional<Project> getById(ProjectId id) {
