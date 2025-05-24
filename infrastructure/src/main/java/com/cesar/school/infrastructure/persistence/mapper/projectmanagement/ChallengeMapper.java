@@ -9,8 +9,9 @@ import com.cesar.school.infrastructure.persistence.entity.projectmanagement.Chal
 public class ChallengeMapper {
 
     public static ChallengeEntity toEntity(Challenge domain) {
+        Integer id = domain.getId() != null ? domain.getId().getValue() : null;
         return new ChallengeEntity(
-                domain.getId().getValue(),
+                id,
                 domain.getTitle(),
                 domain.getDescription(),
                 domain.getCriteria(),

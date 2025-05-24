@@ -15,7 +15,8 @@ import java.util.Date;
 public class ChallengeEntity {
 
     @Id
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String title;
     private String description;

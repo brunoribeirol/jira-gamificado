@@ -10,8 +10,7 @@ import java.util.Date;
 
 public class CreateChallengeRequest {
 
-    @Positive(message = "O ID do desafio deve ser positivo.")
-    public int id;
+    public Integer id;
 
     @NotBlank(message = "O título é obrigatório.")
     public String title;
@@ -35,7 +34,7 @@ public class CreateChallengeRequest {
 
     public Challenge toDomain() {
         return new Challenge(
-                new ChallengeId(id),
+                id != null ? new ChallengeId(id) : null,
                 title,
                 description,
                 criteria,

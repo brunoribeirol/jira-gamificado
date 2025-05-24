@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Repository("jpaChallengeRepo")
 public class ChallengeRepositoryImpl implements ChallengeRepository {
 
     private final ChallengeJpaRepository jpaRepository;
