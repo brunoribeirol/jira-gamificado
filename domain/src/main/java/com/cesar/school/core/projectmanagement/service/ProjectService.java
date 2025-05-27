@@ -14,5 +14,5 @@ public interface ProjectService {
     List<Project> getAll();
     void update(Project project);
     void delete(ProjectId id);
-    void addTaskToProject(ProjectId projectId, Task task, int assignedMemberId);
+    void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId);
 }

@@ -43,15 +43,17 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project);
     }
 
-    public void addTaskToProject(ProjectId projectId, Task task, int assignedMemberId) {
+    public void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId) {
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
 
-        task.assignTo(new MemberId(assignedMemberId)); // associa o membro à tarefa
+        if (assignedMemberId != null) {
+             task.assignTo(new MemberId(assignedMemberId));
+        }
 
-        project.addTask(task); // se quiser manter a lista de tarefas no projeto
-        taskRepository.save(task); // salva a tarefa no banco
-        projectRepository.save(project); // salva o projeto atualizado
+        project.addTask(task);
+        taskRepository.save(task);
+        projectRepository.save(project);
     }
 
     @Override

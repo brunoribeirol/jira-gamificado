@@ -33,15 +33,27 @@ public class CreateChallengeRequest {
     public Date deadline;
 
     public Challenge toDomain() {
-        return new Challenge(
-                id != null ? new ChallengeId(id) : null,
-                title,
-                description,
-                criteria,
-                extraPoints,
-                new MemberId(createdBy),
-                new ProjectId(projectId),
-                deadline
-        );
+        if (this.id == null) {
+            return new Challenge(
+                    this.title,
+                    this.description,
+                    this.criteria,
+                    this.extraPoints,
+                    new MemberId(this.createdBy),
+                    new ProjectId(this.projectId),
+                    this.deadline
+            );
+        } else {
+            return new Challenge(
+                    new ChallengeId(this.id),
+                    this.title,
+                    this.description,
+                    this.criteria,
+                    this.extraPoints,
+                    new MemberId(this.createdBy),
+                    new ProjectId(this.projectId),
+                    this.deadline
+            );
+        }
     }
 }
