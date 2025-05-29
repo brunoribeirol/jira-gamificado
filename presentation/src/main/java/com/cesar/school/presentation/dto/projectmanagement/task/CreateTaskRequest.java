@@ -28,12 +28,10 @@ public class CreateTaskRequest {
 
     public Task toDomain() {
         return new Task(
-                id != null ? new TaskId(id) : null,
-                title,
-                description,
+                this.title,
+                this.description,
                 "Backlog",
-                points,
-                new Date() // ou passe `null` se for setado automaticamente no domínio
+                this.points
         );
     }
 

@@ -16,6 +16,7 @@ public class Challenge {
     private final ProjectId projectId;
     private final Date deadline;
 
+    // Construtor para feedbacks existentes (com ID)
     public Challenge(ChallengeId id, String title, String description, String criteria, int extraPoints,
                      MemberId createdBy, ProjectId projectId, Date deadline) {
         if (title == null || title.isBlank()) {
@@ -29,6 +30,29 @@ public class Challenge {
         }
 
         this.id = id;
+        this.title = title;
+        this.description = description;
+        this.criteria = criteria;
+        this.extraPoints = extraPoints;
+        this.createdBy = createdBy;
+        this.projectId = projectId;
+        this.deadline = deadline;
+    }
+
+    // Construtor para criação de novos desafios (sem ID)
+    public Challenge(String title, String description, String criteria, int extraPoints,
+                     MemberId createdBy, ProjectId projectId, Date deadline) {
+        if (title == null || title.isBlank()) {
+            throw new IllegalArgumentException("Título do desafio é obrigatório");
+        }
+        if (criteria == null || criteria.isBlank()) {
+            throw new IllegalArgumentException("Critério do desafio é obrigatório");
+        }
+        if (extraPoints < 0) {
+            throw new IllegalArgumentException("Pontos extras devem ser positivos");
+        }
+        
+        this.id = null; // O ID será gerado pela infraestrutura
         this.title = title;
         this.description = description;
         this.criteria = criteria;

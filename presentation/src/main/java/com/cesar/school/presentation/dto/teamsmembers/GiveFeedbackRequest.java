@@ -25,13 +25,23 @@ public class GiveFeedbackRequest {
     public Integer relatedTaskId;
 
     public Feedback toDomain() {
-        return new Feedback(
-                id != null ? new FeedbackId(id) : null,
-                message,
-                new Date(),
-                new MemberId(givenBy),
-                new MemberId(receivedBy),
-                relatedTaskId != null ? new TaskId(relatedTaskId) : null
-        );
+        if (this.id == null) {
+            return new Feedback(
+                    this.message,
+                    new Date(),
+                    new MemberId(this.givenBy),
+                    new MemberId(this.receivedBy),
+                    this.relatedTaskId != null ? new TaskId(this.relatedTaskId) : null
+            );
+        } else {
+            return new Feedback(
+                    new FeedbackId(this.id),
+                    this.message,
+                    new Date(),
+                    new MemberId(this.givenBy),
+                    new MemberId(this.receivedBy),
+                    this.relatedTaskId != null ? new TaskId(this.relatedTaskId) : null
+            );
+        }
     }
 }

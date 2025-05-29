@@ -11,7 +11,12 @@ import java.util.stream.Collectors;
 public class TaskMapper {
     public static TaskEntity toEntity(Task task) {
         TaskEntity entity = new TaskEntity();
-        //entity.setId(task.getId().getValue());
+        
+        // Verificar se a entidade de domínio tem um ID e setar na entidade de persistência
+        if (task.getId() != null) {
+            entity.setId(task.getId().getValue());
+        }
+
         entity.setTitle(task.getTitle());
         entity.setDescription(task.getDescription());
         entity.setKanbanColumn(task.getKanbanColumn());
