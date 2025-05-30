@@ -86,8 +86,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TaskServiceImpl taskService(TaskRepository taskRepository, ProjectRepository projectRepository) {
-        return new TaskServiceImpl(taskRepository, projectRepository);
+    public TaskServiceImpl taskService(TaskRepository taskRepository, ProjectRepository projectRepository,  MemberRepository memberRepository) {
+        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository);
     }
 
     @Bean

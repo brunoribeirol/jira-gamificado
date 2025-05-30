@@ -18,4 +18,5 @@ public interface TaskService {
     void createTask(Task task);
     Optional<Task> getById(TaskId taskId);
     List<Task> listByProject(ProjectId projectId);
+    void unlockTask(TaskId taskId, MemberId memberId);
 }

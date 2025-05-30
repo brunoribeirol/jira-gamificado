@@ -8,20 +8,49 @@ import com.cesar.school.core.projectmanagement.service.TaskService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.teamsmembers.entity.Member;
+import com.cesar.school.core.teamsmembers.repository.MemberRepository;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
+    private final MemberRepository memberRepository;          // ← novo
 
-    public TaskServiceImpl(TaskRepository taskRepository, ProjectRepository projectRepository) {
+    public TaskServiceImpl(TaskRepository taskRepository,
+                           ProjectRepository projectRepository,
+                           MemberRepository memberRepository) {   // ← novo param
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
+        this.memberRepository = memberRepository;
     }
+
+    /* ─────────────────────────────
+       NOVO: desbloquear tarefa
+       ───────────────────────────── */
+    @Override
+    @Transactional
+    public void unlockTask(TaskId taskId, MemberId memberId) {
+        Task task = taskRepository.findById(taskId)
+                .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
+
+        int cost = task.getPoints();                 // custo = pontos da própria tarefa
+        member.spendPoints(cost);                    // debita (lança exceção se saldo < custo)
+
+        task.assignTo(memberId);                     // ou task.markUnlocked() se houver flag
+
+        memberRepository.save(member);               // persiste novo saldo
+        taskRepository.save(task);                   // persiste tarefa atribuída
+    }
+
+    /* ───────── métodos já existentes ───────── */
 
     @Override
     public void assignTaskToMember(TaskId taskId, MemberId memberId) {
@@ -67,25 +96,16 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId) {
-        // 1. Atribui o membro responsável, se fornecido
         if (assignedMemberId != null) {
             task.assignTo(new MemberId(assignedMemberId));
         }
+        this.createTask(task);
 
-        // 2. Salva a tarefa no banco, delegando ao método padrão
-        this.createTask(task); // ⬅️ exatamente como é feito com o createMember
-
-        // 3. Busca o projeto e adiciona a tarefa nele
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-
         project.addTask(task);
-
-        // 4. Persiste a atualização no projeto
         projectRepository.save(project);
     }
-
-
 
     @Override
     public Optional<Task> getById(TaskId taskId) {
