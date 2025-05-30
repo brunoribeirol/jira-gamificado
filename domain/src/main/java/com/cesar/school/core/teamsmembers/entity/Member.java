@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Member {
+
     private final MemberId id;
     private final String name;
     private final String email;
@@ -18,9 +19,19 @@ public class Member {
     private int individualScore;
     private final List<Feedback> receivedFeedbacks;
     private final List<RewardId> unlockedRewards;
+    private boolean isAdmin;
 
+
+    /** Construtor legado – continua funcionando (admin = false). */
     public Member(MemberId id, String name, String email, String password, Role role) {
-        if (name == null || name.isBlank() || email == null || email.isBlank() || password == null || password.isBlank()) {
+        this(id, name, email, password, role, false);
+    }
+
+    /** Novo construtor permitindo definir se é administrador. */
+    public Member(MemberId id, String name, String email, String password, Role role, boolean isAdmin) {
+        if (name == null || name.isBlank()
+                || email == null || email.isBlank()
+                || password == null || password.isBlank()) {
             throw new IllegalArgumentException("Informações obrigatórias do membro não podem estar vazias");
         }
 
@@ -32,15 +43,24 @@ public class Member {
         this.individualScore = 0;
         this.receivedFeedbacks = new ArrayList<>();
         this.unlockedRewards = new ArrayList<>();
+        this.isAdmin = isAdmin;
     }
 
-    public void setRole(Role role) {
-        this.role = Objects.requireNonNull(role);
-    }
+    /* -------------------- BEHAVIOUR -------------------- */
+
+    public void setRole(Role role) { this.role = Objects.requireNonNull(role); }
 
     public void addPoints(int points) {
         if (points < 0) throw new IllegalArgumentException("Pontuação não pode ser negativa");
         individualScore += points;
+    }
+
+    public void spendPoints(int points) {
+        if (points <= 0)
+            throw new IllegalArgumentException("points must be positive");
+        if (individualScore < points)
+            throw new IllegalStateException("Not enough points to spend");
+        individualScore -= points;
     }
 
     public void receiveFeedback(Feedback feedback) {
@@ -53,35 +73,29 @@ public class Member {
         unlockedRewards.add(rewardId);
     }
 
-    public MemberId getId() {
-        return id;
-    }
+    /* -------------------- ADMIN OPERATIONS -------------------- */
 
-    public String getName() {
-        return name;
-    }
+    public boolean isAdmin() { return isAdmin; }
 
-    public String getEmail() {
-        return email;
-    }
+    public void promoteToAdmin() { this.isAdmin = true; }
 
-    public String getPassword() {
-        return password;
-    }
+    public void demoteFromAdmin() { this.isAdmin = false; }
 
-    public Role getRole() {
-        return role;
-    }
+    /* -------------------- GETTERS -------------------- */
 
-    public int getIndividualScore() {
-        return individualScore;
-    }
+    public MemberId getId() { return id; }
 
-    public List<Feedback> getReceivedFeedbacks() {
-        return Collections.unmodifiableList(receivedFeedbacks);
-    }
+    public String getName() { return name; }
 
-    public List<RewardId> getUnlockedRewardIds() {
-        return List.copyOf(unlockedRewards);
-    }
+    public String getEmail() { return email; }
+
+    public String getPassword() { return password; }
+
+    public Role getRole() { return role; }
+
+    public int getIndividualScore() { return individualScore; }
+
+    public List<Feedback> getReceivedFeedbacks() { return Collections.unmodifiableList(receivedFeedbacks); }
+
+    public List<RewardId> getUnlockedRewardIds() { return List.copyOf(unlockedRewards); }
 }

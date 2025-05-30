@@ -2,9 +2,7 @@ package com.cesar.school.infrastructure.persistence.mapper.teamsmembers;
 
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
-import com.cesar.school.infrastructure.persistence.entity.teamsmembers.FeedbackEntity;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.RewardIdEmbeddable;
 
@@ -23,8 +21,10 @@ public class MemberMapper {
         entity.setPassword(domain.getPassword());
         entity.setRole(domain.getRole());
         entity.setIndividualScore(domain.getIndividualScore());
+        entity.setAdmin(domain.isAdmin());                                // <-- mapeamento novo
 
-        List<RewardIdEmbeddable> rewards = domain.getUnlockedRewardIds().stream()
+        List<RewardIdEmbeddable> rewards = domain.getUnlockedRewardIds()
+                .stream()
                 .map(r -> new RewardIdEmbeddable(r.getValue()))
                 .collect(Collectors.toList());
         entity.setUnlockedRewards(rewards);
@@ -38,11 +38,13 @@ public class MemberMapper {
                 entity.getName(),
                 entity.getEmail(),
                 entity.getPassword(),
-                entity.getRole()
+                entity.getRole(),
+                entity.isAdmin()                                         // <-- mapeamento novo
         );
         member.addPoints(entity.getIndividualScore());
 
-        entity.getUnlockedRewards().forEach(r -> member.unlockReward(new RewardId(r.getRewardId())));
+        entity.getUnlockedRewards()
+                .forEach(r -> member.unlockReward(new RewardId(r.getRewardId())));
 
         return member;
     }

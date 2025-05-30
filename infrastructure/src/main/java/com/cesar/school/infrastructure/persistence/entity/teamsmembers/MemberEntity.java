@@ -33,6 +33,9 @@ public class MemberEntity {
     @Column(name = "individual_score")
     private int individualScore = 0;
 
+    @Column(name = "is_admin", nullable = false)
+    private boolean admin = false;
+
     @ElementCollection
     @CollectionTable(name = "member_rewards", joinColumns = @JoinColumn(name = "member_id"))
     private List<RewardIdEmbeddable> unlockedRewards = new ArrayList<>();

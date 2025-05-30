@@ -13,6 +13,7 @@ public class MemberResponse {
     public String email;
     public String role;
     public int individualScore;
+    public boolean isAdmin;                         // <-- novo campo
     public List<Integer> unlockedRewardIds;
     public List<FeedbackResponse> receivedFeedbacks;
 
@@ -23,13 +24,15 @@ public class MemberResponse {
         response.email = member.getEmail();
         response.role = member.getRole().name();
         response.individualScore = member.getIndividualScore();
-        response.unlockedRewardIds = member.getUnlockedRewardIds().stream()
+        response.isAdmin = member.isAdmin();        // <-- popula
+        response.unlockedRewardIds = member.getUnlockedRewardIds()
+                .stream()
                 .map(RewardId::getValue)
                 .collect(Collectors.toList());
-        response.receivedFeedbacks = member.getReceivedFeedbacks().stream()
+        response.receivedFeedbacks = member.getReceivedFeedbacks()
+                .stream()
                 .map(FeedbackResponse::fromDomain)
                 .collect(Collectors.toList());
-
         return response;
     }
 }
