@@ -105,22 +105,22 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
+    @jakarta.transaction.Transactional          // mantém o módulo application “clean”
     public void unlockReward(MemberId memberId, RewardId rewardId) {
+
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
 
         Reward reward = rewardRepository.findById(rewardId)
                 .orElseThrow(() -> new IllegalArgumentException("Recompensa não encontrada"));
 
-        if (reward.getRequiredPoints() <= 0) {
-            throw new IllegalArgumentException("Required points must be greater than zero.");
-        }
+        // debita pontos — lança exceção automática se saldo insuficiente
+        member.spendPoints(reward.getRequiredPoints());
 
-        if (member.getIndividualScore() < reward.getRequiredPoints()) {
-            throw new IllegalArgumentException("Pontuação insuficiente para desbloquear a recompensa.");
-        }
-
+        // adiciona a recompensa desbloqueada
         member.unlockReward(reward.getId());
+
+        // persiste o novo saldo e o unlock em uma única transação
         memberRepository.save(member);
     }
 
