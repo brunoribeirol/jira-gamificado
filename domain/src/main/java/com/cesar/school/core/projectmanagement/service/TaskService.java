@@ -11,7 +11,7 @@ import java.util.List;
 public interface TaskService {
     void assignTaskToMember(TaskId taskId, MemberId memberId);
     void updateTaskTitle(TaskId taskId, String newTitle);
-    void completeTask(TaskId taskId);
+    void completeTask(TaskId taskId, MemberId memberId);
     void moveTaskToColumn(TaskId taskId, String column);
     void delete(TaskId taskId);
     void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId);

@@ -1,5 +1,6 @@
 package com.cesar.school.application.projectmanagement;
 
+import com.cesar.school.application.projectmanagement.template.StandardTaskCompletion;
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
@@ -23,21 +24,19 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final TaskScoreStrategy taskScoreStrategy;
-    private final TaskCompletionTemplate taskCompletionTemplate;
-
-
+    private final TaskCompletionTemplate taskCompletion;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            MemberRepository memberRepository,
-                           TaskScoreStrategy taskScoreStrategy ,
-                           TaskCompletionTemplate taskCompletionTemplate) {
+                           TaskScoreStrategy taskScoreStrategy) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
         this.taskScoreStrategy = taskScoreStrategy;
-        this.taskCompletionTemplate = taskCompletionTemplate;
+        this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository);
     }
+
 
     @Override
     @Transactional
@@ -77,17 +76,15 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void completeTask(TaskId taskId) {
+    public void completeTask(TaskId taskId, MemberId memberId) {
         Task task = taskRepository.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+                .orElseThrow(() -> new IllegalArgumentException("Task not found: " + taskId.getValue()));
 
-        Member member = memberRepository.findById(task.getAssignedMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("Membro responsável não encontrado"));
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Member not found: " + memberId.getValue()));
 
-        taskCompletionTemplate.complete(task, taskScoreStrategy, member);
+        taskCompletion.complete(task, taskScoreStrategy, member);
     }
-
-
 
     @Override
     public void moveTaskToColumn(TaskId taskId, String column) {

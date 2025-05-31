@@ -63,9 +63,9 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{id}/complete")
-    public ResponseEntity<Void> complete(@PathVariable int id) {
-        taskService.completeTask(new TaskId(id));
+    @PatchMapping("/{taskId}/complete") //http://localhost:8080/api/tasks/{taskId}/complete?memberId={memberId}
+    public ResponseEntity<Void> complete(@PathVariable int taskId, @RequestParam int memberId) {
+        taskService.completeTask(new TaskId(taskId), new MemberId(memberId));
         return ResponseEntity.ok().build();
     }
 
