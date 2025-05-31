@@ -14,10 +14,12 @@ import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import jakarta.transaction.Transactional;
-
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
@@ -29,12 +31,13 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            MemberRepository memberRepository,
-                           TaskScoreStrategy taskScoreStrategy) {
+                           TaskScoreStrategy taskScoreStrategy,
+                           ApplicationEventPublisher eventPublisher) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
         this.taskScoreStrategy = taskScoreStrategy;
-        this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository);
+        this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher);
     }
 
 

@@ -38,6 +38,7 @@ import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJ
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.ApplicationEventPublisher;
 
 @Configuration
 @EnableJpaRepositories(basePackages = "com.cesar.school.infrastructure.persistence.springdata")
@@ -95,10 +96,12 @@ public class BeanConfiguration {
             TaskRepository taskRepository,
             ProjectRepository projectRepository,
             MemberRepository memberRepository,
-            TaskScoreStrategy taskScoreStrategy
+            TaskScoreStrategy taskScoreStrategy,
+            ApplicationEventPublisher eventPublisher
     ) {
-        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository, taskScoreStrategy);
+        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository, taskScoreStrategy, eventPublisher);
     }
+
 
     @Bean
     public ChallengeServiceImpl challengeService(ChallengeRepository challengeRepository, ProjectRepository projectRepository) {
@@ -130,9 +133,10 @@ public class BeanConfiguration {
     @Bean
     public TaskCompletionTemplate taskCompletionTemplate(
             TaskRepository taskRepository,
-            MemberRepository memberRepository
+            MemberRepository memberRepository,
+            ApplicationEventPublisher eventPublisher
     ) {
-        return new StandardTaskCompletion(taskRepository, memberRepository);
+        return new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher);
     }
 }
 
