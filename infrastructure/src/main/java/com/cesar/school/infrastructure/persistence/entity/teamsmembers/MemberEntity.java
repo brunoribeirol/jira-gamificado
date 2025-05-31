@@ -30,6 +30,9 @@ public class MemberEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(name = "team_id", nullable = false)
+    private Integer teamId;
+
     @Column(name = "individual_score")
     private int individualScore = 0;
 

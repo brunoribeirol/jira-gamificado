@@ -5,6 +5,7 @@ import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.RewardIdEmbeddable;
+import com.cesar.school.core.projectmanagement.vo.TeamId;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +23,7 @@ public class MemberMapper {
         entity.setRole(domain.getRole());
         entity.setIndividualScore(domain.getIndividualScore());
         entity.setAdmin(domain.isAdmin());
+        entity.setTeamId(domain.getTeamId().getValue());
 
         List<RewardIdEmbeddable> rewards = domain.getUnlockedRewardIds()
                 .stream()
@@ -33,13 +35,15 @@ public class MemberMapper {
     }
 
     public static Member toDomain(MemberEntity entity) {
+        TeamId teamId = new TeamId(entity.getTeamId());
         Member member = new Member(
                 new MemberId(entity.getId()),
                 entity.getName(),
                 entity.getEmail(),
                 entity.getPassword(),
                 entity.getRole(),
-                entity.isAdmin()
+                entity.isAdmin(),
+                teamId
         );
         member.addPoints(entity.getIndividualScore());
 

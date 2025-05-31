@@ -3,13 +3,14 @@ package com.cesar.school.presentation.dto.teamsmembers;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.vo.Role;
+import com.cesar.school.core.projectmanagement.vo.TeamId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 public class CreateMemberRequest {
 
-    public Integer id;   // opcional
+    public Integer id;
 
     @NotBlank(message = "O nome é obrigatório.")
     public String name;
@@ -24,11 +25,11 @@ public class CreateMemberRequest {
     @NotBlank(message = "O papel é obrigatório.")
     public String role;
 
-    /* NOVO campo -------------- */
-    @JsonProperty("isAdmin")        // aceita "isAdmin" no JSON
-    public boolean isAdmin = false; // default
+    @JsonProperty("isAdmin")
+    public boolean isAdmin = false;
 
-    /* -------- mapping -------- */
+    public Integer teamId;
+
     public Member toDomain() {
         return new Member(
                 id != null ? new MemberId(id) : null,
@@ -36,7 +37,8 @@ public class CreateMemberRequest {
                 email,
                 password,
                 Role.valueOf(role),
-                isAdmin                     // passa adiante
+                isAdmin,
+                new TeamId(teamId)
         );
     }
 }

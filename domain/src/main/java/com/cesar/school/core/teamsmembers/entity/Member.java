@@ -3,6 +3,7 @@ package com.cesar.school.core.teamsmembers.entity;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.vo.Role;
+import com.cesar.school.core.projectmanagement.vo.TeamId;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,15 +21,14 @@ public class Member {
     private final List<Feedback> receivedFeedbacks;
     private final List<RewardId> unlockedRewards;
     private boolean isAdmin;
+    private final TeamId teamId;
 
 
-    /** Construtor legado – continua funcionando (admin = false). */
-    public Member(MemberId id, String name, String email, String password, Role role) {
-        this(id, name, email, password, role, false);
+    public Member(MemberId id, String name, String email, String password, Role role, TeamId teamId) {
+        this(id, name, email, password, role, false, teamId);
     }
 
-    /** Novo construtor permitindo definir se é administrador. */
-    public Member(MemberId id, String name, String email, String password, Role role, boolean isAdmin) {
+    public Member(MemberId id, String name, String email, String password, Role role, boolean isAdmin, TeamId teamId) {
         if (name == null || name.isBlank()
                 || email == null || email.isBlank()
                 || password == null || password.isBlank()) {
@@ -44,6 +44,7 @@ public class Member {
         this.receivedFeedbacks = new ArrayList<>();
         this.unlockedRewards = new ArrayList<>();
         this.isAdmin = isAdmin;
+        this.teamId = Objects.requireNonNull(teamId, "TeamId não pode ser nulo");
     }
 
     /* -------------------- BEHAVIOUR -------------------- */
@@ -102,7 +103,12 @@ public class Member {
     public Role getRole() { return role; }
 
     public int getIndividualScore() { return individualScore; }
-
+    public boolean belongsToTeam(TeamId otherTeamId) {
+        return this.teamId.equals(otherTeamId);
+    }
+    public TeamId getTeamId() {
+        return teamId;
+    }
     public List<Feedback> getReceivedFeedbacks() { return Collections.unmodifiableList(receivedFeedbacks); }
 
     public List<RewardId> getUnlockedRewardIds() { return List.copyOf(unlockedRewards); }
