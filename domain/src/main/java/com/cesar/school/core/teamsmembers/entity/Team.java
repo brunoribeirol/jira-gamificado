@@ -7,8 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Iterator;
 
-public class Team {
+public class Team implements Iterable<MemberId> {
     private final TeamId id;
     private final String name;
     private final MemberId leaderId;
@@ -59,6 +60,10 @@ public class Team {
 
     public List<MemberId> getMembers() {
         return Collections.unmodifiableList(members);
+    }
+    @Override
+    public Iterator<MemberId> iterator() {
+        return members.iterator();
     }
 
     public int getTeamScore() {

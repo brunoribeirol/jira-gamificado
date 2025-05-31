@@ -9,6 +9,8 @@ import com.cesar.school.presentation.dto.teamsmembers.AddMemberRequest;
 import com.cesar.school.presentation.dto.teamsmembers.CreateTeamRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.ArrayList;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -36,6 +38,20 @@ public class TeamController {
     public ResponseEntity<Team> getTeam(@PathVariable int teamId) {
         return memberTeamService.getById(new TeamId(teamId))
                 .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // GET /api/teams/{teamId}/members
+    @GetMapping("/{teamId}/members")
+    public ResponseEntity<List<Integer>> getTeamMembers(@PathVariable int teamId) {
+        return memberTeamService.getById(new TeamId(teamId))
+                .map(team -> {
+                    List<Integer> memberIds = new ArrayList<>();
+                    for (MemberId id : team) {
+                        memberIds.add(id.getValue()); // usa o iterator diretamente
+                    }
+                    return ResponseEntity.ok(memberIds);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
 }
