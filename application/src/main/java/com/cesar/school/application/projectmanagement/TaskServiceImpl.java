@@ -6,6 +6,7 @@ import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.service.TaskService;
 import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
+import com.cesar.school.core.projectmanagement.template.TaskCompletionTemplate;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
@@ -22,16 +23,20 @@ public class TaskServiceImpl implements TaskService {
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
     private final TaskScoreStrategy taskScoreStrategy;
+    private final TaskCompletionTemplate taskCompletionTemplate;
+
 
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            MemberRepository memberRepository,
-                           TaskScoreStrategy taskScoreStrategy) {
+                           TaskScoreStrategy taskScoreStrategy ,
+                           TaskCompletionTemplate taskCompletionTemplate) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
         this.taskScoreStrategy = taskScoreStrategy;
+        this.taskCompletionTemplate = taskCompletionTemplate;
     }
 
     @Override
@@ -76,9 +81,12 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
 
-        task.complete(taskScoreStrategy);
-        taskRepository.save(task);
+        Member member = memberRepository.findById(task.getAssignedMemberId())
+                .orElseThrow(() -> new IllegalArgumentException("Membro responsável não encontrado"));
+
+        taskCompletionTemplate.complete(task, taskScoreStrategy, member);
     }
+
 
 
     @Override

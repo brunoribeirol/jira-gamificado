@@ -4,6 +4,7 @@ import com.cesar.school.application.gamification.RewardServiceImpl;
 import com.cesar.school.application.projectmanagement.ChallengeServiceImpl;
 import com.cesar.school.application.projectmanagement.ProjectServiceImpl;
 import com.cesar.school.application.projectmanagement.TaskServiceImpl;
+import com.cesar.school.application.projectmanagement.template.StandardTaskCompletion;
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 
 import com.cesar.school.core.gamification.repository.RewardRepository;
@@ -13,6 +14,7 @@ import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.strategy.BonusForPairProgrammingStrategy;
 import com.cesar.school.core.projectmanagement.strategy.DefaultScoreStrategy;
 import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
+import com.cesar.school.core.projectmanagement.template.TaskCompletionTemplate;
 import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
@@ -123,4 +125,14 @@ public class BeanConfiguration {
     public TaskScoreStrategy taskScoreStrategy() {
         return new BonusForPairProgrammingStrategy(10);
     }
+
+    // Template Bean (Pattern Template Method)
+    @Bean
+    public TaskCompletionTemplate taskCompletionTemplate(
+            TaskRepository taskRepository,
+            MemberRepository memberRepository
+    ) {
+        return new StandardTaskCompletion(taskRepository, memberRepository);
+    }
 }
+
