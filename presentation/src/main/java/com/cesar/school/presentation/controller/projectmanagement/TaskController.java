@@ -28,8 +28,11 @@ public class TaskController {
             @PathVariable int projectId,
             @RequestBody @Valid CreateTaskRequest request
     ) {
-        Task task = request.toDomain(); // ✅ cria o domínio sem ID (como Member)
-        Integer memberId = request.getAssignedMemberId(); // ✅ extrai o membro atribuído (se houver)
+        request.setProjectId(projectId); // 👈 adicione isso
+
+        Task task = request.toDomain();
+        Integer memberId = request.getAssignedMemberId();
+
         taskService.addTaskToProject(new ProjectId(projectId), task, memberId);
         return ResponseEntity.ok().build();
     }
