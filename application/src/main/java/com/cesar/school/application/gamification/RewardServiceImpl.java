@@ -18,9 +18,6 @@ public class RewardServiceImpl implements RewardService {
 
     @Override
     public void createReward(Reward reward) {
-        if (reward.getRequiredPoints() <= 0) {
-            throw new IllegalArgumentException("Required points must be greater than zero.");
-        }
         rewardRepository.save(reward);
     }
 
