@@ -10,6 +10,9 @@ import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.projectmanagement.repository.ChallengeRepository;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
+import com.cesar.school.core.projectmanagement.strategy.BonusForPairProgrammingStrategy;
+import com.cesar.school.core.projectmanagement.strategy.DefaultScoreStrategy;
+import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
 import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
@@ -86,8 +89,13 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public TaskServiceImpl taskService(TaskRepository taskRepository, ProjectRepository projectRepository,  MemberRepository memberRepository) {
-        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository);
+    public TaskServiceImpl taskService(
+            TaskRepository taskRepository,
+            ProjectRepository projectRepository,
+            MemberRepository memberRepository,
+            TaskScoreStrategy taskScoreStrategy
+    ) {
+        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository, taskScoreStrategy);
     }
 
     @Bean
@@ -110,4 +118,9 @@ public class BeanConfiguration {
         );
     }
 
+    // Strategy Bean (Pattern Strategy)
+    @Bean
+    public TaskScoreStrategy taskScoreStrategy() {
+        return new BonusForPairProgrammingStrategy(10);
+    }
 }
