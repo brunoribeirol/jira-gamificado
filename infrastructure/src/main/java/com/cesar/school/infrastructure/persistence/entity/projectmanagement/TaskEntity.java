@@ -11,9 +11,10 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "tasks")
 @NoArgsConstructor
+@Table(name = "tasks")
 public class TaskEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -30,4 +31,7 @@ public class TaskEntity {
     private int points;
     private Date createdAt;
     private Date completedAt;
+
+    @Column(name = "project_id", nullable = false)
+    private int projectId;
 }

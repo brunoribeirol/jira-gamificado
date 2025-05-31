@@ -2,12 +2,15 @@ package com.cesar.school.infrastructure.persistence.repository.projectmanagement
 
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
+import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.TaskEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.TaskMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.TaskJpaRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TaskRepositoryImpl implements TaskRepository {
 
@@ -30,7 +33,21 @@ public class TaskRepositoryImpl implements TaskRepository {
     }
 
     @Override
+    public void save(Task task, ProjectId projectId) {
+        TaskEntity entity = TaskMapper.toEntity(task, projectId);
+        jpaRepository.save(entity);
+    }
+
+    @Override
     public void deleteById(TaskId id) {
         jpaRepository.deleteById(id.getValue());
+    }
+
+    @Override
+    public List<Task> findByProjectId(ProjectId projectId) {
+        return jpaRepository.findByProjectId(projectId.getValue())
+                .stream()
+                .map(TaskMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }
