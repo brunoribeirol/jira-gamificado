@@ -5,7 +5,7 @@ import com.cesar.school.core.projectmanagement.vo.TeamId;
 
 import java.util.*;
 
-public class Project {
+public class Project implements Iterable<Task> {
     private final ProjectId id;
     private final String name;
     private final String description;
@@ -48,6 +48,10 @@ public class Project {
     public String getName() { return name; }
     public String getDescription() { return description; }
     public TeamId getTeamId() { return teamId; }
+    @Override
+    public Iterator<Task> iterator() {
+        return tasks.iterator();
+    }
     public List<Task> getTasks() { return List.copyOf(tasks); }
     public List<Challenge> getChallenges() { return List.copyOf(challenges); }
     public List<String> getKanbanColumns() {

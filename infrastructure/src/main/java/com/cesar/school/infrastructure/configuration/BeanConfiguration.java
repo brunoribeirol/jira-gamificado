@@ -48,8 +48,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ProjectRepository projectRepository(ProjectJpaRepository jpa) {
-        return new ProjectRepositoryImpl(jpa);
+    public ProjectRepository projectRepository(ProjectJpaRepository jpa, TaskJpaRepository taskJpa) {
+        return new ProjectRepositoryImpl(jpa, taskJpa);
     }
 
     @Bean

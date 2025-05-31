@@ -7,9 +7,12 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.presentation.dto.projectmanagement.project.CreateProjectRequest;
 import com.cesar.school.presentation.dto.projectmanagement.project.ProjectResponse;
+import com.cesar.school.presentation.dto.projectmanagement.task.TaskSummary;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -53,6 +56,26 @@ public class ProjectController {
         Task task = request.toDomain();
         projectService.addTaskToProject(new ProjectId(projectId), task, request.getAssignedMemberId()); // ✅ correto
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{projectId}/tasks")
+    public ResponseEntity<List<TaskSummary>> listTaskSummaries(@PathVariable int projectId) {
+        return projectService.getById(new ProjectId(projectId))
+                .map(project -> {
+                    List<TaskSummary> summaries = new ArrayList<>();
+                    Iterator<Task> iterator = project.iterator();
+                    while (iterator.hasNext()) {
+                        Task task = iterator.next();
+                        summaries.add(new TaskSummary(
+                                task.getId().getValue(),
+                                task.getTitle(),
+                                task.getDescription(),
+                                task.getKanbanColumn()
+                        ));
+                    }
+                    return ResponseEntity.ok(summaries);
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
