@@ -9,6 +9,7 @@ import com.cesar.school.presentation.dto.teamsmembers.AddMemberRequest;
 import com.cesar.school.presentation.dto.teamsmembers.CreateTeamRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -47,11 +48,14 @@ public class TeamController {
         return memberTeamService.getById(new TeamId(teamId))
                 .map(team -> {
                     List<Integer> memberIds = new ArrayList<>();
-                    for (MemberId id : team) {
-                        memberIds.add(id.getValue()); // usa o iterator diretamente
+                    Iterator<MemberId> iterator = team.iterator();
+                    while (iterator.hasNext()) {
+                        MemberId id = iterator.next();
+                        memberIds.add(id.getValue());
                     }
                     return ResponseEntity.ok(memberIds);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 }
