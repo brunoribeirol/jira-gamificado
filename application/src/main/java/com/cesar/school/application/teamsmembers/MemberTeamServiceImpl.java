@@ -62,7 +62,7 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
                 .orElseThrow(() -> new IllegalArgumentException("Time não encontrado"));
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
-        member.setRole(role);
+        member.changeRole(role);
         team.addMember(memberId);
         teamRepository.save(team);
         memberRepository.save(member);

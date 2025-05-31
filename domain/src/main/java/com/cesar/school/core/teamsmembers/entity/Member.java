@@ -48,7 +48,15 @@ public class Member {
 
     /* -------------------- BEHAVIOUR -------------------- */
 
-    public void setRole(Role role) { this.role = Objects.requireNonNull(role); }
+//    public void setRole(Role role) { this.role = Objects.requireNonNull(role); }
+
+    public void changeRole(Role newRole) {
+        if (newRole == null) {
+            throw new IllegalArgumentException("O novo papel não pode ser nulo");
+        }
+        // validações futuras (ex: impedir downgrade, exigir score mínimo etc)
+        this.role = newRole;
+    }
 
     public void addPoints(int points) {
         if (points < 0) throw new IllegalArgumentException("Pontuação não pode ser negativa");
@@ -57,9 +65,9 @@ public class Member {
 
     public void spendPoints(int points) {
         if (points <= 0)
-            throw new IllegalArgumentException("points must be positive");
+            throw new IllegalArgumentException("A pontuação a ser gasta deve ser positiva");
         if (individualScore < points)
-            throw new IllegalStateException("Not enough points to spend");
+            throw new IllegalStateException("Pontuação insuficiente para desbloquear a tarefa");
         individualScore -= points;
     }
 

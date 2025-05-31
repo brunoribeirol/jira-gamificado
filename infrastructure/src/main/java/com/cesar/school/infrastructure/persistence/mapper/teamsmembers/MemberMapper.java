@@ -21,7 +21,7 @@ public class MemberMapper {
         entity.setPassword(domain.getPassword());
         entity.setRole(domain.getRole());
         entity.setIndividualScore(domain.getIndividualScore());
-        entity.setAdmin(domain.isAdmin());                                // <-- mapeamento novo
+        entity.setAdmin(domain.isAdmin());
 
         List<RewardIdEmbeddable> rewards = domain.getUnlockedRewardIds()
                 .stream()
@@ -39,7 +39,7 @@ public class MemberMapper {
                 entity.getEmail(),
                 entity.getPassword(),
                 entity.getRole(),
-                entity.isAdmin()                                         // <-- mapeamento novo
+                entity.isAdmin()
         );
         member.addPoints(entity.getIndividualScore());
 

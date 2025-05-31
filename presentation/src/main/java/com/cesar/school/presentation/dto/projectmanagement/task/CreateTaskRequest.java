@@ -1,6 +1,7 @@
 package com.cesar.school.presentation.dto.projectmanagement.task;
 
 import com.cesar.school.core.projectmanagement.entity.Task;
+import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
 import jakarta.validation.constraints.NotBlank;
@@ -26,22 +27,10 @@ public class CreateTaskRequest {
     @Positive
     private int points;
 
-    public Task toDomain() {
-        return new Task(
-                this.title,
-                this.description,
-                "Backlog",
-                this.points
-        );
-    }
+    private Integer projectId;
 
-//    public Task toDomain() {
-//        return new Task(
-//                title,
-//                description,
-//                "Backlog",
-//                points
-//        );
-//    }
+    public Task toDomain() {
+        return new Task(this.title, this.description, "Backlog", this.points, new ProjectId(projectId));
+    }
 
 }

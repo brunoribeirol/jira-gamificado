@@ -15,6 +15,7 @@ public class TaskResponse {
     public Date createdAt;
     public Date completedAt;
     public List<Integer> assignees;
+    public int projectId; // 🟢 novo campo
 
     public static TaskResponse fromDomain(Task task) {
         TaskResponse response = new TaskResponse();
@@ -26,6 +27,7 @@ public class TaskResponse {
         response.createdAt = task.getCreatedAt();
         response.completedAt = task.getCompletedAt();
         response.assignees = task.getAssignees().stream().map(a -> a.getValue()).collect(Collectors.toList());
+        response.projectId = task.getProjectId().getValue(); // 🟢 adiciona vínculo no response
         return response;
     }
 }

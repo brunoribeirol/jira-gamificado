@@ -5,6 +5,7 @@ import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.service.TaskService;
+import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
@@ -19,19 +20,20 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
-    private final MemberRepository memberRepository;          // ← novo
+    private final MemberRepository memberRepository;
+    private final TaskScoreStrategy taskScoreStrategy;
+
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
-                           MemberRepository memberRepository) {   // ← novo param
+                           MemberRepository memberRepository,
+                           TaskScoreStrategy taskScoreStrategy) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
+        this.taskScoreStrategy = taskScoreStrategy;
     }
 
-    /* ─────────────────────────────
-       NOVO: desbloquear tarefa
-       ───────────────────────────── */
     @Override
     @Transactional
     public void unlockTask(TaskId taskId, MemberId memberId) {
@@ -42,22 +44,23 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
 
         int cost = task.getPoints();                 // custo = pontos da própria tarefa
-        member.spendPoints(cost);                    // debita (lança exceção se saldo < custo)
+//        member.spendPoints(cost);                    // debita (lança exceção se saldo < custo)
+//
+//        task.assignTo(memberId);                     // ou task.markUnlocked() se houver flag
 
-        task.assignTo(memberId);                     // ou task.markUnlocked() se houver flag
+        task.unlockBy(member);
 
         memberRepository.save(member);               // persiste novo saldo
         taskRepository.save(task);                   // persiste tarefa atribuída
     }
 
-    /* ───────── métodos já existentes ───────── */
 
     @Override
     public void assignTaskToMember(TaskId taskId, MemberId memberId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
         task.assignTo(memberId);
-        taskRepository.save(task);
+        taskRepository.save(task); // ✅ Corrigido aqui
     }
 
     @Override
@@ -72,9 +75,11 @@ public class TaskServiceImpl implements TaskService {
     public void completeTask(TaskId taskId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
-        task.markAsCompleted();
+
+        task.complete(taskScoreStrategy);
         taskRepository.save(task);
     }
+
 
     @Override
     public void moveTaskToColumn(TaskId taskId, String column) {
@@ -99,13 +104,17 @@ public class TaskServiceImpl implements TaskService {
         if (assignedMemberId != null) {
             task.assignTo(new MemberId(assignedMemberId));
         }
-        this.createTask(task);
 
+        // ⛔ Primeiro valida se o projeto existe!
         Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+
+        taskRepository.save(task, projectId);
+
         project.addTask(task);
         projectRepository.save(project);
     }
+
 
     @Override
     public Optional<Task> getById(TaskId taskId) {
@@ -114,8 +123,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> listByProject(ProjectId projectId) {
-        Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
-        return project.getTasks();
+        return taskRepository.findByProjectId(projectId);
     }
 }

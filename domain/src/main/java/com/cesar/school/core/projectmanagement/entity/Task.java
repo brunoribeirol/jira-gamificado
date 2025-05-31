@@ -1,7 +1,10 @@
 package com.cesar.school.core.projectmanagement.entity;
 
+import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.teamsmembers.entity.Member;
+import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,8 +21,10 @@ public class Task {
     private int points;
     private final Date createdAt;
     private Date completedAt;
+    private final ProjectId projectId;
 
-    public Task(TaskId id, String title, String description, String kanbanColumn, int points, Date createdAt) {
+
+    public Task(TaskId id, String title, String description, String kanbanColumn, int points, Date createdAt, ProjectId projectId) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("O nome da tarefa é obrigatório");
         }
@@ -34,10 +39,11 @@ public class Task {
         this.createdAt = new Date(createdAt.getTime());
         this.assignees = new ArrayList<>();
         this.completedAt = null;
+        this.projectId = Objects.requireNonNull(projectId);
     }
 
     // Construtor para criação de novas tarefas
-    public Task(String title, String description, String kanbanColumn, int points) {
+    public Task(String title, String description, String kanbanColumn, int points, ProjectId projectId) {
         if (title == null || title.isBlank()) {
             throw new IllegalArgumentException("O nome da tarefa é obrigatório");
         }
@@ -52,6 +58,7 @@ public class Task {
         this.createdAt = new Date(); // agora() no momento da criação
         this.assignees = new ArrayList<>();
         this.completedAt = null;
+        this.projectId = Objects.requireNonNull(projectId);
     }
 
 
@@ -77,6 +84,12 @@ public class Task {
         this.points = points;
     }
 
+    public void initializePoints(TaskScoreStrategy strategy) {
+        Objects.requireNonNull(strategy, "A estratégia de pontuação não pode ser nula");
+        int pontosCalculados = strategy.calculatePoints(this.points);
+        setPoints(pontosCalculados); // já valida pontos >= 0
+    }
+
     public void markAsCompleted() {
         this.completedAt = new Date();
         moveToColumn("Concluído");
@@ -87,6 +100,19 @@ public class Task {
             throw new IllegalArgumentException("O nome da tarefa é obrigatório");
         }
         this.title = newTitle;
+    }
+
+    public void unlockBy(Member member) {
+        Objects.requireNonNull(member, "O membro não pode ser nulo");
+        member.spendPoints(this.points); // essa validação fica no Member
+        assignTo(member.getId());        // tarefa registra quem a desbloqueou
+    }
+
+    public void complete(TaskScoreStrategy strategy) {
+        Objects.requireNonNull(strategy, "Estratégia de pontuação não pode ser nula");
+        int pontosCalculados = strategy.calculatePoints(this.points);
+        setPoints(pontosCalculados); // reutiliza validação existente
+        markAsCompleted();
     }
 
     // ==== Getters ====
@@ -121,6 +147,10 @@ public class Task {
 
     public Date getCompletedAt() {
         return completedAt != null ? new Date(completedAt.getTime()) : null;
+    }
+
+    public ProjectId getProjectId() {
+        return projectId;
     }
 
     public boolean isCompleted() {
