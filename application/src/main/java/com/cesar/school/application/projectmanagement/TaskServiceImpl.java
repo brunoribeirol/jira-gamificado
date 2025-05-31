@@ -66,8 +66,19 @@ public class TaskServiceImpl implements TaskService {
     public void assignTaskToMember(TaskId taskId, MemberId memberId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+
+        Project project = projectRepository.findById(task.getProjectId())
+                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
+
+        if (!member.belongsToTeam(project.getTeamId())) {
+            throw new IllegalArgumentException("Membro não pertence ao time do projeto.");
+        }
+
         task.assignTo(memberId);
-        taskRepository.save(task); // ✅ Corrigido aqui
+        taskRepository.save(task);
     }
 
     @Override
