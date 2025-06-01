@@ -8,6 +8,8 @@ import com.cesar.school.core.projectmanagement.service.ProjectService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TeamId;
 import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.teamsmembers.entity.Member;
+import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,11 +18,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final TaskRepository taskRepository;
+    private final MemberRepository memberRepository;
 
     public ProjectServiceImpl(ProjectRepository projectRepository,
-                              TaskRepository taskRepository) {
+                              TaskRepository taskRepository,
+                              MemberRepository memberRepository) {
         this.projectRepository = projectRepository;
-        this.taskRepository    = taskRepository;
+        this.taskRepository = taskRepository;
+        this.memberRepository = memberRepository;
     }
 
 //    @Override
@@ -48,13 +53,23 @@ public class ProjectServiceImpl implements ProjectService {
                 .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
 
         if (assignedMemberId != null) {
-             task.assignTo(new MemberId(assignedMemberId));
+            MemberId memberId = new MemberId(assignedMemberId);
+
+            Member member = memberRepository.findById(memberId)
+                    .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
+
+            if (!member.getTeamId().equals(project.getTeamId())) {
+                throw new IllegalArgumentException("Membro não pertence ao time do projeto.");
+            }
+
+            task.assignTo(memberId);
         }
 
         project.addTask(task);
         taskRepository.save(task);
         projectRepository.save(project);
     }
+
 
     @Override
     public List<Project> getAll() {
