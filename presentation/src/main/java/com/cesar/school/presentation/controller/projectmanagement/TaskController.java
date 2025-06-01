@@ -28,9 +28,7 @@ public class TaskController {
             @PathVariable int projectId,
             @RequestBody @Valid CreateTaskRequest request
     ) {
-        request.setProjectId(projectId); // 👈 adicione isso
-
-        Task task = request.toDomain();
+        Task task = request.toDomain(new ProjectId(projectId));
         Integer memberId = request.getAssignedMemberId();
 
         taskService.addTaskToProject(new ProjectId(projectId), task, memberId);

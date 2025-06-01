@@ -53,7 +53,7 @@ public class ProjectController {
             @PathVariable int projectId,
             @RequestBody @Valid CreateTaskRequest request
     ) {
-        Task task = request.toDomain();
+        Task task = request.toDomain(new ProjectId(projectId));
         projectService.addTaskToProject(new ProjectId(projectId), task, request.getAssignedMemberId()); // ✅ correto
         return ResponseEntity.ok().build();
     }

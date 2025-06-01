@@ -27,10 +27,25 @@ public class CreateTaskRequest {
     @Positive
     private int points;
 
-    private Integer projectId;
-
-    public Task toDomain() {
-        return new Task(this.title, this.description, "Backlog", this.points, new ProjectId(projectId));
+    public Task toDomain(ProjectId projectId) {
+        if (id == null) {
+            return new Task(
+                    title,
+                    description,
+                    "Backlog",
+                    points,
+                    projectId
+            );
+        } else {
+            return new Task(
+                    new TaskId(id),
+                    title,
+                    description,
+                    "Backlog",
+                    points,
+                    new Date(),
+                    projectId
+            );
+        }
     }
-
 }
