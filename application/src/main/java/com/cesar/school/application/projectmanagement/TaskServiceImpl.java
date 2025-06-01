@@ -37,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
         this.taskScoreStrategy = taskScoreStrategy;
-        this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher);
+        this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher, taskScoreStrategy);
     }
 
 

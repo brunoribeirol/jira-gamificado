@@ -136,9 +136,11 @@ public class BeanConfiguration {
     public TaskCompletionTemplate taskCompletionTemplate(
             TaskRepository taskRepository,
             MemberRepository memberRepository,
-            ApplicationEventPublisher eventPublisher
+            ApplicationEventPublisher eventPublisher,
+            TaskScoreStrategy taskScoreStrategy
     ) {
-        return new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher);
+        return new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher, taskScoreStrategy);
     }
+
 }
 
