@@ -37,6 +37,7 @@ import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJ
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.context.ApplicationEventPublisher;
 
@@ -71,6 +72,7 @@ public class BeanConfiguration {
     }
 
     @Bean
+    @Primary
     public MemberRepository memberRepository(MemberJpaRepository jpa, FeedbackRepository feedbackRepository) {
         return new MemberRepositoryImpl(jpa, feedbackRepository);
     }
@@ -87,8 +89,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public ProjectServiceImpl projectService(ProjectRepository projectRepository, TaskRepository taskRepository) {
-        return new ProjectServiceImpl(projectRepository, taskRepository);
+    public ProjectServiceImpl projectService(ProjectRepository projectRepository, TaskRepository taskRepository, MemberRepository memberRepository) {
+        return new ProjectServiceImpl(projectRepository, taskRepository, memberRepository);
     }
 
     @Bean

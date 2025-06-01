@@ -8,10 +8,12 @@ import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.MemberMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.MemberJpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class MemberRepositoryImpl implements MemberRepository {
 
     private final MemberJpaRepository jpaRepository;
