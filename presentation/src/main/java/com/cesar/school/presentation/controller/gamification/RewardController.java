@@ -1,8 +1,10 @@
 package com.cesar.school.presentation.controller.gamification;
 
 import com.cesar.school.application.gamification.RewardServiceImpl;
+import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
+import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.presentation.dto.gamification.CreateRewardRequest;
 import com.cesar.school.presentation.dto.gamification.RewardResponse;
 import com.cesar.school.presentation.dto.gamification.UpdateRewardPointsRequest;
@@ -20,9 +22,11 @@ import java.util.stream.Collectors;
 public class RewardController {
 
     private final RewardServiceImpl rewardService;
+    private final MemberTeamServiceImpl memberTeamService;
 
-    public RewardController(RewardServiceImpl rewardService) {
+    public RewardController(RewardServiceImpl rewardService, MemberTeamServiceImpl memberTeamService) {
         this.rewardService = rewardService;
+        this.memberTeamService = memberTeamService;
     }
 
     @PostMapping
@@ -82,11 +86,24 @@ public class RewardController {
         return ResponseEntity.ok(new ApiResponse(true, "Pontuação da recompensa atualizada com sucesso."));
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteReward(@PathVariable("id") int id) {
         rewardService.deleteReward(new RewardId(id));
         return ResponseEntity.ok(new ApiResponse(true, "Recompensa removida com sucesso."));
     }
+
+    // GET /api/rewards/unlocked/{memberId}
+    @GetMapping("/unlocked/{memberId}")
+    public ResponseEntity<List<RewardResponse>> getUnlockedRewardsByMember(@PathVariable int memberId) {
+        List<RewardResponse> rewards = memberTeamService.getUnlockedRewards(new MemberId(memberId)).stream()
+                .map(rewardService::getRewardById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .map(RewardResponse::fromDomain)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(rewards);
+    }
+
 
 }
