@@ -7,7 +7,9 @@ import com.cesar.school.infrastructure.persistence.entity.teamsmembers.TeamEntit
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.TeamMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJpaRepository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TeamRepositoryImpl implements TeamRepository {
 
@@ -32,5 +34,12 @@ public class TeamRepositoryImpl implements TeamRepository {
     @Override
     public void delete(Team team) {
         jpaRepository.deleteById(team.getId().getValue());
+    }
+
+    @Override
+    public List<Team> findAll() {
+        return jpaRepository.findAll().stream()
+                .map(TeamMapper::toDomain)
+                .collect(Collectors.toList());
     }
 }

@@ -20,9 +20,6 @@ public class Team implements Iterable<MemberId> {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Nome do time não pode ser vazio");
         }
-        if (leaderId == null || initialMembers == null || initialMembers.isEmpty()) {
-            throw new IllegalArgumentException("O time deve ter um líder e membros");
-        }
 
         this.id = Objects.requireNonNull(id);
         this.name = name;
