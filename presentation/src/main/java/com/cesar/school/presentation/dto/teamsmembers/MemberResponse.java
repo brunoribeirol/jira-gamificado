@@ -16,12 +16,14 @@ public class MemberResponse {
     public boolean isAdmin;                         // <-- novo campo
     public List<Integer> unlockedRewardIds;
     public List<FeedbackResponse> receivedFeedbacks;
+    public String password;
 
     public static MemberResponse fromDomain(Member member) {
         MemberResponse response = new MemberResponse();
         response.memberId = member.getId().getValue();
         response.name = member.getName();
         response.email = member.getEmail();
+        response.password = member.getPassword();
         response.role = member.getRole().name();
         response.individualScore = member.getIndividualScore();
         response.isAdmin = member.isAdmin();        // <-- popula
