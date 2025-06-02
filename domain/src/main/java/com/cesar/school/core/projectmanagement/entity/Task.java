@@ -14,7 +14,7 @@ import java.util.Objects;
 
 public class Task {
     private final TaskId id;
-    private String title; // ❗ Modificável
+    private String title; // Modificável
     private final String description;
     private final List<MemberId> assignees;
     private String kanbanColumn;
@@ -60,6 +60,29 @@ public class Task {
         this.completedAt = null;
         this.projectId = Objects.requireNonNull(projectId);
     }
+
+    // --- novo construtor para hidratação ---
+    public Task(TaskId id,
+                String title,
+                String description,
+                String kanbanColumn,
+                int points,
+                Date createdAt,
+                Date completedAt,          // 👈 novo parâmetro
+                ProjectId projectId) {
+
+
+        this.id = Objects.requireNonNull(id);
+        this.title = title;
+        this.description = description;
+        this.kanbanColumn = Objects.requireNonNull(kanbanColumn);
+        this.points = points;
+        this.createdAt = new Date(createdAt.getTime());
+        this.assignees = new ArrayList<>();
+        this.completedAt = completedAt;          // ✅ mantém valor vindo do banco
+        this.projectId = Objects.requireNonNull(projectId);
+    }
+
 
 
     // ==== Regras de Negócio ====

@@ -42,6 +42,20 @@ public class TaskMapper {
         return entity;
     }
 
+//    public static Task toDomain(TaskEntity entity) {
+//        Task task = new Task(
+//                new TaskId(entity.getId()),
+//                entity.getTitle(),
+//                entity.getDescription(),
+//                entity.getKanbanColumn(),
+//                entity.getPoints(),
+//                entity.getCreatedAt(),
+//                new ProjectId(entity.getProjectId())
+//        );
+//        entity.getAssignees().forEach(id -> task.assignTo(new MemberId(id)));
+//        return task;
+//    }
+
     public static Task toDomain(TaskEntity entity) {
         Task task = new Task(
                 new TaskId(entity.getId()),
@@ -50,9 +64,13 @@ public class TaskMapper {
                 entity.getKanbanColumn(),
                 entity.getPoints(),
                 entity.getCreatedAt(),
+                entity.getCompletedAt(),
                 new ProjectId(entity.getProjectId())
         );
+
         entity.getAssignees().forEach(id -> task.assignTo(new MemberId(id)));
+
         return task;
     }
+
 }
