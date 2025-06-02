@@ -97,6 +97,15 @@ public class TaskServiceImpl implements TaskService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found: " + memberId.getValue()));
 
+        // valida se o membro pertence ao mesmo time do projeto
+        Project project = projectRepository.findById(task.getProjectId())
+                .orElseThrow(() -> new IllegalArgumentException("Project not found: " + task.getProjectId().getValue()));
+
+        if (!member.belongsToTeam(project.getTeamId())) {
+            throw new IllegalArgumentException("Membro " + memberId.getValue()
+                    + " não pertence ao time desse projeto " + project.getTeamId().getValue());
+        }
+
         taskCompletion.complete(task, taskScoreStrategy, member);
     }
 
