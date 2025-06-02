@@ -61,6 +61,27 @@ public class Task {
         this.projectId = Objects.requireNonNull(projectId);
     }
 
+    // --- novo construtor para hidratação ---Add commentMore actions
+    public Task(TaskId id,
+                String title,
+                String description,
+                String kanbanColumn,
+                int points,
+                Date createdAt,
+                Date completedAt,          // 👈 novo parâmetro
+                ProjectId projectId) {
+
+
+        this.id = Objects.requireNonNull(id);
+        this.title = title;
+        this.description = description;
+        this.kanbanColumn = Objects.requireNonNull(kanbanColumn);
+        this.points = points;
+        this.createdAt = new Date(createdAt.getTime());
+        this.assignees = new ArrayList<>();
+        this.completedAt = completedAt;          // ✅ mantém valor vindo do banco
+        this.projectId = Objects.requireNonNull(projectId);
+    }
 
     // ==== Regras de Negócio ====
 

@@ -50,6 +50,7 @@ public class TaskMapper {
                 entity.getKanbanColumn(),
                 entity.getPoints(),
                 entity.getCreatedAt(),
+                entity.getCompletedAt(),
                 new ProjectId(entity.getProjectId())
         );
         entity.getAssignees().forEach(id -> task.assignTo(new MemberId(id)));
