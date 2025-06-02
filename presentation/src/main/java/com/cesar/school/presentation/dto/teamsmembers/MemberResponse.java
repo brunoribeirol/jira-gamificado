@@ -11,6 +11,7 @@ public class MemberResponse {
     public int memberId;
     public String name;
     public String email;
+    public String password;
     public String role;
     public int individualScore;
     public boolean isAdmin;                         // <-- novo campo
@@ -22,6 +23,7 @@ public class MemberResponse {
         response.memberId = member.getId().getValue();
         response.name = member.getName();
         response.email = member.getEmail();
+        response.password = member.getPassword();
         response.role = member.getRole().name();
         response.individualScore = member.getIndividualScore();
         response.isAdmin = member.isAdmin();        // <-- popula
