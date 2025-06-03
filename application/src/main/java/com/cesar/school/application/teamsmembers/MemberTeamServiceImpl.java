@@ -15,10 +15,12 @@ import com.cesar.school.core.teamsmembers.service.MemberService;
 import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.core.teamsmembers.vo.Role;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class MemberTeamServiceImpl implements MemberTeamService, MemberService, TeamService {
 
     private final TeamRepository teamRepository;
