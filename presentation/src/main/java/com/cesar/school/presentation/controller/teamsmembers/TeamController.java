@@ -2,16 +2,17 @@ package com.cesar.school.presentation.controller.teamsmembers;
 
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
 import com.cesar.school.core.teamsmembers.vo.Role;
 import com.cesar.school.core.teamsmembers.vo.TeamId;
 import com.cesar.school.presentation.dto.teamsmembers.AddMemberRequest;
 import com.cesar.school.presentation.dto.teamsmembers.CreateTeamRequest;
+import com.cesar.school.presentation.dto.teamsmembers.MemberResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/teams")
@@ -35,7 +36,6 @@ public class TeamController {
         return ResponseEntity.ok(teams);
     }
 
-
     @PostMapping("/{teamId}/members")
     public ResponseEntity<Void> addMember(@PathVariable int teamId, @RequestBody AddMemberRequest request) {
         memberTeamService.addMember(new TeamId(teamId), new MemberId(request.memberId), Role.valueOf(request.role));
@@ -49,20 +49,12 @@ public class TeamController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // GET /api/teams/{teamId}/members
     @GetMapping("/{teamId}/members")
-    public ResponseEntity<List<Integer>> getTeamMembers(@PathVariable int teamId) {
-        return memberTeamService.getById(new TeamId(teamId))
-                .map(team -> {
-                    List<Integer> memberIds = new ArrayList<>();
-                    Iterator<MemberId> iterator = team.iterator();
-                    while (iterator.hasNext()) {
-                        MemberId id = iterator.next();
-                        memberIds.add(id.getValue());
-                    }
-                    return ResponseEntity.ok(memberIds);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<List<MemberResponse>> getTeamMembers(@PathVariable int teamId) {
+        List<Member> members = memberTeamService.findMembersByTeamId(new TeamId(teamId));
+        List<MemberResponse> responses = members.stream()
+                .map(MemberResponse::fromDomain)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(responses);
     }
-
 }

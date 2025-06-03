@@ -1,6 +1,7 @@
 package com.cesar.school.application.projectmanagement;
 
 import com.cesar.school.application.projectmanagement.template.StandardTaskCompletion;
+import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
@@ -13,6 +14,7 @@ import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
+import com.cesar.school.core.teamsmembers.vo.TeamId;
 import jakarta.transaction.Transactional;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -27,17 +29,20 @@ public class TaskServiceImpl implements TaskService {
     private final MemberRepository memberRepository;
     private final TaskScoreStrategy taskScoreStrategy;
     private final TaskCompletionTemplate taskCompletion;
+    private final MemberTeamServiceImpl memberTeamService;
 
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            MemberRepository memberRepository,
                            TaskScoreStrategy taskScoreStrategy,
-                           ApplicationEventPublisher eventPublisher) {
+                           ApplicationEventPublisher eventPublisher,
+                           MemberTeamServiceImpl memberTeamService) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
         this.taskScoreStrategy = taskScoreStrategy;
         this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher, taskScoreStrategy);
+        this.memberTeamService = memberTeamService;
     }
 
 
@@ -114,12 +119,19 @@ public class TaskServiceImpl implements TaskService {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
 
-        // Verifica se o membro é um dos responsáveis
+        Project project = projectRepository.findById(task.getProjectId())
+                .orElseThrow(() -> new IllegalArgumentException("Projeto não encontrado"));
+
+        // Converte o TeamId do projeto para o TeamId do time
+        TeamId teamId = new TeamId(project.getTeamId().getValue());
+
+        // Verifica se o membro é um dos responsáveis ou se é o líder do time
         boolean isAssignee = task.getAssignees().stream()
                 .anyMatch(assignee -> assignee.equals(memberId));
+        boolean isTeamLeader = memberTeamService.isTeamLeader(memberId, teamId);
 
-        if (!isAssignee) {
-            throw new IllegalArgumentException("Você não pode mover tarefas que não são suas");
+        if (!isAssignee && !isTeamLeader) {
+            throw new IllegalArgumentException("Você não pode mover tarefas que não são suas e não é líder do time");
         }
 
         task.moveToColumn(column);

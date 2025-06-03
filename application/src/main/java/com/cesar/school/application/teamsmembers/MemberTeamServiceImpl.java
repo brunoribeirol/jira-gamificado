@@ -104,7 +104,7 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
-    @jakarta.transaction.Transactional          // mantém o módulo application “clean”
+    @jakarta.transaction.Transactional          // mantém o módulo application "clean"
     public void unlockReward(MemberId memberId, RewardId rewardId) {
 
         Member member = memberRepository.findById(memberId)
@@ -148,5 +148,17 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     @Override
     public Optional<Team> getById(TeamId teamId) {
         return teamRepository.findById(teamId);
+    }
+
+    @Override
+    public List<Member> findMembersByTeamId(TeamId teamId) {
+        return memberRepository.findByTeamId(teamId);
+    }
+
+    @Override
+    public boolean isTeamLeader(MemberId memberId, TeamId teamId) {
+        return teamRepository.findById(teamId)
+                .map(team -> team.getLeaderId().equals(memberId))
+                .orElse(false);
     }
 }

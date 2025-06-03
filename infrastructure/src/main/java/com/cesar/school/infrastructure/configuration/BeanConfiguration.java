@@ -99,11 +99,11 @@ public class BeanConfiguration {
             ProjectRepository projectRepository,
             MemberRepository memberRepository,
             TaskScoreStrategy taskScoreStrategy,
-            ApplicationEventPublisher eventPublisher
+            ApplicationEventPublisher eventPublisher,
+            MemberTeamServiceImpl memberTeamService
     ) {
-        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository, taskScoreStrategy, eventPublisher);
+        return new TaskServiceImpl(taskRepository, projectRepository, memberRepository, taskScoreStrategy, eventPublisher, memberTeamService);
     }
-
 
     @Bean
     public ChallengeServiceImpl challengeService(ChallengeRepository challengeRepository, ProjectRepository projectRepository) {
