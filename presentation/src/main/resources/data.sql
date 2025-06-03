@@ -62,3 +62,8 @@ INSERT INTO feedbacks (message, date, given_by, received_by, related_task) VALUE
                                                                                ('Ótimo trabalho no login!', '2023-01-16', 3, 1, 1),
                                                                                ('Excelente revisão de código!', '2023-02-01', 1, 2, NULL),
                                                                                ('Teste E2E excelente!', '2023-02-08', 2, 5, 6);
+-- === TEAM MEMBERS ===
+INSERT INTO team_members (team_id, member_id) VALUES
+                                                  (101, 1), (101, 2), (101, 3), (101, 9),
+                                                  (102, 4), (102, 5), (102, 8),
+                                                  (103, 6), (103, 7), (103, 3);

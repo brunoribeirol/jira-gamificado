@@ -29,6 +29,13 @@ public class TeamController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping
+    public ResponseEntity<List<Team>> getAllTeams() {
+        List<Team> teams = memberTeamService.findAll();
+        return ResponseEntity.ok(teams);
+    }
+
+
     @PostMapping("/{teamId}/members")
     public ResponseEntity<Void> addMember(@PathVariable int teamId, @RequestBody AddMemberRequest request) {
         memberTeamService.addMember(new TeamId(teamId), new MemberId(request.memberId), Role.valueOf(request.role));

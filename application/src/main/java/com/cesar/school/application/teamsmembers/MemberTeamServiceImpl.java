@@ -26,7 +26,6 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     private final RewardRepository rewardRepository;
     private final FeedbackRepository feedbackRepository;
 
-
     public MemberTeamServiceImpl(
             TeamRepository teamRepository,
             MemberRepository memberRepository,
@@ -132,6 +131,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     @Override
     public List<Member> getAll() {
         return memberRepository.findAll();
+    }
+    @Override
+    public List<Team> findAll() {
+        return teamRepository.findAll();
     }
 
     @Override

@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-
 @Entity
 @Table(name = "teams")
 @Getter
@@ -24,6 +23,11 @@ public class TeamEntity {
 
     @Column(name = "team_score")
     private int teamScore;
+
+    @ElementCollection
+    @CollectionTable(name = "team_members", joinColumns = @JoinColumn(name = "team_id"))
+    @Column(name = "member_id")
+    private List<Integer> memberIds;
 
     public TeamEntity(int id, String name, int leaderId, int teamScore) {
         this.id = id;
