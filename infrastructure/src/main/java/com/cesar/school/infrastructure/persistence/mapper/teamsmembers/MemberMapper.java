@@ -5,7 +5,7 @@ import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.RewardIdEmbeddable;
-import com.cesar.school.core.shared.TeamId;
+import com.cesar.school.core.projectmanagement.vo.TeamId;
 
 import java.util.List;
 import java.util.stream.Collectors;

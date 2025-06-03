@@ -4,7 +4,6 @@ import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
@@ -15,7 +14,7 @@ import com.cesar.school.core.teamsmembers.service.MemberService;
 import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.TeamService;
 import com.cesar.school.core.teamsmembers.vo.Role;
-import org.springframework.stereotype.Service;
+import com.cesar.school.core.teamsmembers.vo.TeamId;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,7 +48,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
-    public void createTeam(Team team) {
+    public void createTeam(TeamId teamId, String teamName) {
+        MemberId leaderId = new MemberId(1);
+        List<MemberId> initialMembers = List.of(leaderId);
+        Team team = new Team(teamId, teamName, leaderId, initialMembers);
         teamRepository.save(team);
     }
 
@@ -57,16 +59,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     public void addMember(TeamId teamId, MemberId memberId, Role role) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(() -> new IllegalArgumentException("Time não encontrado"));
-
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Membro não encontrado"));
-
         member.changeRole(role);
-
-        if (!team.getMembers().contains(memberId)) {
-            team.addMember(memberId);
-        }
-
+        team.addMember(memberId);
         teamRepository.save(team);
         memberRepository.save(member);
     }
@@ -108,7 +104,7 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
-    @jakarta.transaction.Transactional          // mantém o módulo application “clean”
+    @jakarta.transaction.Transactional          // mantém o módulo application "clean"
     public void unlockReward(MemberId memberId, RewardId rewardId) {
 
         Member member = memberRepository.findById(memberId)
@@ -152,5 +148,17 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     @Override
     public Optional<Team> getById(TeamId teamId) {
         return teamRepository.findById(teamId);
+    }
+
+    @Override
+    public List<Member> findMembersByTeamId(TeamId teamId) {
+        return memberRepository.findByTeamId(teamId);
+    }
+
+    @Override
+    public boolean isTeamLeader(MemberId memberId, TeamId teamId) {
+        return teamRepository.findById(teamId)
+                .map(team -> team.getLeaderId().equals(memberId))
+                .orElse(false);
     }
 }

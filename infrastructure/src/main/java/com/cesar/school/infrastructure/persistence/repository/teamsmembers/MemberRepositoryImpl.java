@@ -8,6 +8,7 @@ import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.MemberMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.MemberJpaRepository;
+import com.cesar.school.core.teamsmembers.vo.TeamId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,6 +50,17 @@ public class MemberRepositoryImpl implements MemberRepository {
     @Override
     public List<Member> findAll() {
         return jpaRepository.findAll().stream()
+                .map(MemberMapper::toDomain)
+                .peek(member -> {
+                    List<Feedback> feedbacks = feedbackRepository.findByReceivedBy(member.getId());
+                    feedbacks.forEach(member::receiveFeedback);
+                })
+                .toList();
+    }
+
+    @Override
+    public List<Member> findByTeamId(TeamId teamId) {
+        return jpaRepository.findByTeamId(teamId.getValue()).stream()
                 .map(MemberMapper::toDomain)
                 .peek(member -> {
                     List<Feedback> feedbacks = feedbackRepository.findByReceivedBy(member.getId());

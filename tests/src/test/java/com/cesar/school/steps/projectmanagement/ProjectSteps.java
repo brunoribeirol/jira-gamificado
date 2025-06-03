@@ -4,7 +4,7 @@ import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.TeamId;
+import com.cesar.school.core.projectmanagement.vo.TeamId;
 import com.cesar.school.core.shared.MemberId;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
@@ -84,9 +84,9 @@ public class ProjectSteps {
                 descricao,
                 "Backlog",
                 0,
-                new Date(),
-                (Date) null,
-                project.getId()
+                new Date(),        // createdAt
+                null,              // completedAt -> ainda não concluída
+                project.getId()    // ✅ ProjectId exigido
         );
 
         if (membro.equalsIgnoreCase("Joana")) {
@@ -112,7 +112,7 @@ public class ProjectSteps {
                     "Backlog",
                     0,
                     new Date(),
-                    (Date) null,
+                    null,
                     project.getId()
             );
             if (createdTask.getAssignees().isEmpty()) {
@@ -142,7 +142,7 @@ public class ProjectSteps {
                     new TaskId(12), "",           // nome vazio
                     "Descrição teste",
                     "Backlog", 0,
-                    new Date(), (Date) null,
+                    new Date(), null,
                     new ProjectId(99)
             );
             // Se não lançou exceção, forçamos a mensagem esperada
