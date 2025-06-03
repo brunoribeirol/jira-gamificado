@@ -19,7 +19,7 @@
         <module>application</module>
         <module>infrastructure</module>
         <module>presentation</module>
-<!--        <module>tests</module>-->
+        <module>tests</module>
     </modules>
 
     <!-- ✅ Propriedades globais -->
