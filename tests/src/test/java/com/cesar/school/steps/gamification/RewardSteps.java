@@ -199,6 +199,12 @@ public class RewardSteps {
         @Override public Optional<Member> findById(MemberId id) { return Optional.ofNullable(db.get(id)); }
         @Override public void delete(Member m) { db.remove(m.getId()); }
         @Override public List<Member> findAll() { return new ArrayList<>(db.values()); }
+
+        @Override
+        public List<Member> findByTeamId(com.cesar.school.core.teamsmembers.vo.TeamId teamId) {
+            return List.of();
+        }
+
         @Override public Optional<Member> findByEmail(String email) { return Optional.empty(); }
     }
 
