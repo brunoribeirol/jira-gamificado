@@ -19,4 +19,5 @@ public interface TaskService {
     Optional<Task> getById(TaskId taskId);
     List<Task> listByProject(ProjectId projectId);
     void unlockTask(TaskId taskId, MemberId memberId);
+    List<Task> findByAssignee(MemberId memberId);
 }

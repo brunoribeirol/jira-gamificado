@@ -81,4 +81,19 @@ public class TaskController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(responses);
     }
+
+    @GetMapping("/assignee/{memberId}")
+    public ResponseEntity<List<TaskSummary>> getTasksByAssignee(@PathVariable int memberId) {
+        List<Task> tasks = taskService.findByAssignee(new MemberId(memberId));
+        List<TaskSummary> summaries = tasks.stream()
+                .map(task -> new TaskSummary(
+                        task.getId().getValue(),
+                        task.getTitle(),
+                        task.getDescription(),
+                        task.getKanbanColumn()
+                ))
+                .toList();
+        return ResponseEntity.ok(summaries);
+    }
+
 }

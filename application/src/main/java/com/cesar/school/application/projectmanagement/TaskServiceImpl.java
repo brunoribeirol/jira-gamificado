@@ -153,4 +153,10 @@ public class TaskServiceImpl implements TaskService {
     public List<Task> listByProject(ProjectId projectId) {
         return taskRepository.findByProjectId(projectId);
     }
+
+    @Override
+    public List<Task> findByAssignee(MemberId memberId) {
+        return taskRepository.findByAssignee(memberId);
+    }
+
 }
