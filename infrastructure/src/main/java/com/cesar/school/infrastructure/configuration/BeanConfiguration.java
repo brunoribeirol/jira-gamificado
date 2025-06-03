@@ -98,6 +98,7 @@ public class BeanConfiguration {
             TaskRepository taskRepository,
             ProjectRepository projectRepository,
             MemberRepository memberRepository,
+            TeamRepository teamRepository,
             TaskScoreStrategy taskScoreStrategy,
             ApplicationEventPublisher eventPublisher,
             MemberTeamServiceImpl memberTeamService

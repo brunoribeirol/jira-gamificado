@@ -6,7 +6,7 @@ import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.service.ProjectService;
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;

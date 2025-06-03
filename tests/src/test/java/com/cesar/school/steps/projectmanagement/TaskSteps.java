@@ -41,9 +41,9 @@ public class TaskSteps {
         task = new Task(
                 new TaskId(1), titulo, "Descrição",
                 "Em Progresso", 0,
-                new Date(),        // createdAt
-                null,              // completedAt
-                new ProjectId(1)   // ✅ ProjectId exigido
+                new Date(),
+                (Date) null,
+                new ProjectId(1)
         );
         task.assignTo(joana);
     }
@@ -184,7 +184,7 @@ public class TaskSteps {
                 "Pronto",
                 100,
                 new Date(),
-                null,
+                (Date) null,
                 new ProjectId(1)
         );
     }
@@ -198,7 +198,7 @@ public class TaskSteps {
                 "Em Progresso",
                 100,
                 new Date(),
-                null,
+                (Date) null,
                 new ProjectId(1)
         );
         task.assignTo(joana);
@@ -213,7 +213,7 @@ public class TaskSteps {
                 "Concluído",
                 80,
                 new Date(),
-                null,
+                (Date) null,
                 new ProjectId(1)
         );
     }
@@ -230,10 +230,10 @@ public class TaskSteps {
                 "Pronto",
                 90,
                 new Date(),
-                null,
+                (Date) null,
                 new ProjectId(1)
         );
-        task.assignTo(rafael); // Não é o membro atual
+        task.assignTo(rafael);
     }
 
     @And("a nova posição é refletida no quadro Kanban")

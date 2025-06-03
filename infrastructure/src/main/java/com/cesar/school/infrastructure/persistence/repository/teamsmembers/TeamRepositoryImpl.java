@@ -1,8 +1,8 @@
 package com.cesar.school.infrastructure.persistence.repository.teamsmembers;
 
+import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.teamsmembers.entity.Team;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
-import com.cesar.school.core.teamsmembers.vo.TeamId;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.TeamEntity;
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.TeamMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.TeamJpaRepository;

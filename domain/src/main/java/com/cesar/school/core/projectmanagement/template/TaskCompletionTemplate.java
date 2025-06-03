@@ -6,9 +6,9 @@ import com.cesar.school.core.teamsmembers.entity.Member;
 
 public abstract class TaskCompletionTemplate {
 
-    public final void complete(Task task, TaskScoreStrategy strategy, Member member) {
+    public final void complete(Task task, Member member) {
         validateTask(task);
-        calculateScore(task, strategy);
+        calculateScore(task);
         notifyMember(task, member);
         persist(task, member);
     }
@@ -19,9 +19,7 @@ public abstract class TaskCompletionTemplate {
         }
     }
 
-    protected void calculateScore(Task task, TaskScoreStrategy strategy) {
-        task.complete(strategy);
-    }
+    protected abstract void calculateScore(Task task);
 
     protected abstract void notifyMember(Task task, Member member);
 
