@@ -36,12 +36,12 @@ public class StandardTaskCompletion extends TaskCompletionTemplate {
 
     @Override
     protected void persist(Task task, Member member) {
-        int basePoints = task.getPoints();
-        int score = scoreStrategy.calculatePoints(basePoints);
+        int score = task.getPoints();
         member.addPoints(score);
         taskRepository.save(task);
         memberRepository.save(member);
     }
+
 
 }
 
