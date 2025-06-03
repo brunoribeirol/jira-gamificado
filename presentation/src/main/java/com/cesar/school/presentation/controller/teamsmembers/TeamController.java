@@ -2,9 +2,9 @@ package com.cesar.school.presentation.controller.teamsmembers;
 
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.teamsmembers.entity.Team;
 import com.cesar.school.core.teamsmembers.vo.Role;
-import com.cesar.school.core.teamsmembers.vo.TeamId;
 import com.cesar.school.presentation.dto.teamsmembers.AddMemberRequest;
 import com.cesar.school.presentation.dto.teamsmembers.CreateTeamRequest;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,8 @@ public class TeamController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody CreateTeamRequest request) {
-        memberTeamService.createTeam(new TeamId(request.id), request.name);
+        Team team = request.toDomain(); // Usa o leaderId correto
+        memberTeamService.createTeam(team);
         return ResponseEntity.ok().build();
     }
 
