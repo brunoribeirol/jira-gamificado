@@ -43,9 +43,32 @@ public class TaskController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    /**
+     * Atribui um membro a uma tarefa (rota original)
+     * POST /api/tasks/{id}/assign
+     * @param id ID da tarefa
+     * @param request Body com o ID do membro a ser atribuído
+     * @return 200 OK se a atribuição for bem-sucedida
+     */
     @PostMapping("/{id}/assign")
     public ResponseEntity<Void> assign(@PathVariable int id, @RequestBody @Valid AssignMemberRequest request) {
         taskService.assignTaskToMember(new TaskId(id), new MemberId(request.memberId));
+        return ResponseEntity.ok().build();
+    }
+
+    /**
+     * Atribui um membro a uma tarefa (nova rota)
+     * POST /api/tasks/{taskId}/assign
+     * @param taskId ID da tarefa
+     * @param request Body com o ID do membro a ser atribuído
+     * @return 200 OK se a atribuição for bem-sucedida
+     */
+    @PostMapping("/{taskId}/assign")
+    public ResponseEntity<Void> assignMemberToTask(
+            @PathVariable int taskId,
+            @RequestBody @Valid AssignMemberRequest request
+    ) {
+        taskService.assignTaskToMember(new TaskId(taskId), new MemberId(request.memberId));
         return ResponseEntity.ok().build();
     }
 
@@ -98,6 +121,23 @@ public class TaskController {
                 ))
                 .toList();
         return ResponseEntity.ok(summaries);
+    }
+
+    /**
+     * Lista todos os membros atribuídos a uma tarefa
+     * GET /api/tasks/{taskId}/assignees
+     * @param taskId ID da tarefa
+     * @return Lista de IDs dos membros atribuídos
+     */
+    @GetMapping("/{taskId}/assignees")
+    public ResponseEntity<List<Integer>> getTaskAssignees(@PathVariable int taskId) {
+        return taskService.getById(new TaskId(taskId))
+                .map(task -> ResponseEntity.ok(
+                    task.getAssignees().stream()
+                        .map(MemberId::getValue)
+                        .toList()
+                ))
+                .orElse(ResponseEntity.notFound().build());
     }
 
 }
