@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
@@ -22,6 +23,7 @@ public class CreateTaskRequest {
 
     private String description;
 
+    @NotNull(message = "Selecione ao menos um responsável")
     private Integer assignedMemberId;
 
     @Positive

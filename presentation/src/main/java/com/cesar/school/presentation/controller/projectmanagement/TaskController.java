@@ -56,8 +56,12 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/column")
-    public ResponseEntity<Void> moveToColumn(@PathVariable int id, @RequestBody @Valid MoveTaskRequest request) {
-        taskService.moveTaskToColumn(new TaskId(id), request.column);
+    public ResponseEntity<Void> moveToColumn(
+            @PathVariable int id,
+            @RequestParam int memberId,
+            @RequestBody @Valid MoveTaskRequest request
+    ) {
+        taskService.moveTaskToColumn(new TaskId(id), request.column, new MemberId(memberId));
         return ResponseEntity.ok().build();
     }
 

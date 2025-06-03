@@ -110,9 +110,18 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void moveTaskToColumn(TaskId taskId, String column) {
+    public void moveTaskToColumn(TaskId taskId, String column, MemberId memberId) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new IllegalArgumentException("Tarefa não encontrada"));
+
+        // Verifica se o membro é um dos responsáveis
+        boolean isAssignee = task.getAssignees().stream()
+                .anyMatch(assignee -> assignee.equals(memberId));
+
+        if (!isAssignee) {
+            throw new IllegalArgumentException("Você não pode mover tarefas que não são suas");
+        }
+
         task.moveToColumn(column);
         taskRepository.save(task);
     }
