@@ -1,64 +1,66 @@
 @startuml
-
 skinparam componentStyle uml2
 
 package "'Gamification' Aggregate" <<Rectangle>> {
 
     ' ==================== ENTITY ====================
     class Reward <<(A,#fffab8) Aggregate Root>> {
-        RewardId id
-        String description
-        Integer requiredPoints
-        RewardType type
-        MemberId createdBy
+        - RewardId id
+        - String description
+        - int requiredPoints
+        - RewardType type
+        - MemberId createdBy
+
+        + boolean canBeUnlockedBy(int points)
     }
 
     ' ==================== VALUE OBJECTS ====================
     class RewardId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
-
-    class RewardType <<(V,DarkSeaGreen) Value Object>> {
-    }
-
-    enum CUPOM
-    enum FOLGA
-    enum DESTAQUE
 
     class MemberId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
+    }
+
+    class RewardType <<(V,DarkSeaGreen) Enum>> {
+    }
+
+    enum RewardTypeEnum {
+        CUPOM
+        FOLGA
+        DESTAQUE
     }
 
     ' ==================== REPOSITORY ====================
     class RewardRepository <<(R,LightBlue) Repository>> {
-        findById(RewardId): Optional<Reward>
-        save(Reward)
-        deleteById(RewardId)
-        findAll(): List<Reward>
-        findRewardsAvailableForPoints(int): List<Reward>
+        + save(reward: Reward)
+        + findById(rewardId: RewardId): Reward
+        + findAll(): List<Reward>
+        + findRewardsAvailableForPoints(points: int): List<Reward>
+        + deleteById(rewardId: RewardId)
     }
 
     ' ==================== SERVICE ====================
     class RewardService <<(S,Wheat) Service>> {
-        createReward(Reward)
-        getRewardById(RewardId): Optional<Reward>
-        getAllRewards(): List<Reward>
-        getRewardsAvailableForPoints(int): List<Reward>
-        deleteReward(RewardId)
+        + createReward(reward: Reward)
+        + getRewardById(rewardId: RewardId): Reward
+        + getAllRewards(): List<Reward>
+        + getRewardsAvailableForPoints(points: int): List<Reward>
+        + deleteReward(rewardId: RewardId)
     }
 
     ' ==================== RELATIONSHIPS ====================
-    Reward --> RewardId : id
-    Reward --> RewardType : type
-    Reward --> MemberId : createdBy
+    Reward --> RewardId
+    Reward --> MemberId
+    Reward --> RewardType
 
     RewardRepository --> Reward
     RewardService --> Reward
 }
 
 legend left
-  This bounded context implements the subdomain 'Gamification'.
+  This bounded context implements the subdomain 'Gamification'.\n
   S = Service, R = Repository, A = Aggregate Root, V = Value Object
 end legend
-
 @enduml

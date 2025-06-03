@@ -1,121 +1,185 @@
 @startuml
-
-!define ENTITY(x) class x << (E,#FFAAAA) >>
-!define VALUE_OBJECT(x) class x << (V,#FFDD55) >>
-!define SERVICE(x) class x << (S,#BBEEBB) >>
-!define REPOSITORY(x) class x << (R,#BBDDEE) >>
-
-
 skinparam componentStyle uml2
 
 package "'ProjectManagement' Aggregate" <<Rectangle>> {
 
-    ' ==================== ENTITIES ====================
+    ' ========== ENTITIES ==========
     class Project <<(A,#fffab8) Aggregate Root>> {
-        ProjectId id
-        String name
-        String description
-        List<TaskId> tasks
-        List<ChallengeId> challenges
-        TeamId teamId
+        - ProjectId id
+        - String name
+        - String description
+        - TeamId teamId
+        - List<Task> tasks
+        - List<Challenge> challenges
+        - List<String> kanbanColumns
+
+        + addTask(task: Task)
+        + addChallenge(challenge: Challenge)
     }
 
-    class Task <<(A,#fffab8) Aggregate Root>> {
-        TaskId id
-        String title
-        String description
-        List<MemberId> assignees
-        String kanbanColumn
-        Integer points
-        Date createdAt
-        Date? completedAt
+    class Task {
+        - TaskId id
+        - String title
+        - String description
+        - List<MemberId> assignees
+        - String kanbanColumn
+        - int points
+        - String createdAt
+        - String completedAt
+        - ProjectId projectId
+
+        + assignTo(memberId: MemberId)
+        + moveToColumn(column: String)
+        + setPoints(points: int)
+        + initializePoints(strategy: TaskScoreStrategy)
+        + complete(strategy: TaskScoreStrategy)
+        + markAsCompleted()
+        + unlockBy(member: Member)
+        + setTitle(newTitle: String)
     }
 
-    class Challenge <<(A,#fffab8) Aggregate Root>> {
-        ChallengeId id
-        String title
-        String description
-        String criteria
-        Integer extraPoints
-        MemberId createdBy
-        ProjectId projectId
-        Date deadline
+    class Challenge {
+        - ChallengeId id
+        - String title
+        - String description
+        - String criteria
+        - int extraPoints
+        - MemberId createdBy
+        - ProjectId projectId
+        - String deadline
     }
 
-    ' ==================== VALUE OBJECTS ====================
+    ' ========== VALUE OBJECTS ==========
     class ProjectId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
 
     class TaskId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
 
     class ChallengeId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
 
     class TeamId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
 
     class MemberId <<(V,DarkSeaGreen) Value Object>> {
-        int id
+        + int value
     }
 
-    ' ==================== REPOSITORIES ====================
+    ' ========== STRATEGY ==========
+    interface TaskScoreStrategy <<(S,Wheat) Strategy>> {
+        + calculatePoints(basePoints: int): int
+    }
+
+    class BonusForPairProgrammingStrategy implements TaskScoreStrategy {
+        - int bonus
+        + calculatePoints(basePoints: int): int
+    }
+
+    class DefaultScoreStrategy implements TaskScoreStrategy {
+        + calculatePoints(basePoints: int): int
+    }
+
+    ' ========== TEMPLATE METHOD ==========
+    abstract class TaskCompletionTemplate <<(S,Wheat) Template>> {
+        + complete(task: Task, strategy: TaskScoreStrategy, member: Member)
+        + validateTask(task: Task)
+        + calculateScore(task: Task, strategy: TaskScoreStrategy)
+        + notifyMember(task: Task, member: Member)
+        + persist(task: Task, member: Member)
+    }
+
+    ' ========== DOMAIN EVENT ==========
+    class TaskCompletedEvent <<(S,Wheat) DomainEvent>> {
+        + Task task
+        + Member member
+    }
+
+    ' ========== REPOSITORIES ==========
     class ProjectRepository <<(R,LightBlue) Repository>> {
-        findById(ProjectId): Optional<Project>
-        save(Project)
-        deleteById(ProjectId)
+        + save(project: Project)
+        + findById(id: ProjectId): Project
+        + findAll(): List<Project>
+        + deleteById(id: ProjectId)
     }
 
     class TaskRepository <<(R,LightBlue) Repository>> {
-        findById(TaskId): Optional<Task>
-        save(Task)
-        deleteById(TaskId)
+        + save(task: Task)
+        + saveWithProject(task: Task, projectId: ProjectId)
+        + findById(id: TaskId): Task
+        + findByProjectId(id: ProjectId): List<Task>
+        + deleteById(id: TaskId)
     }
 
     class ChallengeRepository <<(R,LightBlue) Repository>> {
-        findById(ChallengeId): Optional<Challenge>
-        save(Challenge)
-        deleteById(ChallengeId)
+        + save(challenge: Challenge)
+        + findById(id: ChallengeId): Challenge
+        + deleteById(id: ChallengeId)
+        + findAllByProjectId(id: ProjectId): List<Challenge>
     }
 
-    ' ==================== SERVICE ====================
+    ' ========== SERVICES ==========
     class ProjectService <<(S,Wheat) Service>> {
-        createProject(ProjectId, String, String)
-        addTask(ProjectId, TaskId)
-        moveTask(TaskId, String)
-        completeTask(TaskId)
-        addChallenge(ProjectId, ChallengeId)
+        + createProject(project: Project)
+        + getById(id: ProjectId): Project
+        + getAll(): List<Project>
+        + update(project: Project)
+        + delete(id: ProjectId)
+        + addTaskToProject(id: ProjectId, task: Task, assignedMemberId: int)
     }
 
-    ' ==================== RELATIONSHIPS ====================
-    Project --> ProjectId : id
-    Project --> TaskId : tasks
-    Project --> ChallengeId : challenges
-    Project --> TeamId : teamId
+    class TaskService <<(S,Wheat) Service>> {
+        + assignTaskToMember(id: TaskId, memberId: MemberId)
+        + updateTaskTitle(id: TaskId, newTitle: String)
+        + completeTask(id: TaskId, memberId: MemberId)
+        + moveTaskToColumn(id: TaskId, column: String)
+        + delete(id: TaskId)
+        + addTaskToProject(id: ProjectId, task: Task, assignedMemberId: int)
+        + createTask(task: Task)
+        + getById(id: TaskId): Task
+        + listByProject(id: ProjectId): List<Task>
+        + unlockTask(id: TaskId, memberId: MemberId)
+    }
 
-    Task --> TaskId : id
-    Task --> MemberId : assignees
+    class ChallengeService <<(S,Wheat) Service>> {
+        + addToProject(id: ProjectId, challenge: Challenge)
+        + getById(id: ChallengeId): Challenge
+        + update(challenge: Challenge)
+        + delete(id: ChallengeId)
+        + listByProject(id: ProjectId): List<Challenge>
+    }
 
-    Challenge --> ChallengeId : id
-    Challenge --> MemberId : createdBy
-    Challenge --> ProjectId : projectId
+    ' ========== RELATIONSHIPS ==========
+    Project --> ProjectId
+    Project --> Task
+    Project --> Challenge
+    Project --> TeamId
 
-    ProjectRepository --> Project
-    TaskRepository --> Task
-    ChallengeRepository --> Challenge
+    Task --> TaskId
+    Task --> MemberId
+    Task --> ProjectId
 
-    ProjectService --> Project
-    ProjectService --> Task
-    ProjectService --> Challenge
+    Challenge --> ChallengeId
+    Challenge --> MemberId
+    Challenge --> ProjectId
+
+    Task --> TaskScoreStrategy
+    Task --> Member
+
+    BonusForPairProgrammingStrategy --> TaskScoreStrategy
+    DefaultScoreStrategy --> TaskScoreStrategy
+
+    TaskCompletionTemplate --> Task
+    TaskCompletedEvent --> Task
+    TaskCompletedEvent --> Member
 }
 
 legend left
-  This bounded context implements the subdomain 'ProjectManagement'.
+  This bounded context implements the subdomain 'ProjectManagement'.\n
   S = Service, R = Repository, A = Aggregate Root, V = Value Object
 end legend
-
 @enduml

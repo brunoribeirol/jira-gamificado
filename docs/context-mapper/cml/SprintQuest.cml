@@ -1,186 +1,308 @@
 Domain SprintQuest {
-    Subdomain ProjectManagement
     Subdomain Gamification
-    Subdomain TeamsAndUsers
+    Subdomain ProjectManagement
+    Subdomain TeamsMembers
+    Subdomain Shared
 }
 
 ContextMap SprintQuestContextMap {
-    contains ProjectManagement
     contains Gamification
-    contains TeamsAndUsers
+    contains ProjectManagement
+    contains TeamsMembers
+    contains Shared
 
-    ProjectManagement Shared-Kernel TeamsAndUsers
-    Gamification Shared-Kernel TeamsAndUsers
+    ProjectManagement [SK]<->[SK] TeamsMembers
+    ProjectManagement [SK]<->[SK] Gamification
+    TeamsMembers [SK]<->[SK] Gamification
+    ProjectManagement [SK]<->[SK] Shared
+    TeamsMembers [SK]<->[SK] Shared
+    Gamification [SK]<->[SK] Shared
 }
 
+
+
+BoundedContext Gamification implements Gamification {
+    Aggregate Reward {
+        Entity Reward {
+            aggregateRoot
+            - RewardId id
+            String description
+            int requiredPoints
+            - RewardType type
+            - MemberId createdBy
+
+            def boolean canBeUnlockedBy(int points)
+        }
+
+        ValueObject RewardId {
+            int value
+        }
+
+        Enum RewardType {
+            CUPOM,
+            FOLGA,
+            DESTAQUE
+        }
+    }
+
+    Repository RewardRepository {
+        save(reward: Reward)
+        findById(rewardId: RewardId): Reward
+        findAll(): List<Reward>
+        findRewardsAvailableForPoints(points: int): List<Reward>
+        deleteById(rewardId: RewardId)
+    }
+
+    Service RewardService {
+        createReward(reward: Reward)
+        getRewardById(rewardId: RewardId): Reward
+        getAllRewards(): List<Reward>
+        getRewardsAvailableForPoints(points: int): List<Reward>
+        deleteReward(rewardId: RewardId)
+    }
+}
+
+
 BoundedContext ProjectManagement implements ProjectManagement {
-    Aggregate ProjectManagement {
+
+    Aggregate Project {
         Entity Project {
             aggregateRoot
-            -ProjectId id
-            String name
-            String description
-            List<TaskId> tasks
-            List<ChallengeId> challenges
-            List<String> kanbanColumns
-            -TeamId teamId
+            id: ProjectId
+            name: String
+            description: String
+            teamId: TeamId
+            tasks: List<Task>
+            challenges: List<Challenge>
+            kanbanColumns: List<String>
+
+            def addTask(task: Task)
+            def addChallenge(challenge: Challenge)
         }
 
         Entity Task {
-            aggregateRoot
-            -TaskId id
-            String title
-            String description
-            List<MemberId> assignees
-            String kanbanColumn
-            Integer points
-            Date createdAt
-            Date? completedAt
+            id: TaskId
+            title: String
+            description: String
+            assignees: List<MemberId>
+            kanbanColumn: String
+            points: int
+            createdAt: String
+            completedAt: String nullable
+            projectId: ProjectId
+
+            def assignTo(memberId: MemberId)
+            def moveToColumn(column: String)
+            def setPoints(points: int)
+            def initializePoints(strategy: TaskScoreStrategy)
+            def complete(strategy: TaskScoreStrategy)
+            def markAsCompleted()
+            def unlockBy(member: Member)
+            def setTitle(newTitle: String)
         }
 
         Entity Challenge {
-            aggregateRoot
-            -ChallengeId id
-            String title
-            String description
-            String criteria
-            Integer extraPoints
-            MemberId createdBy
-            ProjectId projectId
-            Date deadline
+            id: ChallengeId
+            title: String
+            description: String
+            criteria: String
+            extraPoints: int
+            createdBy: MemberId
+            projectId: ProjectId
+            deadline: String
         }
 
-        ValueObject ProjectId { int id }
-        ValueObject TaskId { int id }
-        ValueObject ChallengeId { int id }
-        ValueObject TeamId { int id }
-        ValueObject MemberId { int id }
+        ValueObject ProjectId { value: int }
+        ValueObject TaskId { value: int }
+        ValueObject ChallengeId { value: int }
+        ValueObject TeamId { value: int }
+    }
 
-        Repository ProjectRepository {
-            Optional<Project> findById(@ProjectId id)
-            void save(Project project)
-            void deleteById(@ProjectId id)
-        }
+    Repository ProjectRepository {
+        save(project: Project)
+        findById(id: ProjectId): Project
+        findAll(): List<Project>
+        deleteById(id: ProjectId)
+    }
 
-        Repository TaskRepository {
-            Optional<Task> findById(@TaskId id)
-            void save(Task task)
-            void deleteById(@TaskId id)
-        }
+    Repository TaskRepository {
+        save(task: Task)
+        saveWithProject(task: Task, projectId: ProjectId)
+        findById(id: TaskId): Task
+        findByProjectId(id: ProjectId): List<Task>
+        deleteById(id: TaskId)
+    }
 
-        Repository ChallengeRepository {
-            Optional<Challenge> findById(@ChallengeId id)
-            void save(Challenge challenge)
-            void deleteById(@ChallengeId id)
-        }
+    Repository ChallengeRepository {
+        save(challenge: Challenge)
+        findById(id: ChallengeId): Challenge
+        deleteById(id: ChallengeId)
+        findAllByProjectId(id: ProjectId): List<Challenge>
+    }
 
-        Service ProjectService {
-            void createProject(@ProjectId projectId, @String name, @String description);
-            void addTask(@ProjectId projectId, @TaskId taskId);
-            void moveTask(@TaskId taskId, @String targetColumn);
-            void completeTask(@TaskId taskId);
-            void addChallenge(@ProjectId projectId, @ChallengeId challengeId);
-        }
+    Service ProjectService {
+        createProject(project: Project)
+        getById(id: ProjectId): Project
+        getAll(): List<Project>
+        update(project: Project)
+        delete(id: ProjectId)
+        addTaskToProject(id: ProjectId, task: Task, assignedMemberId: int)
+    }
+
+    Service TaskService {
+        assignTaskToMember(id: TaskId, memberId: MemberId)
+        updateTaskTitle(id: TaskId, newTitle: String)
+        completeTask(id: TaskId, memberId: MemberId)
+        moveTaskToColumn(id: TaskId, column: String)
+        delete(id: TaskId)
+        addTaskToProject(id: ProjectId, task: Task, assignedMemberId: int)
+        createTask(task: Task)
+        getById(id: TaskId): Task
+        listByProject(id: ProjectId): List<Task>
+        unlockTask(id: TaskId, memberId: MemberId)
+    }
+
+    Service ChallengeService {
+        addToProject(id: ProjectId, challenge: Challenge)
+        getById(id: ChallengeId): Challenge
+        update(challenge: Challenge)
+        delete(id: ChallengeId)
+        listByProject(id: ProjectId): List<Challenge>
+    }
+
+    Interface TaskScoreStrategy {
+        def calculatePoints(basePoints: int): int
+    }
+
+    Implementation BonusForPairProgrammingStrategy implements TaskScoreStrategy {
+        bonus: int
+        def calculatePoints(basePoints: int): int
+    }
+
+    Implementation DefaultScoreStrategy implements TaskScoreStrategy {
+        def calculatePoints(basePoints: int): int
+    }
+
+    Template TaskCompletionTemplate {
+        def complete(task: Task, strategy: TaskScoreStrategy, member: Member)
+        def validateTask(task: Task)
+        def calculateScore(task: Task, strategy: TaskScoreStrategy)
+        def notifyMember(task: Task, member: Member)
+        def persist(task: Task, member: Member)
+    }
+
+    DomainEvent TaskCompletedEvent {
+        task: Task
+        member: Member
     }
 }
 
-BoundedContext Gamification implements Gamification {
-    Aggregate Gamification {
-        Entity Reward {
-            aggregateRoot
-            -RewardId id
-            String description
-            Integer requiredPoints
-            RewardType type
-            MemberId createdBy
-        }
 
-        ValueObject RewardId { int id }
+BoundedContext TeamsMembers implements TeamsMembers {
 
-        ValueObject RewardType {
-            enum CUPOM
-            enum FOLGA
-            enum DESTAQUE
-        }
-
-        Repository RewardRepository {
-            Optional<Reward> findById(@RewardId id)
-            void save(Reward reward)
-            void deleteById(@RewardId id)
-            List<Reward> findAll()
-            List<Reward> findRewardsAvailableForPoints(@int points)
-        }
-
-        Service RewardService {
-            void createReward(@Reward reward);
-            Optional<Reward> getRewardById(@RewardId rewardId);
-            List<Reward> getAllRewards();
-            List<Reward> getRewardsAvailableForPoints(@int points);
-            void deleteReward(@RewardId rewardId);
-        }
-    }
-}
-
-BoundedContext TeamsAndUsers implements TeamsAndUsers {
-    Aggregate TeamsAndUsers {
-        Entity Team {
-            aggregateRoot
-            -TeamId id
-            String name
-            MemberId leader
-            List<MemberId> members
-            Integer teamScore
-        }
+    Aggregate Member {
 
         Entity Member {
             aggregateRoot
-            -MemberId id
-            String name
-            String email
-            String password
-            Role role
-            int individualScore
-            List<RewardId> unlockedRewards
+            id: MemberId
+            name: String
+            email: String
+            password: String
+            role: Role
+            individualScore: int
+            receivedFeedbacks: List<Feedback>
+            unlockedRewards: List<RewardId>
+            isAdmin: boolean
+            teamId: TeamId
+
+            def changeRole(newRole: Role)
+            def addPoints(points: int)
+            def spendPoints(points: int)
+            def receiveFeedback(feedback: Feedback)
+            def unlockReward(rewardId: RewardId)
+            def promoteToAdmin()
+            def demoteFromAdmin()
+            def belongsToTeam(otherTeamId: TeamId): boolean
         }
 
         Entity Feedback {
-            aggregateRoot
-            -FeedbackId id
-            String message
-            Date date
-            MemberId givenBy
-            MemberId receivedBy
-            TaskId? relatedTask
+            id: FeedbackId
+            message: String
+            date: String
+            givenBy: MemberId
+            receivedBy: MemberId
+            relatedTask: TaskId nullable
         }
 
-        ValueObject TeamId { int id }
-        ValueObject FeedbackId { int id }
+        Entity Team {
+            id: TeamId
+            name: String
+            leaderId: MemberId
+            members: List<MemberId>
+            teamScore: int
 
-        ValueObject Role {
-            enum DEV
-            enum QA
-            enum PO
-            enum LIDER
+            def addMember(memberId: MemberId)
+            def removeMember(memberId: MemberId)
+            def addPoints(points: int)
         }
 
-        Repository TeamRepository {
-            Optional<Team> findById(@TeamId id)
-            void save(Team team)
-            void delete(Team team)
-        }
+        ValueObject FeedbackId { value: int }
+        ValueObject TeamId { value: int }
 
-        Service MemberTeamService {
-            void createTeam(@TeamId teamId, @String teamName);
-            void addMember(@TeamId teamId, @MemberId memberId, @Role role);
-            List<RewardId> getUnlockedRewards(@MemberId memberId);
-            int getScore(@MemberId memberId);
-            List<Feedback> getReceivedFeedbacks(@MemberId memberId);
+        enum Role {
+            DEV,
+            QA,
+            PO,
+            LIDER
         }
+    }
 
-        Repository MemberRepository {
-            Optional<Member> findById(@MemberId id)
-            void save(Member member)
-            void delete(Member member)
-        }
+    Repository MemberRepository {
+        save(member: Member)
+        findById(memberId: MemberId): Member
+        findByEmail(email: String): Member
+        findAll(): List<Member>
+        delete(member: Member)
+    }
+
+    Repository FeedbackRepository {
+        save(feedback: Feedback)
+        findById(id: FeedbackId): Feedback
+        findByReceivedBy(memberId: MemberId): List<Feedback>
+    }
+
+    Repository TeamRepository {
+        save(team: Team)
+        findById(teamId: TeamId): Team
+        delete(team: Team)
+    }
+
+    Service MemberService {
+        addPoints(memberId: MemberId, points: int)
+        addFeedback(memberId: MemberId, feedback: Feedback)
+        unlockReward(memberId: MemberId, rewardId: RewardId)
+        createMember(member: Member)
+        getById(memberId: MemberId): Member
+        getAll(): List<Member>
+    }
+
+    Service MemberTeamService {
+        createTeam(teamId: TeamId, teamName: String)
+        addMember(teamId: TeamId, memberId: MemberId, role: Role)
+        getUnlockedRewards(memberId: MemberId): List<RewardId>
+        getScore(memberId: MemberId): int
+        getReceivedFeedbacks(memberId: MemberId): List<Feedback>
+        createMember(member: Member)
+    }
+
+    Service TeamService {
+        addPoints(teamId: TeamId, points: int)
+        getById(teamId: TeamId): Team
+    }
+}
+
+BoundedContext Shared implements Shared {
+    ValueObject MemberId {
+        value: int
     }
 }

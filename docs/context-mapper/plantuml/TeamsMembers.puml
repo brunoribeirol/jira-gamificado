@@ -1,0 +1,146 @@
+@startuml
+skinparam componentStyle uml2
+
+package "'TeamsMembers' Aggregate" <<Rectangle>> {
+
+    ' ========== ENTITIES ==========
+    class Member <<(A,#fffab8) Aggregate Root>> {
+        - MemberId id
+        - String name
+        - String email
+        - String password
+        - Role role
+        - int individualScore
+        - List<Feedback> receivedFeedbacks
+        - List<RewardId> unlockedRewards
+        - boolean isAdmin
+        - TeamId teamId
+
+        + changeRole(newRole: Role)
+        + addPoints(points: int)
+        + spendPoints(points: int)
+        + receiveFeedback(feedback: Feedback)
+        + unlockReward(rewardId: RewardId)
+        + promoteToAdmin()
+        + demoteFromAdmin()
+        + belongsToTeam(otherTeamId: TeamId): boolean
+    }
+
+    class Feedback {
+        - FeedbackId id
+        - String message
+        - String date
+        - MemberId givenBy
+        - MemberId receivedBy
+        - TaskId relatedTask
+    }
+
+    class Team {
+        - TeamId id
+        - String name
+        - MemberId leaderId
+        - List<MemberId> members
+        - int teamScore
+
+        + addMember(memberId: MemberId)
+        + removeMember(memberId: MemberId)
+        + addPoints(points: int)
+    }
+
+    ' ========== VALUE OBJECTS ==========
+    class MemberId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+
+    class FeedbackId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+
+    class TeamId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+
+    class RewardId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+
+    class TaskId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+
+    enum Role {
+        DEV
+        QA
+        PO
+        LIDER
+    }
+
+    ' ========== REPOSITORIES ==========
+    class MemberRepository <<(R,LightBlue) Repository>> {
+        + save(member: Member)
+        + findById(memberId: MemberId): Member
+        + findByEmail(email: String): Member
+        + findAll(): List<Member>
+        + delete(member: Member)
+    }
+
+    class FeedbackRepository <<(R,LightBlue) Repository>> {
+        + save(feedback: Feedback)
+        + findById(id: FeedbackId): Feedback
+        + findByReceivedBy(memberId: MemberId): List<Feedback>
+    }
+
+    class TeamRepository <<(R,LightBlue) Repository>> {
+        + save(team: Team)
+        + findById(teamId: TeamId): Team
+        + delete(team: Team)
+    }
+
+    ' ========== SERVICES ==========
+    class MemberService <<(S,Wheat) Service>> {
+        + addPoints(memberId: MemberId, points: int)
+        + addFeedback(memberId: MemberId, feedback: Feedback)
+        + unlockReward(memberId: MemberId, rewardId: RewardId)
+        + createMember(member: Member)
+        + getById(memberId: MemberId): Member
+        + getAll(): List<Member>
+    }
+
+    class MemberTeamService <<(S,Wheat) Service>> {
+        + createTeam(teamId: TeamId, teamName: String)
+        + addMember(teamId: TeamId, memberId: MemberId, role: Role)
+        + getUnlockedRewards(memberId: MemberId): List<RewardId>
+        + getScore(memberId: MemberId): int
+        + getReceivedFeedbacks(memberId: MemberId): List<Feedback>
+        + createMember(member: Member)
+    }
+
+    class TeamService <<(S,Wheat) Service>> {
+        + addPoints(teamId: TeamId, points: int)
+        + getById(teamId: TeamId): Team
+    }
+
+    ' ========== RELATIONSHIPS ==========
+    Member --> MemberId
+    Member --> Role
+    Member --> Feedback
+    Member --> RewardId
+    Member --> TeamId
+
+    Feedback --> FeedbackId
+    Feedback --> MemberId
+    Feedback --> TaskId
+
+    Team --> TeamId
+    Team --> MemberId
+
+    MemberRepository --> Member
+    FeedbackRepository --> Feedback
+    TeamRepository --> Team
+}
+
+legend left
+  This bounded context implements the subdomain 'TeamsMembers'.\n
+  S = Service, R = Repository, A = Aggregate Root, V = Value Object
+end legend
+@enduml

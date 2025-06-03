@@ -1,0 +1,16 @@
+@startuml
+skinparam componentStyle uml2
+
+package "'Shared' Bounded Context" <<Rectangle>> {
+
+    ' ========== VALUE OBJECT ==========
+    class MemberId <<(V,DarkSeaGreen) Value Object>> {
+        + int value
+    }
+}
+
+legend left
+  This bounded context implements the subdomain 'Shared'.\n
+  V = Value Object
+end legend
+@enduml
