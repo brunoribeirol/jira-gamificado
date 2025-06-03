@@ -3,12 +3,12 @@ USE sprintquest;
 INSERT INTO members (name, email, password, role, individual_score, is_admin, team_id) VALUES
                                                                                            ('João Silva', 'joao.silva@example.com', 'senha123', 'DEV', 150, false, 101),   -- ID 1
                                                                                            ('Maria Souza', 'maria.souza@example.com', 'senha456', 'QA', 120, false, 101),  -- ID 2
-                                                                                           ('Pedro Gomes', 'pedro.gomes@example.com', 'senha789', 'LIDER', 200, true, 101),-- ID 3 (líder de Alpha e Gamma)
+                                                                                           ('Pedro Gomes', 'pedro.gomes@example.com', 'senha789', 'LIDER', 200, false, 101),-- ID 3 (líder de Alpha e Gamma)
                                                                                            ('Ana Costa', 'ana.costa@example.com', 'senhaabc', 'DEV', 80, false, 101),      -- ID 4
                                                                                            ('Rafaela Lima', 'rafaela.lima@example.com', 'senhadef', 'QA', 95, false, 102), -- ID 5
                                                                                            ('Lucas Rocha', 'lucas.rocha@example.com', 'senhaaaa', 'DEV', 70, false, 103),  -- ID 6
                                                                                            ('Bianca Melo', 'bianca.melo@example.com', 'senha1234', 'QA', 130, false, 103), -- ID 7
-                                                                                           ('Carlos Pinto', 'carlos.pinto@example.com', 'senhaabc123', 'LIDER', 160, true, 102), -- ID 8
+                                                                                           ('Carlos Pinto', 'carlos.pinto@example.com', 'senhaabc123', 'LIDER', 160, false, 102), -- ID 8
                                                                                            ('Letícia Andrade', 'leticia.andrade@example.com', '123senha', 'QA', 90, false, 101); -- ID 9
 
 INSERT INTO teams (id, name, leader_id, team_score) VALUES
