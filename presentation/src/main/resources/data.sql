@@ -4,7 +4,7 @@ INSERT INTO members (name, email, password, role, individual_score, is_admin, te
                                                                                            ('João Silva', 'joao.silva@example.com', 'senha123', 'DEV', 150, false, 101),   -- ID 1
                                                                                            ('Maria Souza', 'maria.souza@example.com', 'senha456', 'QA', 120, false, 101),  -- ID 2
                                                                                            ('Pedro Gomes', 'pedro.gomes@example.com', 'senha789', 'LIDER', 200, true, 101),-- ID 3 (líder de Alpha e Gamma)
-                                                                                           ('Ana Costa', 'ana.costa@example.com', 'senhaabc', 'DEV', 80, false, 102),      -- ID 4
+                                                                                           ('Ana Costa', 'ana.costa@example.com', 'senhaabc', 'DEV', 80, false, 101),      -- ID 4
                                                                                            ('Rafaela Lima', 'rafaela.lima@example.com', 'senhadef', 'QA', 95, false, 102), -- ID 5
                                                                                            ('Lucas Rocha', 'lucas.rocha@example.com', 'senhaaaa', 'DEV', 70, false, 103),  -- ID 6
                                                                                            ('Bianca Melo', 'bianca.melo@example.com', 'senha1234', 'QA', 130, false, 103), -- ID 7
@@ -64,6 +64,15 @@ INSERT INTO feedbacks (message, date, given_by, received_by, related_task) VALUE
                                                                                ('Teste E2E excelente!', '2023-02-08', 2, 5, 6);
 -- === TEAM MEMBERS ===
 INSERT INTO team_members (team_id, member_id) VALUES
-                                                  (101, 1), (101, 2), (101, 3), (101, 9),
-                                                  (102, 4), (102, 5), (102, 8),
-                                                  (103, 6), (103, 7), (103, 3);
+                                                  (101, 1),  -- João Silva
+                                                  (101, 2),  -- Maria Souza
+                                                  (101, 3),  -- Pedro Gomes (líder Alpha/Gamma)
+                                                  (101, 4),  -- Ana Costa (para projeto 1 e 2)
+                                                  (101, 5),  -- Rafaela Lima (corrigido)
+                                                  (101, 6),  -- Lucas Rocha (corrigido)
+                                                  (101, 7),  -- Bianca Melo (já ajustado)
+                                                  (101, 9),  -- Letícia Andrade (usada em projeto 1)
+                                                  (102, 4),  -- Ana Costa (duplicado para projeto 3)
+                                                  (102, 8),  -- Carlos Pinto (líder Beta)
+                                                  (102, 9),  -- Letícia Andrade (usada em projeto 3)
+                                                  (103, 3);  -- Pedro Gomes (líder Gamma)
