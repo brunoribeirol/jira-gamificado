@@ -1,8 +1,8 @@
 package com.cesar.school.infrastructure.persistence.mapper.teamsmembers;
 
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.teamsmembers.entity.Team;
+import com.cesar.school.core.teamsmembers.vo.TeamId;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.TeamEntity;
 
 import java.util.List;

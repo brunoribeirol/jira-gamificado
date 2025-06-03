@@ -13,7 +13,6 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.core.projectmanagement.vo.TaskId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
-import com.cesar.school.core.teamsmembers.entity.Team;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.vo.TeamId;
 import jakarta.transaction.Transactional;
@@ -28,7 +27,6 @@ public class TaskServiceImpl implements TaskService {
     private final TaskRepository taskRepository;
     private final ProjectRepository projectRepository;
     private final MemberRepository memberRepository;
-    private final TeamRepository teamRepository;
     private final TaskScoreStrategy taskScoreStrategy;
     private final TaskCompletionTemplate taskCompletion;
     private final MemberTeamServiceImpl memberTeamService;
@@ -36,14 +34,12 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository taskRepository,
                            ProjectRepository projectRepository,
                            MemberRepository memberRepository,
-                           TeamRepository teamRepository,
                            TaskScoreStrategy taskScoreStrategy,
                            ApplicationEventPublisher eventPublisher,
                            MemberTeamServiceImpl memberTeamService) {
         this.taskRepository = taskRepository;
         this.projectRepository = projectRepository;
         this.memberRepository = memberRepository;
-        this.teamRepository = teamRepository;
         this.taskScoreStrategy = taskScoreStrategy;
         this.taskCompletion = new StandardTaskCompletion(taskRepository, memberRepository, eventPublisher, taskScoreStrategy);
         this.memberTeamService = memberTeamService;
@@ -106,18 +102,16 @@ public class TaskServiceImpl implements TaskService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("Member not found: " + memberId.getValue()));
 
+        // valida se o membro pertence ao mesmo time do projeto
         Project project = projectRepository.findById(task.getProjectId())
                 .orElseThrow(() -> new IllegalArgumentException("Project not found: " + task.getProjectId().getValue()));
 
-        Team team = teamRepository.findById(project.getTeamId())
-                .orElseThrow(() -> new IllegalArgumentException("Time do projeto não encontrado"));
-
-        if (!team.getMembers().contains(memberId)) {
+        if (!member.belongsToTeam(project.getTeamId())) {
             throw new IllegalArgumentException("Membro " + memberId.getValue()
-                    + " não pertence ao time " + team.getId().getValue());
+                    + " não pertence ao time desse projeto " + project.getTeamId().getValue());
         }
 
-        taskCompletion.complete(task, member);
+        taskCompletion.complete(task, taskScoreStrategy, member);
     }
 
     @Override

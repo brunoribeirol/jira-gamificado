@@ -2,9 +2,10 @@ package com.cesar.school.presentation.controller.teamsmembers;
 
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.shared.TeamId;
+import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
 import com.cesar.school.core.teamsmembers.vo.Role;
+import com.cesar.school.core.teamsmembers.vo.TeamId;
 import com.cesar.school.presentation.dto.teamsmembers.AddMemberRequest;
 import com.cesar.school.presentation.dto.teamsmembers.CreateTeamRequest;
 import com.cesar.school.presentation.dto.teamsmembers.MemberResponse;
@@ -25,8 +26,7 @@ public class TeamController {
 
     @PostMapping
     public ResponseEntity<Void> create(@RequestBody CreateTeamRequest request) {
-        Team team = request.toDomain(); // Usa o leaderId correto
-        memberTeamService.createTeam(team);
+        memberTeamService.createTeam(new TeamId(request.id), request.name);
         return ResponseEntity.ok().build();
     }
 

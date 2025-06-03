@@ -24,10 +24,6 @@ public class StandardTaskCompletion extends TaskCompletionTemplate {
         this.scoreStrategy = scoreStrategy; // <- NOVO
     }
 
-    @Override
-    protected void calculateScore(Task task) {
-        task.complete(scoreStrategy);
-    }
 
     @Override
     protected void notifyMember(Task task, Member member) {

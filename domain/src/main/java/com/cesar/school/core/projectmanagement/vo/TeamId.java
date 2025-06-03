@@ -1,14 +1,13 @@
-package com.cesar.school.core.shared;
+package com.cesar.school.core.projectmanagement.vo;
 
 import java.util.Objects;
 
-public class TeamId {
-
+public final class TeamId {
     private final int value;
 
     public TeamId(int value) {
         if (value <= 0) {
-            throw new IllegalArgumentException("TeamId deve ser positivo");
+            throw new IllegalArgumentException("O ID do time deve ser positivo");
         }
         this.value = value;
     }
@@ -18,10 +17,10 @@ public class TeamId {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TeamId)) return false;
-        TeamId that = (TeamId) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        TeamId that = (TeamId) obj;
         return value == that.value;
     }
 
@@ -32,6 +31,6 @@ public class TeamId {
 
     @Override
     public String toString() {
-        return String.valueOf(value);
+        return Integer.toString(value);
     }
 }
