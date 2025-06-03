@@ -33,7 +33,7 @@ class StandardTaskCompletionTest {
 
         // Executa o método do template
         StandardTaskCompletion template = new StandardTaskCompletion(taskRepository, memberRepository, publisher, strategy);
-        template.complete(task, strategy, member);
+        template.complete(task, member);
 
         // Verificações
         verify(task).complete(strategy);
