@@ -78,14 +78,24 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Move uma tarefa para uma nova coluna do Kanban
+     * PATCH /api/tasks/{id}/column?memberId={memberId}
+     * @param id ID da tarefa
+     * @param memberId ID do membro que está movendo a tarefa
+     * @param request Body com a nova coluna
+     * @return Nova coluna da tarefa
+     */
     @PatchMapping("/{id}/column")
-    public ResponseEntity<Void> moveToColumn(
+    public ResponseEntity<String> moveToColumn(
             @PathVariable int id,
             @RequestParam int memberId,
             @RequestBody @Valid MoveTaskRequest request
     ) {
         taskService.moveTaskToColumn(new TaskId(id), request.column, new MemberId(memberId));
-        return ResponseEntity.ok().build();
+        return taskService.getById(new TaskId(id))
+                .map(task -> ResponseEntity.ok(task.getKanbanColumn()))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("/{taskId}/complete") //http://localhost:8080/api/tasks/{taskId}/complete?memberId={memberId}
