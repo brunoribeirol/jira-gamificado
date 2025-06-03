@@ -1,7 +1,7 @@
 package com.cesar.school.core.teamsmembers.entity;
 
 import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.teamsmembers.vo.TeamId;
+import com.cesar.school.core.shared.TeamId;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -7,7 +7,7 @@ import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.gamification.service.RewardService;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.gamification.vo.RewardType;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.TeamId;
 import com.cesar.school.core.shared.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
@@ -203,7 +203,7 @@ public class RewardSteps {
     }
 
     private static class FakeTeamRepository implements TeamRepository {
-        @Override public Optional<Team> findById(com.cesar.school.core.teamsmembers.vo.TeamId id) { return Optional.empty(); }
+        @Override public Optional<Team> findById(com.cesar.school.core.shared.TeamId id) { return Optional.empty(); }
         @Override public void delete(Team team) { /* no-op */ }
 
         public List<Team> findAll() { return List.of(); }

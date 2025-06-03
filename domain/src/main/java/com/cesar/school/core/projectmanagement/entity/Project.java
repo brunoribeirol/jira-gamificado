@@ -1,7 +1,7 @@
 package com.cesar.school.core.projectmanagement.entity;
 
 import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.TeamId;
 
 import java.util.*;
 
