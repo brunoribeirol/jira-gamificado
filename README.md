@@ -41,6 +41,10 @@ SprintQuest permite a criação e gestão de projetos com visualização de tare
 - 🗺️ [Mapa de Histórias de Usuário](./docs/mapa_historias_usuario.jpeg)  
   Visualização da jornada e organização das histórias.
 
+### 🧩 Padrões de Projeto
+- 📘 [Padrões de Projeto](./docs/SEGUNDA_ENTREGA.md)  
+  Padrões de projeto utilizados no desenvolvimento da aplicação.
+
 ### 🧑‍🎨 Prototipação
 - 🖼️ [Protótipo de Baixa Fidelidade (Figma)](https://www.figma.com/design/8yORsLBWoXVqCpEj7tWPCJ/Projeto-Requisistos?node-id=0-1&p=f&t=eIytbgGlwM35SFbd-0)  
   Interface inicial com telas representativas da navegação e funcionalidades principais.

@@ -67,22 +67,16 @@
 
    ```
    bash
-   Copiar
-   Editar
    mysql -u root -p
    Crie o banco de dados:```
 
    ```
    sql
-   Copiar
-   Editar
    CREATE DATABASE sprintquest;
    Crie um usuário com senha segura e conceda as permissões necessárias:```
 
    ```
    sql
-   Copiar
-   Editar
    CREATE USER 'sprintquest_user'@'localhost' IDENTIFIED BY 'sua_senha_segura';
    GRANT ALL PRIVILEGES ON sprintquest.* TO 'sprintquest_user'@'localhost';
    FLUSH PRIVILEGES;```
