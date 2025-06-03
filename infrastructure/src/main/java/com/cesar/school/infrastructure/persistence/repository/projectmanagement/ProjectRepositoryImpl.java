@@ -6,7 +6,6 @@ import com.cesar.school.core.projectmanagement.vo.ProjectId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.ProjectEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.ProjectMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ProjectJpaRepository;
-import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.TaskEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.TaskMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.TaskJpaRepository;
@@ -24,11 +23,11 @@ public class ProjectRepositoryImpl implements ProjectRepository {
         this.taskJpaRepository = taskJpaRepository;
     }
 
-
     @Override
-    public void save(Project project) {
+    public Project save(Project project) {
         ProjectEntity entity = ProjectMapper.toEntity(project);
-        jpaRepository.save(entity);
+        ProjectEntity saved = jpaRepository.save(entity);
+        return ProjectMapper.toDomain(saved);
     }
 
     @Override

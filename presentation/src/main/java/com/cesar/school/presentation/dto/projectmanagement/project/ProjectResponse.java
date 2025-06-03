@@ -12,10 +12,15 @@ public class ProjectResponse {
 
     public static ProjectResponse fromDomain(Project project) {
         ProjectResponse response = new ProjectResponse();
-        response.id = project.getId().getValue();
+
+        if (project.getId() != null) {
+            response.id = project.getId().getValue();
+        }
+
         response.name = project.getName();
         response.description = project.getDescription();
         response.teamId = project.getTeamId().getValue();
+
         return response;
     }
 }

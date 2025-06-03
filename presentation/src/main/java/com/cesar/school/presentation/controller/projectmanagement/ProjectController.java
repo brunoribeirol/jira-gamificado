@@ -43,9 +43,9 @@ public class ProjectController {
     }
 
     @PostMapping("/new-project")
-    public ResponseEntity<Void> create(@RequestBody @Valid CreateProjectRequest request) {
-        projectService.createProject(request.toDomain());
-        return ResponseEntity.ok().build();
+    public ResponseEntity<ProjectResponse> create(@RequestBody @Valid CreateProjectRequest request) {
+        Project created = projectService.createProject(request.toDomain());
+        return ResponseEntity.status(201).body(ProjectResponse.fromDomain(created));
     }
 
     @PostMapping("/{projectId}/tasks")

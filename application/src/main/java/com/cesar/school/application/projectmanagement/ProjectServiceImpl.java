@@ -28,24 +28,13 @@ public class ProjectServiceImpl implements ProjectService {
         this.memberRepository = memberRepository;
     }
 
-//    @Override
-//    public Project create(ProjectId projectId, String name, String description, TeamId teamId) {
-//        if (name == null || name.trim().isEmpty()) {
-//            throw new IllegalArgumentException("Nome do projeto é obrigatório");
-//        }
-//
-//        Project project = new Project(projectId, name, description, teamId);
-//        projectRepository.save(project);
-//        return project;
-//    }
-
     @Override
-    public void createProject(Project project) {
+    public Project createProject(Project project) {
         if (project.getName() == null || project.getName().isBlank()) {
             throw new IllegalArgumentException("Nome do projeto é obrigatório");
         }
 
-        projectRepository.save(project);
+        return projectRepository.save(project);
     }
 
     public void addTaskToProject(ProjectId projectId, Task task, Integer assignedMemberId) {

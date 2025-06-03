@@ -44,12 +44,12 @@
 
 ## 📐 Padrões de Projeto Utilizados
 
-| Padrão              | Aplicação                                                                 |
-|---------------------|---------------------------------------------------------------------------|
-| **Template Method** | `StandardTaskCompletion.java` – Encapsula o fluxo de conclusão de tarefas |
+| Padrão              | Aplicação                                                                  |
+|---------------------|----------------------------------------------------------------------------|
+| **Template Method** | `StandardTaskCompletion.java` – Encapsula o fluxo de conclusão de tarefas  |
 | **Strategy**        | `TaskScoreStrategy.java` e implementações – Define regras de pontuação     |
 | **Observer**        | `ApplicationEventPublisher` + `TaskCompletedEvent` – Notificação de eventos |
-| **Iterator**        | `Team.iterator()` – Iteração customizada sobre membros de um time          |
+| **Iterator**        | Listar tarefas de um projeto, listar membros de uma tarefa                 |
 
 ---
 

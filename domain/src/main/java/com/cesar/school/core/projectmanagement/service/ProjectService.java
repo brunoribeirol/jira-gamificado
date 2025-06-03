@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ProjectService {
-    public void createProject(Project project);
+    Project createProject(Project project);
     Optional<Project> getById(ProjectId id);
     List<Project> getAll();
     void update(Project project);
