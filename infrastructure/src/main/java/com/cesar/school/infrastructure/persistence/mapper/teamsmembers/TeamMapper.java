@@ -11,20 +11,35 @@ import java.util.stream.Collectors;
 public class TeamMapper {
 
     public static TeamEntity toEntity(Team team) {
-        return new TeamEntity(
+        TeamEntity entity = new TeamEntity(
                 team.getId().getValue(),
                 team.getName(),
                 team.getLeaderId().getValue(),
                 team.getTeamScore()
         );
+
+        // Adiciona os memberIds (se estiver persistindo)
+        entity.setMemberIds(
+                team.getMembers().stream()
+                        .map(MemberId::getValue)
+                        .collect(Collectors.toList())
+        );
+
+        return entity;
     }
 
     public static Team toDomain(TeamEntity entity) {
+        List<MemberId> memberIds = entity.getMemberIds() != null
+                ? entity.getMemberIds().stream()
+                .map(MemberId::new)
+                .collect(Collectors.toList())
+                : List.of(); // caso seja nulo
+
         Team team = new Team(
                 new TeamId(entity.getId()),
                 entity.getName(),
                 new MemberId(entity.getLeaderId()),
-                List.of()
+                memberIds
         );
 
         team.addPoints(entity.getTeamScore());

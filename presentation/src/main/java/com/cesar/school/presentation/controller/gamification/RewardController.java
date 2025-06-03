@@ -105,5 +105,4 @@ public class RewardController {
         return ResponseEntity.ok(rewards);
     }
 
-
 }
