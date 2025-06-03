@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 public class MemberTeamServiceImpl implements MemberTeamService, MemberService, TeamService {
 
     private final TeamRepository teamRepository;
