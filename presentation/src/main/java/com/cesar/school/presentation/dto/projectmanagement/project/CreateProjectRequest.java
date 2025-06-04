@@ -1,8 +1,8 @@
 package com.cesar.school.presentation.dto.projectmanagement.project;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.TeamId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

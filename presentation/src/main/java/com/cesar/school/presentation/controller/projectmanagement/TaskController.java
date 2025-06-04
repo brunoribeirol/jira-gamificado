@@ -2,9 +2,9 @@ package com.cesar.school.presentation.controller.projectmanagement;
 
 import com.cesar.school.application.projectmanagement.TaskServiceImpl;
 import com.cesar.school.core.projectmanagement.entity.Task;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.presentation.dto.projectmanagement.task.*;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

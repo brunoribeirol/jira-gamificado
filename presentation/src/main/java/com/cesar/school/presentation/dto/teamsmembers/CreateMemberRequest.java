@@ -1,9 +1,9 @@
 package com.cesar.school.presentation.dto.teamsmembers;
 
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
-import com.cesar.school.core.teamsmembers.vo.Role;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.Role;
+import com.cesar.school.core.shared.vo.TeamId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

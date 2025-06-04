@@ -1,9 +1,9 @@
 package com.cesar.school.presentation.dto.projectmanagement.challenge;
 
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.MemberId;
 import jakarta.validation.constraints.*;
 
 import java.util.Date;

@@ -4,7 +4,7 @@ import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
 import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
 import com.cesar.school.core.projectmanagement.event.TaskCompletedEvent;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import org.junit.jupiter.api.Test;

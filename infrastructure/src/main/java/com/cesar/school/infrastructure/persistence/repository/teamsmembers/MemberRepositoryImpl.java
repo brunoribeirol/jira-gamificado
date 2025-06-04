@@ -1,6 +1,6 @@
 package com.cesar.school.infrastructure.persistence.repository.teamsmembers;
 
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
@@ -8,7 +8,7 @@ import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.MemberEntity;
 import com.cesar.school.infrastructure.persistence.mapper.teamsmembers.MemberMapper;
 import com.cesar.school.infrastructure.persistence.springdata.teamsmembers.MemberJpaRepository;
-import com.cesar.school.core.teamsmembers.vo.TeamId;
+import com.cesar.school.core.shared.vo.TeamId;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

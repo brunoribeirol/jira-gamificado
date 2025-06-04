@@ -1,8 +1,8 @@
 package com.cesar.school.core.teamsmembers.repository;
 
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
-import com.cesar.school.core.teamsmembers.vo.FeedbackId;
+import com.cesar.school.core.shared.vo.FeedbackId;
 
 import java.util.List;
 import java.util.Optional;

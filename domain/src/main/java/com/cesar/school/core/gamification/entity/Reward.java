@@ -2,7 +2,7 @@ package com.cesar.school.core.gamification.entity;
 
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.gamification.vo.RewardType;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 
 import java.util.Objects;
 

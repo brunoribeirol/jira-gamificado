@@ -2,8 +2,7 @@ package com.cesar.school.core.projectmanagement.service;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.vo.ProjectId;
 
 import java.util.List;
 import java.util.Optional;

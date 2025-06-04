@@ -2,10 +2,10 @@ package com.cesar.school.steps.projectmanagement;
 
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.entity.Task;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.TeamId;
+import com.cesar.school.core.shared.vo.MemberId;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 

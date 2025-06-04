@@ -7,8 +7,9 @@ import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.gamification.service.RewardService;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.gamification.vo.RewardType;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.FeedbackId;
+import com.cesar.school.core.shared.vo.TeamId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
@@ -16,7 +17,7 @@ import com.cesar.school.core.teamsmembers.repository.FeedbackRepository;
 import com.cesar.school.core.teamsmembers.repository.MemberRepository;
 import com.cesar.school.core.teamsmembers.repository.TeamRepository;
 import com.cesar.school.core.teamsmembers.service.MemberService;
-import com.cesar.school.core.teamsmembers.vo.Role;
+import com.cesar.school.core.shared.Role;
 import io.cucumber.java.Before;
 import io.cucumber.java.en.*;
 
@@ -201,7 +202,7 @@ public class RewardSteps {
         @Override public List<Member> findAll() { return new ArrayList<>(db.values()); }
 
         @Override
-        public List<Member> findByTeamId(com.cesar.school.core.teamsmembers.vo.TeamId teamId) {
+        public List<Member> findByTeamId(TeamId teamId) {
             return List.of();
         }
 
@@ -209,7 +210,7 @@ public class RewardSteps {
     }
 
     private static class FakeTeamRepository implements TeamRepository {
-        @Override public Optional<Team> findById(com.cesar.school.core.teamsmembers.vo.TeamId id) { return Optional.empty(); }
+        @Override public Optional<Team> findById(TeamId id) { return Optional.empty(); }
         @Override public void delete(Team team) { /* no-op */ }
 
         public List<Team> findAll() { return List.of(); }
@@ -217,7 +218,7 @@ public class RewardSteps {
     }
 
     private static class FakeFeedbackRepository implements FeedbackRepository {
-        @Override public Optional<Feedback> findById(com.cesar.school.core.teamsmembers.vo.FeedbackId id) { return Optional.empty(); }
+        @Override public Optional<Feedback> findById(FeedbackId id) { return Optional.empty(); }
         @Override public List<Feedback> findByReceivedBy(MemberId id) { return List.of(); }
 
         public List<Feedback> findAll() { return List.of(); }

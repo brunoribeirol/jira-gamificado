@@ -2,9 +2,9 @@ package com.cesar.school.infrastructure.persistence.repository.projectmanagement
 
 import com.cesar.school.core.projectmanagement.entity.Task;
 import com.cesar.school.core.projectmanagement.repository.TaskRepository;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.TaskEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.TaskMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.TaskJpaRepository;

@@ -1,4 +1,4 @@
-package com.cesar.school.core.projectmanagement.vo;
+package com.cesar.school.core.shared.vo;
 
 import java.util.Objects;
 

@@ -3,7 +3,7 @@ package com.cesar.school.application.teamsmembers;
 import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.repository.RewardRepository;
 import com.cesar.school.core.gamification.vo.RewardId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.teamsmembers.entity.Team;
@@ -13,8 +13,8 @@ import com.cesar.school.core.teamsmembers.repository.TeamRepository;
 import com.cesar.school.core.teamsmembers.service.MemberService;
 import com.cesar.school.core.teamsmembers.service.MemberTeamService;
 import com.cesar.school.core.teamsmembers.service.TeamService;
-import com.cesar.school.core.teamsmembers.vo.Role;
-import com.cesar.school.core.teamsmembers.vo.TeamId;
+import com.cesar.school.core.shared.Role;
+import com.cesar.school.core.shared.vo.TeamId;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +48,10 @@ public class MemberTeamServiceImpl implements MemberTeamService, MemberService, 
     }
 
     @Override
-    public void createTeam(TeamId teamId, String teamName) {
-        MemberId leaderId = new MemberId(1);
+    public void createTeam(TeamId teamId, String teamName, MemberId leaderId) {
+        Member leader = memberRepository.findById(leaderId)
+                .orElseThrow(() -> new IllegalArgumentException("Líder não encontrado"));
+
         List<MemberId> initialMembers = List.of(leaderId);
         Team team = new Team(teamId, teamName, leaderId, initialMembers);
         teamRepository.save(team);

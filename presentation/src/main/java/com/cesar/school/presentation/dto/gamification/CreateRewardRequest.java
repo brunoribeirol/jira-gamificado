@@ -3,7 +3,7 @@ package com.cesar.school.presentation.dto.gamification;
 import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.gamification.vo.RewardType;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

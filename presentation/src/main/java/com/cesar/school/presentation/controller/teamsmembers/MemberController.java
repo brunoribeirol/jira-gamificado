@@ -1,9 +1,8 @@
 package com.cesar.school.presentation.controller.teamsmembers;
 
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
-import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.presentation.dto.teamsmembers.*;
 import com.cesar.school.presentation.response.ApiResponse;
 import jakarta.validation.Valid;

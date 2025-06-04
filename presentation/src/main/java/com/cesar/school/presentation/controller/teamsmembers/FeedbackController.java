@@ -1,7 +1,7 @@
 package com.cesar.school.presentation.controller.teamsmembers;
 
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.presentation.dto.teamsmembers.GiveFeedbackRequest;
 import com.cesar.school.presentation.response.ApiResponse;

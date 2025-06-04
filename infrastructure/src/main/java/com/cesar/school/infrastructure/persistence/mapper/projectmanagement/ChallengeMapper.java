@@ -1,13 +1,10 @@
 package com.cesar.school.infrastructure.persistence.mapper.projectmanagement;
 
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.ChallengeEntity;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ChallengeMapper {
 

@@ -1,6 +1,6 @@
 package com.cesar.school.infrastructure.persistence.entity.teamsmembers;
 
-import com.cesar.school.core.teamsmembers.vo.Role;
+import com.cesar.school.core.shared.Role;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,9 @@
 package com.cesar.school.core.projectmanagement.repository;
 
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ChallengeId;
 import java.util.List;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
+import com.cesar.school.core.shared.vo.ProjectId;
 import java.util.Optional;
 
 

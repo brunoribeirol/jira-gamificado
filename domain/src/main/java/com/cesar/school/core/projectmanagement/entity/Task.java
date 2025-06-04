@@ -1,8 +1,8 @@
 package com.cesar.school.core.projectmanagement.entity;
 
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Member;
 import com.cesar.school.core.projectmanagement.strategy.TaskScoreStrategy;
 

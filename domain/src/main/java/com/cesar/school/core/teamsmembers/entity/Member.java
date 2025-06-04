@@ -1,9 +1,9 @@
 package com.cesar.school.core.teamsmembers.entity;
 
 import com.cesar.school.core.gamification.vo.RewardId;
-import com.cesar.school.core.shared.MemberId;
-import com.cesar.school.core.teamsmembers.vo.Role;
-import com.cesar.school.core.projectmanagement.vo.TeamId;
+import com.cesar.school.core.shared.vo.MemberId;
+import com.cesar.school.core.shared.Role;
+import com.cesar.school.core.shared.vo.TeamId;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,9 +1,9 @@
 package com.cesar.school.steps.projectmanagement;
 
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ProjectId;
+import com.cesar.school.core.shared.vo.MemberId;
 import io.cucumber.java.en.*;
 
 import java.text.ParseException;

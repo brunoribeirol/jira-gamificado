@@ -1,10 +1,9 @@
 package com.cesar.school.core.teamsmembers.service;
 
-import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
 import com.cesar.school.core.teamsmembers.entity.Member;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 
 import java.util.List;
 import java.util.Optional;

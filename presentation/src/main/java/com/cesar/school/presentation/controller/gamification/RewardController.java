@@ -4,7 +4,7 @@ import com.cesar.school.application.gamification.RewardServiceImpl;
 import com.cesar.school.application.teamsmembers.MemberTeamServiceImpl;
 import com.cesar.school.core.gamification.entity.Reward;
 import com.cesar.school.core.gamification.vo.RewardId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.presentation.dto.gamification.CreateRewardRequest;
 import com.cesar.school.presentation.dto.gamification.RewardResponse;
 import com.cesar.school.presentation.dto.gamification.UpdateRewardPointsRequest;

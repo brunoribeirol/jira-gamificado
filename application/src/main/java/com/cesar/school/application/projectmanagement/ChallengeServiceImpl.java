@@ -5,8 +5,8 @@ import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.repository.ChallengeRepository;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
 import com.cesar.school.core.projectmanagement.service.ChallengeService;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
+import com.cesar.school.core.shared.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ProjectId;
 
 import java.util.List;
 import java.util.Optional;

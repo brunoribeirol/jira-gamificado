@@ -1,13 +1,13 @@
-package com.cesar.school.core.shared;
+package com.cesar.school.core.shared.vo;
 
 import java.util.Objects;
 
-public final class MemberId {
+public final class FeedbackId {
     private final int value;
 
-    public MemberId(int value) {
+    public FeedbackId(int value) {
         if (value <= 0) {
-            throw new IllegalArgumentException("MemberId deve ser um número positivo.");
+            throw new IllegalArgumentException("O ID do feedback deve ser positivo");
         }
         this.value = value;
     }
@@ -19,9 +19,9 @@ public final class MemberId {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MemberId)) return false;
-        MemberId memberId = (MemberId) o;
-        return value == memberId.value;
+        if (!(o instanceof FeedbackId)) return false;
+        FeedbackId that = (FeedbackId) o;
+        return value == that.value;
     }
 
     @Override

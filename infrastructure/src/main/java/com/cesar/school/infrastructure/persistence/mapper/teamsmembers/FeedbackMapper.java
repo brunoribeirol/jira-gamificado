@@ -1,9 +1,9 @@
 package com.cesar.school.infrastructure.persistence.mapper.teamsmembers;
 
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
-import com.cesar.school.core.teamsmembers.vo.FeedbackId;
+import com.cesar.school.core.shared.vo.FeedbackId;
 import com.cesar.school.infrastructure.persistence.entity.teamsmembers.FeedbackEntity;
 
 public class FeedbackMapper {

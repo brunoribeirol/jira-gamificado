@@ -1,9 +1,9 @@
 package com.cesar.school.presentation.dto.teamsmembers;
 
-import com.cesar.school.core.projectmanagement.vo.TaskId;
-import com.cesar.school.core.shared.MemberId;
+import com.cesar.school.core.shared.vo.TaskId;
+import com.cesar.school.core.shared.vo.MemberId;
 import com.cesar.school.core.teamsmembers.entity.Feedback;
-import com.cesar.school.core.teamsmembers.vo.FeedbackId;
+import com.cesar.school.core.shared.vo.FeedbackId;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

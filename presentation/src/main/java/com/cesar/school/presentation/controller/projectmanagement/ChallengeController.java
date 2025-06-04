@@ -2,8 +2,8 @@ package com.cesar.school.presentation.controller.projectmanagement;
 
 import com.cesar.school.application.projectmanagement.ChallengeServiceImpl;
 import com.cesar.school.core.projectmanagement.entity.Challenge;
-import com.cesar.school.core.projectmanagement.vo.ChallengeId;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
+import com.cesar.school.core.shared.vo.ChallengeId;
+import com.cesar.school.core.shared.vo.ProjectId;
 import com.cesar.school.presentation.dto.projectmanagement.challenge.ChallengeResponse;
 import com.cesar.school.presentation.dto.projectmanagement.challenge.CreateChallengeRequest;
 import jakarta.validation.Valid;

@@ -2,7 +2,7 @@ package com.cesar.school.infrastructure.persistence.repository.projectmanagement
 
 import com.cesar.school.core.projectmanagement.entity.Project;
 import com.cesar.school.core.projectmanagement.repository.ProjectRepository;
-import com.cesar.school.core.projectmanagement.vo.ProjectId;
+import com.cesar.school.core.shared.vo.ProjectId;
 import com.cesar.school.infrastructure.persistence.entity.projectmanagement.ProjectEntity;
 import com.cesar.school.infrastructure.persistence.mapper.projectmanagement.ProjectMapper;
 import com.cesar.school.infrastructure.persistence.springdata.projectmanagement.ProjectJpaRepository;
