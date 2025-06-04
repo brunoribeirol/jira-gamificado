@@ -180,12 +180,49 @@ Certifique-se de que o backend esteja rodando em:
 ```
 http://localhost:8080
 ```
+### 📦 Instalação
 
-Para que o frontend (React + Vite) funcione corretamente com:
+1. **Clone o repositório:**
+
+```bash
+git clone https://github.com/lucasrosati/sprintquest-team-pulse.git
+cd sprintquest-team-pulse
+```
+
+2. **Instale as dependências:**
+
+```bash
+npm install
+# ou
+yarn
+```
+
+3. **Crie um arquivo `.env` com as variáveis necessárias:**
 
 ```env
 VITE_API_URL=http://localhost:8080/api
 ```
+
+---
+
+### ▶️ Executando o projeto
+
+```bash
+npm run dev
+# ou
+yarn dev
+```
+
+A aplicação estará disponível em:  
+📍 `http://localhost:5173`
+
+### 💡 Observações
+Para testar a interação entre um líder de equipe e um membro, você pode abrir a aplicação em duas guias do navegador:
+
+- Uma guia principal com o navegador comum.
+- Uma segunda guia utilizando modo anônimo (navegação privada).
+- Isso permite simular ações simultâneas de diferentes perfis de usuário na plataforma.
+
 
 ---
 
