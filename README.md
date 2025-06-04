@@ -15,7 +15,6 @@ Este é o repositório do backend da aplicação **SprintQuest**, uma plataforma
 - **MySQL**
 
 ---
----
 
 ## 📌 Sobre o Projeto
 
@@ -112,67 +111,7 @@ Execute a aplicação:
 cd presentation
 mvn spring-boot:run
 ```
-
-A aplicação estará disponível em:
-
-```
-http://localhost:8080
-```
-
 ---
-
-## 🧪 Testes
-
-Para rodar os testes BDD com Cucumber:
-
-```bash
-mvn test
-```
-
----
-## 📚 Documentação
-
-### 📦 Segunda Entrega
-- 🧩 [Histórias Implementadas & Padrões de Projeto](./docs/SEGUNDA_ENTREGA.md)  
-  Histórias implementadas & Padrões de projeto utilizados no desenvolvimento da aplicação.
-
-### 🧾 Descrição Geral
-- 📄 [Descrição do Domínio (PDF)](./docs/descricao_dominio.pdf)  
-  Visão conceitual e motivação do sistema, destacando os objetivos e a lógica do negócio.
-
-### 👥 Personas
-- 👤 [Personas do Projeto](./docs/personas.pdf)  
-  Perfis de usuários que interagem com o sistema, com seus objetivos e dores.
-
-### 📝 Funcionalidades
-- 📋 [Histórias de Usuário](./docs/historias_usuario.pdf)  
-  Detalhamento das histórias no formato:  
-  _"Como [persona], quero [funcionalidade] para [benefício]."_
-
-- 🗺️ [Mapa de Histórias de Usuário](./docs/mapa_historias_usuario.jpeg)  
-  Visualização da jornada e organização das histórias.
-
-### 🧑‍🎨 Prototipação
-- 🖌️ [Protótipo de Baixa Fidelidade (Figma)](https://www.figma.com/design/8yORsLBWoXVqCpEj7tWPCJ/Projeto-Requisistos?node-id=0-1&p=f&t=eIytbgGlwM35SFbd-0)  
-  Interface inicial com telas representativas da navegação e funcionalidades principais.
-
-### 🧠 Modelagem de Domínio
-- 🗂️ [Modelo do Domínio (Context Mapper - CML)](./docs/context-mapper/cml/SprintQuest.cml)  
-  Estrutura de bounded contexts e subdomínios seguindo DDD.
-
-- 📊 [Diagrama UML (PlantUML - PNG)](./docs/context-mapper/images)  
-  Representação visual das entidades, agregados e serviços do sistema.
-
-### ✅ Validação Comportamental
-- 🧪 [BDD - Cenários de Teste (Gherkin)](./docs/bdd_gherkin.pdf)  
-  Cenários escritos com Gherkin para testes comportamentais automatizados com Cucumber.
-
-### 📽️ Apresentação
-- 🎤 [Slide da 1ª Apresentação](https://www.canva.com/design/DAGleCnl3jE/XS6bPCAyfjVwojx6mjnXhA/edit)  
-  Material da 1ª apresentação.
-
-___
-
 ## 🤝 Integração com Frontend
 
 Certifique-se de que o backend esteja rodando em:
@@ -223,8 +162,57 @@ Para testar a interação entre um líder de equipe e um membro, você pode abri
 - Uma segunda guia utilizando modo anônimo (navegação privada).
 - Isso permite simular ações simultâneas de diferentes perfis de usuário na plataforma.
 
-
 ---
+## 🧪 Testes
+
+Para rodar os testes BDD com Cucumber:
+
+```bash
+mvn test
+```
+---
+## 📚 Documentação
+
+### 📦 Segunda Entrega
+- 🧩 [Histórias, Cenários e Padrões de Projeto](./docs/SEGUNDA_ENTREGA.md)  
+  Histórias implementadas com cenários BDD e Padrões de projeto utilizados no desenvolvimento da aplicação. (**SEGUNDA_ENTREGA.md**)
+
+### 🧾 Descrição Geral
+- 📄 [Descrição do Domínio (PDF)](./docs/descricao_dominio.pdf)  
+  Visão conceitual e motivação do sistema, destacando os objetivos e a lógica do negócio.
+
+### 👥 Personas
+- 👤 [Personas do Projeto](./docs/personas.pdf)  
+  Perfis de usuários que interagem com o sistema, com seus objetivos e dores.
+
+### 📝 Funcionalidades
+- 📋 [Histórias de Usuário](./docs/historias_usuario.pdf)  
+  Detalhamento das histórias no formato:  
+  _"Como [persona], quero [funcionalidade] para [benefício]."_
+
+- 🗺️ [Mapa de Histórias de Usuário](./docs/mapa_historias_usuario.jpeg)  
+  Visualização da jornada e organização das histórias.
+
+### 🧑‍🎨 Prototipação
+- 🖌️ [Protótipo de Baixa Fidelidade (Figma)](https://www.figma.com/design/8yORsLBWoXVqCpEj7tWPCJ/Projeto-Requisistos?node-id=0-1&p=f&t=eIytbgGlwM35SFbd-0)  
+  Interface inicial com telas representativas da navegação e funcionalidades principais.
+
+### 🧠 Modelagem de Domínio
+- 🗂️ [Modelo do Domínio (Context Mapper - CML)](./docs/context-mapper/cml/SprintQuest.cml)  
+  Estrutura de bounded contexts e subdomínios seguindo DDD.
+
+- 📊 [Diagrama UML (PlantUML - PNG)](./docs/context-mapper/images)  
+  Representação visual das entidades, agregados e serviços do sistema.
+
+### ✅ Validação Comportamental
+- 🧪 [BDD - Cenários de Teste (Gherkin)](./docs/bdd_gherkin.pdf)  
+  Cenários escritos com Gherkin para testes comportamentais automatizados com Cucumber.
+
+### 📽️ Apresentação
+- 🎤 [Slide da 1ª Apresentação](https://www.canva.com/design/DAGleCnl3jE/XS6bPCAyfjVwojx6mjnXhA/edit)  
+  Material da 1ª apresentação.
+
+___
 
 ## 👥 Time de Desenvolvimento
 
